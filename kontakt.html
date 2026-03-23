@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Kontaktirajte Sabioncello Grafica — pošaljite upit za grafički dizajn, tisak ili ostale usluge. Orebić, Pelješac, Dubrovačko-neretvanska županija." />
+  <title>Kontakt | Sabioncello Grafica</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar" id="navbar" aria-label="Glavna navigacija">
+  <div class="nav-container">
+    <a href="index.html" class="nav-logo" aria-label="Sabioncello Grafica – početna">
+      <img src="assets/img/logo.png" alt="Sabioncello Grafica" />
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html"      class="nav-link">Početna</a></li>
+      <li><a href="o-nama.html"     class="nav-link">O Nama</a></li>
+      <li><a href="usluge.html"     class="nav-link">Usluge</a></li>
+      <li><a href="izdvojeno.html"  class="nav-link">Izdvojeno</a></li>
+      <li><a href="kontakt.html"    class="nav-link active nav-cta">Kontakt</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger" aria-label="Izbornik" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- PAGE HERO -->
+<header class="page-hero" aria-labelledby="ph-title">
+  <div class="page-hero-inner">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="index.html">Početna</a>
+      <i class="fas fa-chevron-right"></i>
+      <span>Kontakt</span>
+    </nav>
+    <h1 class="page-hero-title" id="ph-title">
+      Stupite u <em>kontakt</em>
+    </h1>
+    <p class="page-hero-sub">
+      Imate projekt, pitanje ili ideju? Javite nam se — odgovaramo brzo.
+    </p>
+  </div>
+</header>
+
+<main>
+
+<!-- KONTAKT GRID -->
+<section class="section" aria-labelledby="kontakt-title">
+  <div class="container">
+
+    <div class="kontakt-grid">
+
+      <!-- Info column -->
+      <div class="k-info" data-aos>
+
+        <div class="tag">Kontakt info</div>
+        <h2 class="section-title" id="kontakt-title">Pronađite <em>nas</em></h2>
+        <div class="divider"></div>
+
+        <div class="k-info-item">
+          <div class="k-icon"><i class="fas fa-map-marker-alt"></i></div>
+          <div>
+            <h4>Adresa</h4>
+            <p>Orebić, Pelješac<br>Dubrovačko-neretvanska županija</p>
+          </div>
+        </div>
+
+        <div class="k-info-item">
+          <div class="k-icon"><i class="fas fa-phone"></i></div>
+          <div>
+            <h4>Telefon</h4>
+            <p>
+              <a href="tel:+38598XXXXXXX">+385 98 1763072</a><br>
+              <a href="tel:+38599XXXXXXX">+385 99 595 6567</a>
+            </p>
+          </div>
+        </div>
+
+        <div class="k-info-item">
+          <div class="k-icon"><i class="fas fa-envelope"></i></div>
+          <div>
+            <h4>E-mail</h4>
+            <p><a href="mailto:info@sabioncellografica.hr">info@sabioncellografica.hr</a></p>
+          </div>
+        </div>
+
+        <div class="k-info-item">
+          <div class="k-icon"><i class="fas fa-clock"></i></div>
+          <div>
+            <h4>Radno vrijeme</h4>
+            <p>Ponedjeljak – Subota<br>08:00 – 16:00</p>
+          </div>
+        </div>
+
+        <div class="socials-row">
+          <a href="#" class="social-btn" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" class="social-btn" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+        </div>
+
+      </div>
+
+      <!-- Form column -->
+      <div data-aos>
+        <div class="form-card">
+          <div class="tag" style="margin-bottom:22px;">Pošaljite upit</div>
+          <form id="contactForm" novalidate>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="name">Ime i prezime <span class="req">*</span></label>
+                <input type="text" id="name" name="name" placeholder="Ana Horvat" autocomplete="name" required />
+              </div>
+              <div class="form-group">
+                <label for="email">E-mail adresa <span class="req">*</span></label>
+                <input type="email" id="email" name="email" placeholder="ana@primjer.hr" autocomplete="email" required />
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="phone">Broj telefona</label>
+              <input type="tel" id="phone" name="phone" placeholder="+385 XX XXX XXXX" autocomplete="tel" />
+            </div>
+            <div class="form-group">
+              <label for="service">Usluga koja Vas zanima</label>
+              <select id="service" name="service">
+                <option value="">— Odaberite uslugu —</option>
+                <option>Grafički dizajn</option>
+                <option>Tisak</option>
+                <option>Vez i tisak na tekstil</option>
+                <option>Oslikavanje vozila</option>
+                <option>Svjetleće reklame</option>
+                <option>Putokazi i natpisne ploče</option>
+                <option>Promo materijali</option>
+                <option>Jelovnici</option>
+                <option>Vjenčanja</option>
+                <option>Trofeje i plakete</option>
+                <option>Poslovni / personalizirani pokloni</option>
+                <option>Etikete</option>
+                <option>Ostalo</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="message">Poruka <span class="req">*</span></label>
+              <textarea id="message" name="message" rows="5" placeholder="Opišite Vaš projekt, potrebe i rokove..." required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary btn-lg" id="submitBtn" style="width:100%;justify-content:center;">
+              Pošaljite upit <i class="fas fa-paper-plane"></i>
+            </button>
+            <div class="form-success" id="formSuccess" role="alert">
+              <i class="fas fa-check-circle"></i>
+              Hvala! Vaša poruka je primljena. Javit ćemo Vam se uskoro.
+            </div>
+          </form>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Map placeholder -->
+    <div class="map-placeholder" data-aos>
+      <i class="fas fa-map-marked-alt"></i>
+      <p>Orebić, Pelješac — Dubrovačko-neretvanska županija</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- CTA BAND -->
+<section class="cta-band" aria-label="Poziv na akciju">
+  <div class="container">
+    <div class="cta-band-inner" data-aos>
+      <h2>Brzi odgovor, bez obaveza.</h2>
+      <p>Svaki upit tretiramo s pažnjom — odgovorimo u roku jednog radnog dana.</p>
+      <a href="tel:+38598XXXXXXX" class="btn btn-dark btn-lg">
+        <i class="fas fa-phone"></i> Nazovite nas odmah
+      </a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-simple">
+      <div class="footer-simple-brand">
+        <a href="index.html"><img src="assets/img/logo.png" alt="Sabioncello Grafica" /></a>
+        <p>Orebić · Pelješac · DNŽ</p>
+      </div>
+      <nav class="footer-simple-nav" aria-label="Footer navigacija">
+        <a href="index.html">Početna</a>
+        <a href="o-nama.html">O Nama</a>
+        <a href="usluge.html">Usluge</a>
+        <a href="izdvojeno.html">Izdvojeno</a>
+        <a href="kontakt.html">Kontakt</a>
+      </nav>
+      <div class="footer-simple-contact">
+        <a href="tel:+38598XXXXXXX" class="footer-cline"><i class="fas fa-phone"></i>+385 98 1763072</a>
+        <a href="mailto:info@sabioncellografica.hr" class="footer-cline"><i class="fas fa-envelope"></i>info@sabioncellografica.hr</a>
+        <div class="footer-socials">
+          <a href="#" class="footer-social-btn" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" class="footer-social-btn" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2024 Sabioncello Grafica. Sva prava pridržana.</p>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>
