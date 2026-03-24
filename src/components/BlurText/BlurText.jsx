@@ -54,7 +54,7 @@ const BlurText = ({
   );
 
   return (
-    <Tag className={className} style={{ display: 'flex', flexWrap: 'wrap', gap: '0.25em' }}>
+    <Tag className={className} style={{ display: 'flex', flexWrap: 'wrap', gap: '0.25em', justifyContent: 'center' }}>
       {elements.map((segment, index) => {
         const animateKeyframes = buildKeyframes(fromSnapshot, toSnapshots);
         const spanTransition = {

@@ -373,7 +373,7 @@ strong { font-weight: 600; }
 
 /* ── PAGE HERO (inner pages) ───────────────────────────────── */
 .page-hero {
-  background: var(--dark); padding: calc(var(--nav-h) + 64px) 24px 72px;
+  background: var(--dark); padding: calc(var(--nav-h) + 92px) 24px 103px;
   position: relative; overflow: hidden;
 }
 .page-hero::before {
@@ -401,13 +401,13 @@ strong { font-weight: 600; }
 .breadcrumb i { font-size: .65rem; }
 
 .page-hero-title {
-  font-family: var(--fd); font-size: clamp(2.2rem, 5vw, 3.8rem);
-  font-weight: 700; color: var(--inv); line-height: 1.15; margin-bottom: 16px;
+  font-family: var(--fd); font-size: clamp(2.64rem, 6vw, 4.56rem);
+  font-weight: 700; color: var(--inv); line-height: 1.15; margin-bottom: 19px;
 }
 .page-hero-title em { font-style: italic; color: var(--teal-pale); }
 
 .page-hero-sub {
-  font-size: 1.05rem; color: var(--inv-2); max-width: 560px; line-height: 1.7;
+  font-size: 1.26rem; color: var(--inv-2); max-width: 672px; line-height: 1.7;
 }
 
 /* ── STATS BAND ────────────────────────────────────────────── */
@@ -427,20 +427,21 @@ strong { font-weight: 600; }
 .stat-label { font-size: .75rem; color: var(--inv-3); text-transform: uppercase; letter-spacing: .07em; margin-top: 4px; }
 
 /* ── CTA BAND ──────────────────────────────────────────────── */
-.cta-band { background: var(--teal); padding: 80px 0; text-align: center; position: relative; overflow: hidden; }
+.cta-band { background: var(--teal); padding: 104px 0; text-align: center; position: relative; overflow: hidden; }
 .cta-band::before {
   content: ''; position: absolute; inset: 0;
   background: linear-gradient(135deg, rgba(255,255,255,.06), transparent 60%);
   pointer-events: none;
 }
 .cta-band-inner { position: relative; z-index: 1; }
-.cta-band h2 { font-family: var(--fd); font-size: clamp(1.8rem, 3.5vw, 2.6rem); font-weight: 700; color: #fff; margin-bottom: 14px; }
-.cta-band p  { font-size: 1.05rem; color: rgba(255,255,255,.8); max-width: 480px; margin: 0 auto 34px; }
+.cta-band h2 { font-family: var(--fd); font-size: clamp(2.34rem, 4.55vw, 3.38rem); font-weight: 700; color: #fff; margin-bottom: 18px; }
+.cta-band p  { font-size: 1.365rem; color: rgba(255,255,255,.8); max-width: 624px; margin: 0 auto 44px; }
 
 /* ── SERVICES ──────────────────────────────────────────────── */
 .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
 
 .svc-card {
+  display: block; color: inherit; text-decoration: none;
   background: var(--bg); border: 1px solid var(--border);
   border-radius: var(--r); padding: 34px 28px;
   transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease;
@@ -865,9 +866,9 @@ strong { font-weight: 600; }
 
 .slide-desc {
   font-size: 1.08rem; color: rgba(255,255,255,.72); line-height: 1.72;
-  max-width: 500px; margin-bottom: 38px;
+  max-width: 500px; margin: 0 auto 38px;
 }
-.slide-ctas { display: flex; gap: 14px; flex-wrap: wrap; }
+.slide-ctas { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; }
 
 /* Service slides typography */
 .slide-svc-tag,
@@ -1139,7 +1140,7 @@ strong { font-weight: 600; }
   overflow: hidden;
   padding: 0;
   background: var(--dark);
-  min-height: 320px;
+  min-height: 416px;
   display: flex;
   align-items: center;
 }
@@ -1154,13 +1155,13 @@ strong { font-weight: 600; }
 .cta-band__liquid-bg .liquid-ether-container {
   width: 100%;
   height: 100%;
-  min-height: 320px;
+  min-height: 416px;
 }
 .cta-band__content {
   position: relative;
   z-index: 1;
-  padding-top: 80px;
-  padding-bottom: 80px;
+  padding-top: 104px;
+  padding-bottom: 104px;
   width: 100%;
 }
 .cta-band--liquid .cta-band-inner {
@@ -1169,10 +1170,10 @@ strong { font-weight: 600; }
   -webkit-backdrop-filter: blur(8px);
   border: 1px solid rgba(255,255,255,0.1);
   border-radius: 4px;
-  padding: 56px 64px;
+  padding: 73px 83px;
 }
 @media (max-width: 640px) {
-  .cta-band--liquid .cta-band-inner { padding: 40px 28px; }
+  .cta-band--liquid .cta-band-inner { padding: 52px 28px; }
 }
 
 /* ── REACT AOS (data-aos) ───────────────────────────────────── */

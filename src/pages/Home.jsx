@@ -10,7 +10,6 @@ const SLIDES = [
     bg: 'slide-bg-1',
     icon: 'fa-star',
     type: 'intro',
-    eyebrow: 'Orebić · 20 godina iskustva',
     title: ['Dajemo oblik', 'Vašim idejama'],
     desc: 'Grafički dizajn, tisak i branding koji ostavlja trag — diljem Dubrovačko-neretvanske županije.',
   },
@@ -98,15 +97,17 @@ function HeroSlider() {
         {s.type === 'intro' ? (
           <div className="slide-content slide-content-intro" key={`intro-${current}`}>
             <div className="container">
-              <BlurText
-                key={`eyebrow-${current}`}
-                text={s.eyebrow}
-                as="span"
-                className="slide-eyebrow"
-                delay={60}
-                direction="bottom"
-                stepDuration={0.28}
-              />
+              {s.eyebrow && (
+                <BlurText
+                  key={`eyebrow-${current}`}
+                  text={s.eyebrow}
+                  as="span"
+                  className="slide-eyebrow"
+                  delay={60}
+                  direction="bottom"
+                  stepDuration={0.28}
+                />
+              )}
               <h1 className="slide-title-main">
                 <BlurText
                   key={`t0-${current}`}
@@ -414,7 +415,7 @@ export default function Home() {
           <div className="svc-fade-wrap">
             <div className="home-svc-grid">
               {SVC_CARDS.map((svc, i) => (
-                <article className="svc-card" key={i} data-aos>
+                <Link to="/usluge" className="svc-card" key={i} data-aos>
                   <img
                     src={svc.img}
                     alt={svc.title}
@@ -425,7 +426,7 @@ export default function Home() {
                   <div className="svc-icon"><i className={`fas ${svc.icon}`}></i></div>
                   <h3>{svc.title}</h3>
                   <p>{svc.desc}</p>
-                </article>
+                </Link>
               ))}
             </div>
           </div>
