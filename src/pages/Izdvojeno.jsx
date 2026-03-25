@@ -61,6 +61,7 @@ export default function Izdvojeno() {
   return (
     <div ref={pageRef}>
       <header className="page-hero" aria-labelledby="ph-title">
+        <span className="page-hero-deco" aria-hidden="true">IZDVOJENO</span>
         <div className="page-hero-inner">
           <nav className="breadcrumb" aria-label="Breadcrumb">
             <Link to="/">Početna</Link>
@@ -74,7 +75,7 @@ export default function Izdvojeno() {
 
       <main>
         {ITEMS.map((item, i) => (
-          <section key={i} className={`section${item.alt ? ' section-alt' : ''}`} aria-labelledby={item.id}>
+          <section key={i} className={`section${item.alt ? ' section-dark' : ''}`} aria-labelledby={item.id}>
             <div className="container">
               <div className={`o-nama-split${item.reverse ? ' reverse' : ''}`}>
                 {!item.reverse && (

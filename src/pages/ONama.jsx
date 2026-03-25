@@ -51,6 +51,7 @@ export default function ONama() {
   return (
     <div ref={pageRef}>
       <header className="page-hero" aria-labelledby="ph-title">
+        <span className="page-hero-deco" aria-hidden="true">PRIČA</span>
         <div className="page-hero-inner">
           <nav className="breadcrumb" aria-label="Breadcrumb">
             <Link to="/">Početna</Link>
@@ -123,11 +124,11 @@ export default function ONama() {
           </div>
         </section>
 
-        <section className="section section-alt" aria-labelledby="vrijednosti-title">
+        <section className="section section-dark" aria-labelledby="vrijednosti-title">
           <div className="container">
             <div className="section-header" data-aos>
-              <h2 className="section-title" id="vrijednosti-title">Zašto biraju nas</h2>
-              <p className="section-sub">Principi koji vode svaki naš projekt i svaki odnos s klijentom.</p>
+              <h2 className="section-title section-title-inv" id="vrijednosti-title">Zašto biraju nas</h2>
+              <p className="section-sub section-sub-inv">Principi koji vode svaki naš projekt i svaki odnos s klijentom.</p>
             </div>
             <div className="values-grid">
               {[

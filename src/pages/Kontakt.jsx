@@ -55,6 +55,7 @@ export default function Kontakt() {
   return (
     <div ref={pageRef}>
       <header className="page-hero" aria-labelledby="ph-title">
+        <span className="page-hero-deco" aria-hidden="true">KONTAKT</span>
         <div className="page-hero-inner">
           <nav className="breadcrumb" aria-label="Breadcrumb">
             <Link to="/">Početna</Link>

@@ -1,196 +1,150 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useCallback } from 'react'
 import { Link } from 'react-router-dom'
-import CTABand from '../components/CTABand'
-import BlurText from '../components/BlurText/BlurText'
-import ShapeGrid from '../components/ShapeGrid/ShapeGrid'
 
-/* ── HERO SLIDER ─────────────────────────────────────────── */
-const SLIDES = [
-  {
-    bg: 'slide-bg-1',
-    icon: 'fa-star',
-    type: 'intro',
-    title: ['Dajemo oblik', 'Vašim idejama'],
-    desc: 'Grafički dizajn, tisak i branding koji ostavlja trag — diljem Dubrovačko-neretvanske županije.',
-  },
-  { bg: 'slide-bg-2', icon: 'fa-print',    type: 'service', name: 'Tisak',               desc: 'Digitalni i ofsetni tisak visoke rezolucije — od vizitki do velikih formata' },
-  { bg: 'slide-bg-3', icon: 'fa-pen-nib',  type: 'service', name: 'Grafički Dizajn',      desc: 'Logotipi, vizualni identitet i promo materijali koji Vaš brend čine nezaboravnim' },
-  { bg: 'slide-bg-4', icon: 'fa-tshirt',   type: 'service', name: 'Vez i Tekstil',        desc: 'Vez i tisak na tekstilu za uniforme, suvenire i promotivne tekstile' },
-  { bg: 'slide-bg-5', icon: 'fa-lightbulb',type: 'service', name: 'Reklame i Vozila',     desc: 'Svjetleće reklame, oslikavanje vozila i natpisne ploče koje se ne mogu ignorirati' },
+/* ── HERO NEW ────────────────────────────────────────────── */
+const HERO_CARDS = [
+  { icon: 'fa-pen-nib',   line1: 'Grafički',   line2: 'Dizajn',   desc: 'Logotipi · Branding · Tiskovine' },
+  { icon: 'fa-print',     line1: 'Visoki',      line2: 'Tisak',    desc: 'Digitalni · Ofsetni · Veliki formati' },
+  { icon: 'fa-tshirt',    line1: 'Vez &',       line2: 'Tekstil',  desc: 'Uniforme · Majice · Suveniri' },
+  { icon: 'fa-car',       line1: 'Brendiranje', line2: 'Vozila',   desc: 'Wrap · Foliranje · Fasade' },
+  { icon: 'fa-lightbulb', line1: 'Svjetleće',   line2: 'Reklame',  desc: 'LED · Neonski · Kanalna slova' },
 ]
+const L1 = 'SABIONCELLO'
+const L2 = 'GRAFICA'
 
-const SLIDE_DUR = 4000
-
-function HeroSlider() {
-  const [current, setCurrent] = useState(0)
-  const timerRef = useRef(null)
-  const barRef = useRef(null)
-
-  function goTo(idx) {
-    setCurrent((idx + SLIDES.length) % SLIDES.length)
-  }
-
-  function startBar() {
-    if (!barRef.current) return
-    barRef.current.style.transition = 'none'
-    barRef.current.style.width = '0%'
-    requestAnimationFrame(() => requestAnimationFrame(() => {
-      if (!barRef.current) return
-      barRef.current.style.transition = `width ${SLIDE_DUR}ms linear`
-      barRef.current.style.width = '100%'
-    }))
-  }
-
-  function startTimer() {
-    clearInterval(timerRef.current)
-    timerRef.current = setInterval(() => setCurrent(c => (c + 1) % SLIDES.length), SLIDE_DUR)
-  }
+function HeroNew() {
+  const wheelRef     = useRef(null)
+  const l1Refs       = useRef([])
+  const l2Refs       = useRef([])
+  const rafRef       = useRef(null)
+  const lastTsRef    = useRef(null)
+  const angleRef     = useRef(0)
+  const targetMxRef  = useRef(0)
+  const currentMxRef = useRef(0)
 
   useEffect(() => {
-    startBar()
-    startTimer()
-    return () => clearInterval(timerRef.current)
-  }, [current])
+    targetMxRef.current  = window.innerWidth / 2
+    currentMxRef.current = window.innerWidth / 2
 
-  const handlePrev = () => { goTo(current - 1); startTimer() }
-  const handleNext = () => { goTo(current + 1); startTimer() }
-  const touchX = useRef(0)
+    function tick(ts) {
+      if (lastTsRef.current === null) lastTsRef.current = ts
+      const dt = Math.min(ts - lastTsRef.current, 50)
+      lastTsRef.current = ts
 
-  const s = SLIDES[current]
+      /* Rotate wheel clockwise: 24°/s = full circle in 15 s */
+      angleRef.current = (angleRef.current + 24 * dt / 1000) % 360
+      if (wheelRef.current) {
+        const sc = window.innerWidth < 768 ? 0.68 : 1
+        wheelRef.current.style.transform =
+          `scale(${sc}) rotateX(-22deg) rotateY(${angleRef.current}deg)`
+      }
+
+      /* Smooth mouse X lerp */
+      currentMxRef.current += (targetMxRef.current - currentMxRef.current) * 0.07
+
+      /* Per-letter scaleY — height driven by proximity to mouse X */
+      const mx     = currentMxRef.current
+      const radius = window.innerWidth * 0.38
+      ;[...l1Refs.current, ...l2Refs.current].forEach(el => {
+        if (!el) return
+        const rect = el.getBoundingClientRect()
+        const cx   = rect.left + rect.width / 2
+        const t    = Math.max(0, 1 - Math.abs(mx - cx) / radius)
+        const sy   = 0.93 + (t * t * (3 - 2 * t)) * 0.14  /* smoothstep 0.93 – 1.07, ~15% range */
+        el.style.transform = `scaleY(${sy})`
+      })
+
+      rafRef.current = requestAnimationFrame(tick)
+    }
+    rafRef.current = requestAnimationFrame(tick)
+    return () => { cancelAnimationFrame(rafRef.current); lastTsRef.current = null }
+  }, [])
+
+  const handleMouseMove  = useCallback(e => { targetMxRef.current = e.clientX }, [])
+  const handleMouseLeave = useCallback(() => { targetMxRef.current = window.innerWidth / 2 }, [])
 
   return (
     <section
-      className="hero-slider"
-      aria-label="Naše usluge"
-      onMouseEnter={() => clearInterval(timerRef.current)}
-      onMouseLeave={startTimer}
-      onTouchStart={e => { touchX.current = e.changedTouches[0].clientX }}
-      onTouchEnd={e => {
-        const dx = e.changedTouches[0].clientX - touchX.current
-        if (Math.abs(dx) > 48) { goTo(current + (dx < 0 ? 1 : -1)); startTimer() }
-      }}
+      className="hero-new"
+      aria-label="Sabioncello Grafica — naše usluge"
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
     >
-      {/* ShapeGrid background — subtle, behind all slides */}
-      <div className="hero-shapegrid-bg">
-        <ShapeGrid
-          direction="diagonal"
-          speed={0.3}
-          borderColor="rgba(255,255,255,0.06)"
-          squareSize={52}
-          hoverFillColor="rgba(255,255,255,0.04)"
-          shape="square"
-        />
-      </div>
+      {/* Shared 3D stage — title letters and carousel depth-sorted together */}
+      <div className="hero-3d-stage">
+        <div className="hero-3d-world">
 
-      <div className="slides-wrap">
-        {SLIDES.map((slide, i) => (
-          <div key={i} className={`slide${i === current ? ' slide-active' : ''}`} data-index={i}>
-            <div className={`slide-bg ${slide.bg}`}>
-              <i className={`fas ${slide.icon} slide-bg-icon`} aria-hidden="true"></i>
+          {/* Giant title — letters rendered at z = 0 */}
+          <div className="hero-title-block" aria-hidden="true">
+            <div className="hero-title-row">
+              {L1.split('').map((ch, i) => (
+                <span
+                  key={i}
+                  className="hero-letter"
+                  ref={el => { l1Refs.current[i] = el }}
+                >{ch}</span>
+              ))}
+            </div>
+            <div className="hero-title-row">
+              {L2.split('').map((ch, i) => (
+                <span
+                  key={i}
+                  className="hero-letter hero-letter--2"
+                  ref={el => { l2Refs.current[i] = el }}
+                >{ch}</span>
+              ))}
             </div>
           </div>
-        ))}
-      </div>
 
-      {/* Slide content rendered outside slides-wrap so it's always on top and re-mounts on change */}
-      <div className="slide-content-overlay">
-        {s.type === 'intro' ? (
-          <div className="slide-content slide-content-intro" key={`intro-${current}`}>
-            <div className="container">
-              {s.eyebrow && (
-                <BlurText
-                  key={`eyebrow-${current}`}
-                  text={s.eyebrow}
-                  as="span"
-                  className="slide-eyebrow"
-                  delay={60}
-                  direction="bottom"
-                  stepDuration={0.28}
-                />
-              )}
-              <h1 className="slide-title-main">
-                <BlurText
-                  key={`t0-${current}`}
-                  text={s.title[0]}
-                  as="span"
-                  className="blur-line"
-                  delay={70}
-                  direction="bottom"
-                  stepDuration={0.32}
-                />
-                <BlurText
-                  key={`t1-${current}`}
-                  text={s.title[1]}
-                  as="em"
-                  className="blur-line"
-                  delay={70}
-                  direction="bottom"
-                  stepDuration={0.32}
-                />
-              </h1>
-              <BlurText
-                key={`desc-${current}`}
-                text={s.desc}
-                as="p"
-                className="slide-desc"
-                delay={45}
-                direction="bottom"
-                stepDuration={0.28}
-              />
-              <div className="slide-ctas">
-                <Link to="/usluge" className="btn btn-primary btn-lg">Naše usluge <i className="fas fa-arrow-right"></i></Link>
-                <Link to="/kontakt" className="btn btn-outline-inv btn-lg">Kontaktirajte nas</Link>
-              </div>
-            </div>
+          {/* 3D carousel wheel — continuous clockwise rotation via RAF */}
+          <div className="hero-wheel" ref={wheelRef} aria-hidden="true">
+            {HERO_CARDS.map((card, cardIdx) => {
+              /* Split each card into N slices placed on the circle surface */
+              const N = 8, W = 240, R = 260, sliceW = W / N
+              const base = cardIdx * 72
+              return Array.from({ length: N }, (_, j) => {
+                const xc  = (j - (N - 1) / 2) * sliceW
+                const arc = Math.asin(xc / R) * (180 / Math.PI)
+                const isL = j === 0, isR = j === N - 1
+                return (
+                  <div
+                    key={`${cardIdx}-${j}`}
+                    className="hero-slice"
+                    style={{ transform: `rotateY(${base + arc}deg) translateZ(${R}px)` }}
+                  >
+                    <div className={`hero-slice__front${isL ? ' hero-slice__front--l' : ''}${isR ? ' hero-slice__front--r' : ''}`}>
+                      <div className="hero-slice__content" style={{ left: `${-j * sliceW}px` }}>
+                        <div className="hero-card__top">
+                          <div className="hero-card__icon">
+                            <i className={`fas ${card.icon}`} aria-hidden="true"></i>
+                          </div>
+                          <span className="hero-card__num">0{cardIdx + 1}</span>
+                        </div>
+                        <div className="hero-card__body">
+                          <h2 className="hero-card__title">
+                            {card.line1}<br /><em>{card.line2}</em>
+                          </h2>
+                          <p className="hero-card__desc">{card.desc}</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className={`hero-slice__back${isL ? ' hero-slice__back--l' : ''}${isR ? ' hero-slice__back--r' : ''}`} />
+                  </div>
+                )
+              })
+            })}
           </div>
-        ) : (
-          <div className="slide-content slide-content-service" key={`svc-${current}`}>
-            <span className="slide-svc-tag">Usluge</span>
-            <BlurText
-              key={`name-${current}`}
-              text={s.name}
-              as="h2"
-              className="slide-svc-name"
-              delay={80}
-              direction="bottom"
-              stepDuration={0.35}
-            />
-            <BlurText
-              key={`sdesc-${current}`}
-              text={s.desc}
-              as="p"
-              className="slide-svc-desc"
-              delay={50}
-              direction="bottom"
-              stepDuration={0.28}
-            />
-            <Link to="/usluge" className="btn btn-outline-inv btn-lg">Saznajte više <i className="fas fa-arrow-right"></i></Link>
-          </div>
-        )}
+
+        </div>
       </div>
 
-      <button className="slider-btn slider-prev" onClick={handlePrev} aria-label="Prethodni slide">
-        <i className="fas fa-chevron-left"></i>
-      </button>
-      <button className="slider-btn slider-next" onClick={handleNext} aria-label="Sljedeći slide">
-        <i className="fas fa-chevron-right"></i>
-      </button>
-
-      <div className="slider-dots" role="tablist" aria-label="Navigacija slajdova">
-        {SLIDES.map((_, i) => (
-          <button
-            key={i}
-            className={`slider-dot${i === current ? ' dot-active' : ''}`}
-            role="tab"
-            aria-selected={i === current}
-            aria-label={`Slajd ${i + 1}`}
-            onClick={() => { goTo(i); startTimer() }}
-          />
-        ))}
-      </div>
-
-      <div className="slider-progress" aria-hidden="true">
-        <div className="slider-progress-bar" ref={barRef}></div>
+      {/* Bottom CTA bar */}
+      <div className="hero-new__footer">
+        <p className="hero-new__tagline">20 godina iskustva · Orebić, Pelješac</p>
+        <div className="hero-new__footer-btns">
+          <Link to="/usluge"  className="btn btn-primary btn-lg">Naše usluge <i className="fas fa-arrow-right"></i></Link>
+          <Link to="/kontakt" className="btn btn-outline-inv btn-lg">Kontaktirajte nas</Link>
+        </div>
       </div>
     </section>
   )
@@ -223,27 +177,38 @@ function StatsBand() {
   return (
     <section className="stats-band" aria-label="Statistike" ref={ref}>
       <div className="container">
-        {/* 3-col centered grid */}
-        <div className="stats-grid stats-grid--3">
-          <div className="stat-item">
-            <div className="stat-count">
-              <span className="stat-number" data-count="20">0</span>
-              <span className="stat-plus">+</span>
-            </div>
-            <span className="stat-label">Godina iskustva</span>
+        <div className="stats-band-layout">
+          <div className="stats-band-copy">
+            <h2 className="stats-band-headline">
+              Iskustvo koje<br /><em>govori samo za sebe</em>
+            </h2>
+            <p className="stats-band-desc">
+              Dva desetljeća grafičkog dizajna, tiska i brendiranja — od prve skice
+              do gotovog proizvoda u Vašim rukama.
+            </p>
+            <div className="stats-band-divider" aria-hidden="true" />
           </div>
-          <div className="stat-item">
-            <div className="stat-count">
-              <span className="stat-number" data-count="100">0</span>
-              <span className="stat-plus">+</span>
+          <div className="stats-band-numbers">
+            <div className="stat-item">
+              <div className="stat-count">
+                <span className="stat-number" data-count="20">0</span>
+                <span className="stat-plus">+</span>
+              </div>
+              <span className="stat-label">Godina iskustva</span>
             </div>
-            <span className="stat-label">Realiziranih projekata</span>
-          </div>
-          <div className="stat-item">
-            <div className="stat-count">
-              <span className="stat-number" data-count="7">0</span>
+            <div className="stat-item">
+              <div className="stat-count">
+                <span className="stat-number" data-count="500">0</span>
+                <span className="stat-plus">+</span>
+              </div>
+              <span className="stat-label">Zadovoljnih klijenata</span>
             </div>
-            <span className="stat-label">Kategorija usluga</span>
+            <div className="stat-item">
+              <div className="stat-count">
+                <span className="stat-number" data-count="7">0</span>
+              </div>
+              <span className="stat-label">Kategorija usluga</span>
+            </div>
           </div>
         </div>
       </div>
@@ -295,10 +260,11 @@ function Reviews() {
   }, [])
 
   return (
-    <section className="section section-alt reviews-section" aria-labelledby="reviews-h">
+    <section className="section section-dark section--deco reviews-section" aria-labelledby="reviews-h">
+      <span className="section-deco-bg" aria-hidden="true">KLIJENTI</span>
       <div className="container">
         <div className="section-header">
-          <h2 className="section-title" id="reviews-h">Što kažu naši klijenti</h2>
+          <h2 className="section-title section-title-inv" id="reviews-h">Što kažu naši klijenti</h2>
           <div className="reviews-rating-summary">
             <div className="rrs-stars">
               {[1,2,3,4,5].map(n => <i key={n} className="fas fa-star"></i>)}
@@ -336,12 +302,132 @@ function Reviews() {
 
 /* ── SVC CARDS ───────────────────────────────────────────── */
 const SVC_CARDS = [
-  { icon: 'fa-pen-nib',  img: 'https://images.unsplash.com/photo-1626785774573-4b799315345d?w=600&q=80', title: 'Grafički dizajn',       desc: 'Logotipi, vizualni identitet, oglasi i brošure koje Vašoj marki daju prepoznatljivo lice.' },
-  { icon: 'fa-print',    img: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80',  title: 'Tisak',                   desc: 'Digitalni i ofsetni tisak visoke rezolucije — od vizitki do velikih formata.' },
-  { icon: 'fa-lightbulb',img: 'https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=600&q=80',title: 'Svjetleće reklame',       desc: 'LED i klasične reklame koje Vaš poslovni prostor čine vidljivim danju i noću.' },
-  { icon: 'fa-tshirt',   img: 'https://images.unsplash.com/photo-1503341504253-dff4815485f1?w=600&q=80',title: 'Vez i tisak na tekstil',  desc: 'Uniforme, suveniri i promo tekstil s Vašim logom — vez i direktni tisak na sve materijale.' },
-  { icon: 'fa-car',      img: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=600&q=80',title: 'Oslikavanje vozila',      desc: 'Brendiranje vozila i velikih površina koje Vaš logo nosi diljem regije.' },
-  { icon: 'fa-sign',     img: 'https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=600&q=80',title: 'Putokazi i ploče',        desc: 'Natpisne ploče, putokazi i reklamni panoi — trajni i uočljivi na svakom koraku.' },
+  { icon: 'fa-pen-nib',   title: 'Grafički dizajn',      desc: 'Logotipi, vizualni identitet, oglasi i brošure koje Vašoj marki daju prepoznatljivo lice.', href: '/usluge' },
+  { icon: 'fa-print',     title: 'Tisak',                desc: 'Digitalni i ofsetni tisak visoke rezolucije — od vizitki do velikih formata.', href: '/usluge' },
+  { icon: 'fa-lightbulb', title: 'Svjetleće reklame',    desc: 'LED i klasične reklame koje Vaš poslovni prostor čine vidljivim danju i noću.', href: '/usluge' },
+  { icon: 'fa-tshirt',    title: 'Vez i tisak na tekstil', desc: 'Uniforme, suveniri i promo tekstil s Vašim logom — vez i direktni tisak na sve materijale.', href: '/usluge' },
+  { icon: 'fa-car',       title: 'Oslikavanje vozila',   desc: 'Brendiranje vozila i velikih površina koje Vaš logo nosi diljem regije.', href: '/usluge' },
+  { icon: 'fa-sign',      title: 'Putokazi i ploče',     desc: 'Natpisne ploče, putokazi i reklamni panoi — trajni i uočljivi na svakom koraku.', href: '/usluge' },
+]
+
+const CTA_IMGS = [
+  'https://images.unsplash.com/photo-1626785774573-4b799315345d?w=400&q=80',
+  'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80',
+  'https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=400&q=80',
+  'https://images.unsplash.com/photo-1503341504253-dff4815485f1?w=400&q=80',
+  'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=400&q=80',
+  'https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=400&q=80',
+]
+
+const CTA_L1 = 'IMATE'
+const CTA_L2 = 'IDEJU?'
+
+function CTABig() {
+  const leftRef    = useRef(null)
+  const imgRef     = useRef(null)
+  const l1Refs     = useRef([])
+  const l2Refs     = useRef([])
+  const rafRef     = useRef(null)
+  const targetMxRef  = useRef(typeof window !== 'undefined' ? window.innerWidth / 2 : 0)
+  const currentMxRef = useRef(typeof window !== 'undefined' ? window.innerWidth / 2 : 0)
+  const intervalRef  = useRef(null)
+
+  /* RAF: letter scaleY (shrinks near cursor) */
+  useEffect(() => {
+    function tick() {
+      currentMxRef.current += (targetMxRef.current - currentMxRef.current) * 0.07
+      const mx     = currentMxRef.current
+      const radius = window.innerWidth * 0.32
+      ;[...l1Refs.current, ...l2Refs.current].forEach(el => {
+        if (!el) return
+        const rect = el.getBoundingClientRect()
+        const cx   = rect.left + rect.width / 2
+        const t    = Math.max(0, 1 - Math.abs(mx - cx) / radius)
+        const sy   = 1.0 - (t * t * (3 - 2 * t)) * 0.22   /* shrink up to 22% */
+        el.style.transform = `scaleY(${sy})`
+      })
+      rafRef.current = requestAnimationFrame(tick)
+    }
+    const onMove = e => { targetMxRef.current = e.clientX }
+    rafRef.current = requestAnimationFrame(tick)
+    window.addEventListener('mousemove', onMove)
+    return () => { cancelAnimationFrame(rafRef.current); window.removeEventListener('mousemove', onMove) }
+  }, [])
+
+  /* Hover image: follow cursor, cycle images */
+  const pickImg = () => CTA_IMGS[Math.floor(Math.random() * CTA_IMGS.length)]
+
+  function onLeftMove(e) {
+    if (!imgRef.current || !leftRef.current) return
+    const r = leftRef.current.getBoundingClientRect()
+    imgRef.current.style.left = `${e.clientX - r.left}px`
+    imgRef.current.style.top  = `${e.clientY - r.top}px`
+  }
+  function onLeftEnter() {
+    if (!imgRef.current) return
+    imgRef.current.src = pickImg()
+    imgRef.current.style.opacity = '1'
+    intervalRef.current = setInterval(() => {
+      if (imgRef.current) imgRef.current.src = pickImg()
+    }, 1400)
+  }
+  function onLeftLeave() {
+    if (!imgRef.current) return
+    imgRef.current.style.opacity = '0'
+    clearInterval(intervalRef.current)
+  }
+  useEffect(() => () => clearInterval(intervalRef.current), [])
+
+  return (
+    <section className="cta-big">
+      {/* LEFT — huge interactive text */}
+      <div className="cta-big__left" ref={leftRef}
+        onMouseMove={onLeftMove} onMouseEnter={onLeftEnter} onMouseLeave={onLeftLeave}>
+        <div className="cta-big__text">
+          <div className="cta-big__row">
+            {CTA_L1.split('').map((ch, i) => (
+              <span key={i} ref={el => l1Refs.current[i] = el} className="cta-big-letter">{ch}</span>
+            ))}
+          </div>
+          <div className="cta-big__row">
+            {CTA_L2.split('').map((ch, i) => (
+              <span key={i} ref={el => l2Refs.current[i] = el} className="cta-big-letter">{ch}</span>
+            ))}
+          </div>
+        </div>
+        {/* floating hover image */}
+        <img ref={imgRef} className="cta-big__hover-img" src={CTA_IMGS[0]} alt="" aria-hidden="true" />
+      </div>
+
+      {/* RIGHT — text + arrow + button */}
+      <div className="cta-big__right">
+        <p className="cta-big__sub">
+          Kontaktirajte nas danas i zajedno osmislimo projekt koji će izdvojiti Vaš brend.
+        </p>
+        <div className="cta-big__arrow-row">
+          {/* hand-drawn arrow SVG */}
+          <svg className="cta-big__arrow" viewBox="0 0 140 55" fill="none" aria-hidden="true">
+            <path d="M6 34 C22 12 52 9 84 20 C104 27 122 22 132 30"
+              stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
+            <path d="M122 20 L132 30 L120 37"
+              stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+          <Link to="/kontakt" className="btn btn-dark btn-lg cta-big__btn">
+            Zatražite ponudu <i className="fas fa-arrow-right"></i>
+          </Link>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+const FEAT_ITEMS = [
+  { icon: 'fa-utensils', title: 'Jelovnici',               desc: 'Premium dizajn i tisak jelovnika za restorane, hotele i kafiće — od jednostavnih do luksuznih verzija.' },
+  { icon: 'fa-heart',    title: 'Vjenčanja',               desc: 'Pozivnice, zahvalnice, oznake stola i sav tiskani materijal za Vaš savršen dan.' },
+  { icon: 'fa-gift',     title: 'Poslovni pokloni',        desc: 'Personalizirani poslovni i privatni pokloni koji ostavljaju pravi dojam.' },
+  { icon: 'fa-tag',      title: 'Etikete',                 desc: 'Etikete za vina, maslinova ulja i domaće proizvode s prepoznatljivim dizajnom.' },
+  { icon: 'fa-trophy',   title: 'Trofeje i plakete',       desc: 'Personalizirani trofeje, plakete i nagrade za sportska i korporativna događanja.' },
+  { icon: 'fa-user-tag', title: 'Personalizirani pokloni', desc: 'Unikatni pokloni s imenom, fotografijom ili posebnom porukom — za svaku prigodu.' },
 ]
 
 /* ── HOME PAGE ───────────────────────────────────────────── */
@@ -349,139 +435,208 @@ export default function Home() {
   const pageRef = useRef(null)
   useAOS(pageRef)
 
+  /* Tilt + scroll-capture handler */
+  useEffect(() => {
+    let rafId = null
+    function update() {
+      rafId = null
+      const vh = window.innerHeight
+
+      /* — flip-reveal tilt — */
+      pageRef.current?.querySelectorAll('.flip-reveal').forEach(el => {
+        const top = el.getBoundingClientRect().top
+        if (top <= 0) { el.style.transform = ''; return }
+        const p      = Math.max(0, Math.min(1, 1 - top / vh))
+        const ease   = p * p * (3 - 2 * p)
+        const angleX = (1 - ease) * 22           /* more extreme flip */
+        const angleZ = (1 - ease) * 9            /* more extreme right-side tilt */
+        el.style.transform = `perspective(1400px) rotateX(${-angleX}deg) rotateZ(${angleZ}deg)`
+      })
+
+      /* — scroll-capture: advance active slide — */
+      pageRef.current?.querySelectorAll('.scroll-capture').forEach(wrap => {
+        const rect = wrap.getBoundingClientRect()
+        const totalScroll = wrap.offsetHeight - vh
+        if (totalScroll <= 0) return
+        const scrolled = -rect.top
+        const p = Math.max(0, Math.min(1, scrolled / totalScroll))
+        const slides = wrap.querySelectorAll('.cap-slide')
+        const dots   = wrap.querySelectorAll('.cap-dot')
+        const cur    = wrap.querySelector('.cap-counter-cur')
+        const N = slides.length
+        if (!N) return
+        const rawIdx = p * N
+        const idx = Math.min(N - 1, Math.floor(rawIdx))
+        slides.forEach((s, i) => {
+          s.classList.toggle('is-active', i === idx)
+          s.classList.toggle('was-active', i < idx)
+        })
+        dots.forEach((d, i) => d.classList.toggle('is-active', i === idx))
+        if (cur) cur.textContent = String(idx + 1).padStart(2, '0')
+      })
+    }
+    function onScroll() { if (!rafId) rafId = requestAnimationFrame(update) }
+    window.addEventListener('scroll', onScroll, { passive: true })
+    update()
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      if (rafId) cancelAnimationFrame(rafId)
+    }
+  }, [])
+
   return (
     <div ref={pageRef}>
-      <HeroSlider />
+      <div className="hero-sticky">
+        <HeroNew />
+      </div>
 
-      <StatsBand />
+      <div className="flip-reveal" style={{ zIndex: 2, background: '#050A10' }}>
+        <StatsBand />
+      </div>
 
       {/* O NAMA PREVIEW */}
-      <section className="section" aria-labelledby="home-onam">
-        <div className="container">
-          <div className="o-nama-split">
-            <div className="o-img" data-aos>
-              <div className="o-placeholder">
-                <i className="fas fa-camera"></i>
-                <span>Fotografija tima / studija</span>
-              </div>
-              <div className="medal-badge" aria-label="Osnovani 2004">
-                <div className="medal-ribbons" aria-hidden="true">
-                  <span className="ribbon ribbon-l"></span>
-                  <span className="ribbon ribbon-r"></span>
+      <div className="flip-reveal" style={{ zIndex: 3, background: '#FFFFFF' }}>
+        <section className="section" aria-labelledby="home-onam">
+          <div className="container">
+            <div className="o-nama-split">
+              <div className="o-img" data-aos>
+                <div className="o-placeholder">
+                  <i className="fas fa-camera"></i>
+                  <span>Fotografija tima / studija</span>
                 </div>
-                <div className="medal-circle">
-                  <span className="medal-year">2004</span>
-                  <span className="medal-label">Osnovani</span>
-                </div>
-              </div>
-            </div>
-            <div className="o-content" data-aos>
-              <h2 className="section-title" id="home-onam">
-                Dvadeset godina<br /><em>strasti prema dizajnu</em>
-              </h2>
-              <div className="divider"></div>
-              <p className="body-text">
-                Sabioncello Grafica nastala je iz ljubavi prema vizualnoj komunikaciji i
-                želje da pomognemo lokalnim tvrtkama, ugostiteljima i privatnim
-                klijentima da ostave dojam koji traje.
-              </p>
-              <p className="body-text">
-                Poslovnica nam je u <strong>Orebićima</strong>, ali poslujemo na cijelom
-                području <strong>Dubrovačko-neretvanske županije</strong>. Tijekom dvije
-                dekade izgradili smo mrežu klijenata — od malih obiteljskih biznisa do
-                poznatih brendova regije.
-              </p>
-              <ul className="feature-list">
-                <li><i className="fas fa-check-circle"></i> Osobni pristup svakom projektu</li>
-                <li><i className="fas fa-check-circle"></i> Brza izrada i pouzdana dostava</li>
-                <li><i className="fas fa-check-circle"></i> Od ideje do finalnog proizvoda</li>
-                <li><i className="fas fa-check-circle"></i> Visoka kvaliteta, konkurentne cijene</li>
-              </ul>
-              <Link to="/o-nama" className="btn btn-primary" style={{ marginTop: '2rem' }}>
-                Saznajte više <i className="fas fa-arrow-right"></i>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* USLUGE PREVIEW */}
-      <section className="section section-alt" aria-labelledby="home-usluge">
-        <div className="container">
-          <div className="section-header" data-aos>
-            <h2 className="section-title" id="home-usluge">Što nudimo</h2>
-            <p className="section-sub">Od ideje do finalnog proizvoda — sve pod jednim krovom.</p>
-          </div>
-          <div className="svc-fade-wrap">
-            <div className="home-svc-grid">
-              {SVC_CARDS.map((svc, i) => (
-                <Link to="/usluge" className="svc-card" key={i} data-aos>
-                  <img
-                    src={svc.img}
-                    alt={svc.title}
-                    className="svc-card-img"
-                    loading="lazy"
-                    onError={e => { e.target.style.display = 'none' }}
-                  />
-                  <div className="svc-icon"><i className={`fas ${svc.icon}`}></i></div>
-                  <h3>{svc.title}</h3>
-                  <p>{svc.desc}</p>
-                </Link>
-              ))}
-            </div>
-          </div>
-          <div className="section-cta" data-aos>
-            <Link to="/usluge" className="btn btn-outline">
-              Sve usluge <i className="fas fa-arrow-right"></i>
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* IZDVOJENO PREVIEW */}
-      <section className="section" aria-labelledby="home-izdv">
-        <div className="container">
-          <div className="section-header" data-aos>
-            <h2 className="section-title" id="home-izdv">Posebnosti koje volimo raditi</h2>
-            <p className="section-sub">Neki projekti zahtijevaju posebnu pažnju — evo nekoliko kojih smo posebno ponosni.</p>
-          </div>
-          <div className="feat-fade-wrap">
-            <div className="featured-preview-grid">
-              {[
-                { icon: 'fa-utensils', title: 'Jelovnici',               desc: 'Premium dizajn i tisak jelovnika za restorane, hotele i kafiće — od jednostavnih do luksuznih verzija.' },
-                { icon: 'fa-heart',    title: 'Vjenčanja',               desc: 'Pozivnice, zahvalnice, oznake stola i sav tiskani materijal za Vaš savršen dan.' },
-                { icon: 'fa-gift',     title: 'Poslovni pokloni',        desc: 'Personalizirani poslovni i privatni pokloni koji ostavljaju pravi dojam.' },
-                { icon: 'fa-tag',      title: 'Etikete',                 desc: 'Etikete za vina, maslinova ulja i domaće proizvode s prepoznatljivim dizajnom.' },
-                { icon: 'fa-trophy',   title: 'Trofeje i plakete',       desc: 'Personalizirani trofeje, plakete i nagrade za sportska i korporativna događanja.' },
-                { icon: 'fa-user-tag', title: 'Personalizirani pokloni', desc: 'Unikatni pokloni s imenom, fotografijom ili posebnom porukom — za svaku prigodu.' },
-              ].map((f, i) => (
-                <article className="feat-card" key={i} data-aos>
-                  <div className="feat-icon"><i className={`fas ${f.icon}`}></i></div>
-                  <div className="feat-body">
-                    <h3>{f.title}</h3>
-                    <p>{f.desc}</p>
-                    <Link to="/izdvojeno" className="text-link">Pogledajte više <i className="fas fa-arrow-right"></i></Link>
+                <div className="medal-badge" aria-label="Osnovani 2004">
+                  <div className="medal-ribbons" aria-hidden="true">
+                    <span className="ribbon ribbon-l"></span>
+                    <span className="ribbon ribbon-r"></span>
                   </div>
-                </article>
-              ))}
+                  <div className="medal-circle">
+                    <span className="medal-year">2004</span>
+                    <span className="medal-label">Osnovani</span>
+                  </div>
+                </div>
+              </div>
+              <div className="o-content" data-aos>
+                <h2 className="section-title" id="home-onam">
+                  Dvadeset godina<br /><em>strasti prema dizajnu</em>
+                </h2>
+                <div className="divider"></div>
+                <p className="body-text">
+                  Sabioncello Grafica nastala je iz ljubavi prema vizualnoj komunikaciji i
+                  želje da pomognemo lokalnim tvrtkama, ugostiteljima i privatnim
+                  klijentima da ostave dojam koji traje.
+                </p>
+                <p className="body-text">
+                  Poslovnica nam je u <strong>Orebićima</strong>, ali poslujemo na cijelom
+                  području <strong>Dubrovačko-neretvanske županije</strong>. Tijekom dvije
+                  dekade izgradili smo mrežu klijenata — od malih obiteljskih biznisa do
+                  poznatih brendova regije.
+                </p>
+                <ul className="feature-list">
+                  <li><i className="fas fa-check-circle"></i> Osobni pristup svakom projektu</li>
+                  <li><i className="fas fa-check-circle"></i> Brza izrada i pouzdana dostava</li>
+                  <li><i className="fas fa-check-circle"></i> Od ideje do finalnog proizvoda</li>
+                  <li><i className="fas fa-check-circle"></i> Visoka kvaliteta, konkurentne cijene</li>
+                </ul>
+                <Link to="/o-nama" className="btn btn-primary" style={{ marginTop: '2rem' }}>
+                  Saznajte više <i className="fas fa-arrow-right"></i>
+                </Link>
+              </div>
             </div>
           </div>
-          <div className="section-cta" data-aos>
-            <Link to="/izdvojeno" className="btn btn-outline">
-              Sve posebnosti <i className="fas fa-arrow-right"></i>
-            </Link>
-          </div>
+        </section>
+      </div>
+
+      {/* USLUGE — scroll capture: one service per scroll step */}
+      <div className="scroll-capture" style={{ position: 'relative', zIndex: 4, height: `${SVC_CARDS.length * 100}vh` }}>
+        <div className="flip-reveal flip-reveal--capture" style={{ background: '#050A10', marginBottom: 0 }}>
+          <section className="cap-section cap-section--dark" aria-labelledby="home-usluge">
+            <div className="cap-header">
+              <span className="cap-label">Što nudimo</span>
+              <div className="cap-counter">
+                <span className="cap-counter-cur">01</span>
+                <span className="cap-counter-sep">/</span>
+                <span>{String(SVC_CARDS.length).padStart(2, '0')}</span>
+              </div>
+            </div>
+
+            <div className="cap-stage">
+              {SVC_CARDS.map((svc, i) => (
+                <div className={`cap-slide${i === 0 ? ' is-active' : ''}`} key={i}>
+                  <div className="cap-slide-inner">
+                    <div className="cap-slide-icon-wrap">
+                      <i className={`fas ${svc.icon} cap-slide-icon`}></i>
+                      <span className="cap-slide-num">{String(i + 1).padStart(2, '0')}</span>
+                    </div>
+                    <div className="cap-slide-body">
+                      <h2 className="cap-slide-title">{svc.title}</h2>
+                      <p className="cap-slide-desc">{svc.desc}</p>
+                      <Link to={svc.href} className="btn btn-outline-inv cap-slide-btn">
+                        Pogledajte uslugu <i className="fas fa-arrow-right"></i>
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="cap-dots">
+              {SVC_CARDS.map((_, i) => (
+                <div className={`cap-dot${i === 0 ? ' is-active' : ''}`} key={i} />
+              ))}
+            </div>
+          </section>
         </div>
-      </section>
+      </div>
 
-      <Reviews />
+      {/* IZDVOJENO — scroll capture */}
+      <div className="scroll-capture" style={{ position: 'relative', zIndex: 5, height: `${FEAT_ITEMS.length * 100}vh` }}>
+        <div className="flip-reveal flip-reveal--capture" style={{ background: '#F2F7FA', marginBottom: 0 }}>
+          <section className="cap-section cap-section--light" aria-labelledby="home-izdv">
+            <div className="cap-header">
+              <span className="cap-label">Posebnosti koje volimo raditi</span>
+              <div className="cap-counter">
+                <span className="cap-counter-cur">01</span>
+                <span className="cap-counter-sep">/</span>
+                <span>{String(FEAT_ITEMS.length).padStart(2, '0')}</span>
+              </div>
+            </div>
 
-      <CTABand
-        title="Imate ideju? Pretvorimo je u stvarnost."
-        subtitle="Kontaktirajte nas danas i zajedno osmislimo projekt koji će izdvojiti Vaš brend."
-        btnText="Zatražite ponudu"
-        btnHref="/kontakt"
-      />
+            <div className="cap-stage">
+              {FEAT_ITEMS.map((f, i) => (
+                <div className={`cap-slide${i === 0 ? ' is-active' : ''}`} key={i}>
+                  <div className="cap-slide-inner">
+                    <div className="cap-slide-icon-wrap">
+                      <i className={`fas ${f.icon} cap-slide-icon`}></i>
+                      <span className="cap-slide-num">{String(i + 1).padStart(2, '0')}</span>
+                    </div>
+                    <div className="cap-slide-body">
+                      <h2 className="cap-slide-title">{f.title}</h2>
+                      <p className="cap-slide-desc">{f.desc}</p>
+                      <Link to="/izdvojeno" className="btn btn-outline cap-slide-btn">
+                        Pogledajte više <i className="fas fa-arrow-right"></i>
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="cap-dots">
+              {FEAT_ITEMS.map((_, i) => (
+                <div className={`cap-dot${i === 0 ? ' is-active' : ''}`} key={i} />
+              ))}
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <div className="flip-reveal" style={{ zIndex: 6, background: '#0C1924' }}>
+        <Reviews />
+      </div>
+
+      <div className="flip-reveal" style={{ zIndex: 7, background: '#0CBDCF' }}>
+        <CTABig />
+      </div>
     </div>
   )
 }

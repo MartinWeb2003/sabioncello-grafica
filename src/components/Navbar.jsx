@@ -3,10 +3,18 @@ import { NavLink } from 'react-router-dom'
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
+  const [hidden, setHidden] = useState(false)
   const [open, setOpen] = useState(false)
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 30)
+    let lastY = window.scrollY
+    const onScroll = () => {
+      const y = window.scrollY
+      setScrolled(y > 30)
+      if (y > lastY && y > 80) setHidden(true)   // scrolling down → hide
+      else if (y < lastY)      setHidden(false)   // scrolling up → show
+      lastY = y
+    }
     window.addEventListener('scroll', onScroll, { passive: true })
     onScroll()
     return () => window.removeEventListener('scroll', onScroll)
@@ -20,7 +28,7 @@ export default function Navbar() {
   const close = () => setOpen(false)
 
   return (
-    <nav className={`navbar${scrolled ? ' scrolled' : ''}`} aria-label="Glavna navigacija">
+    <nav className={`navbar${scrolled ? ' scrolled' : ''}${hidden && !open ? ' navbar--hidden' : ''}`} aria-label="Glavna navigacija">
       <div className="nav-container">
         <NavLink to="/" className="nav-logo" aria-label="Sabioncello Grafica – početna" onClick={close}>
           <img src="assets/img/logo.png" alt="Sabioncello Grafica"

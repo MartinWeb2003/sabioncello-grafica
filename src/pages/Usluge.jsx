@@ -73,6 +73,7 @@ export default function Usluge() {
   return (
     <div ref={pageRef}>
       <header className="page-hero" aria-labelledby="ph-title">
+        <span className="page-hero-deco" aria-hidden="true">USLUGE</span>
         <div className="page-hero-inner">
           <nav className="breadcrumb" aria-label="Breadcrumb">
             <Link to="/">Početna</Link>
@@ -86,7 +87,7 @@ export default function Usluge() {
 
       <main>
         {SERVICES.map((s, i) => (
-          <section key={i} className={`section${s.alt ? ' section-alt' : ''}`} aria-labelledby={s.id}>
+          <section key={i} className={`section${s.alt ? ' section-dark' : ''}`} aria-labelledby={s.id}>
             <div className="container">
               <div className={`o-nama-split${s.reverse ? ' reverse' : ''}`}>
                 {!s.reverse && (
