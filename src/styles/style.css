@@ -1040,16 +1040,7 @@ strong { font-weight: 600; }
 }
 .rrs-count { font-size: .85rem; color: var(--inv-3); }
 
-.reviews-grid {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 22px;
-  margin-top: 44px;
-}
-.review-card { grid-column: span 2; }
-/* Centre the last 2 cards in row 2 */
-.review-card:nth-child(4) { grid-column: 2 / 4; }
-.review-card:nth-child(5) { grid-column: 4 / 6; }
+/* reviews-grid kept for other pages; reviews section on home uses parallax */
 
 .review-card {
   background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.08);
@@ -1092,6 +1083,12 @@ strong { font-weight: 600; }
 /* ── KEYFRAMES ─────────────────────────────────────────────── */
 @keyframes fadeUp { to { opacity:1; transform:translateY(0); } }
 @keyframes fadeIn { to { opacity:1; } }
+@keyframes icon-coin-flip {
+  0%   { transform: perspective(400px) rotateY(0deg);   }
+  50%  { transform: perspective(400px) rotateY(90deg);  }
+  100% { transform: perspective(400px) rotateY(360deg); }
+}
+.cap-slide-icon-wrap.icon-flip { animation: icon-coin-flip .55s ease-in-out; }
 
 /* ── RESPONSIVE ────────────────────────────────────────────── */
 @media (max-width: 1024px) {
@@ -1281,11 +1278,53 @@ strong { font-weight: 600; }
   justify-content: center;
 }
 .flip-reveal .reviews-section {
-  min-height: 100%;
-  padding: clamp(40px, 5vh, 72px) 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* ── REVIEWS SCATTER ────────────────────────────────────────── */
+.reviews-section {
+  position: relative;
+  background: var(--dark);
+  overflow: hidden;
+  height: 100%;
+  min-height: 100vh;
+}
+.reviews-header-overlay {
+  position: relative;
+  z-index: 3;
+  padding: 52px 0 0;
+  background: linear-gradient(to bottom, rgba(5,10,16,1) 60%, rgba(5,10,16,0) 100%);
+  pointer-events: none;
+}
+.reviews-scatter {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+/* Scattered cards — JS drives transform, CSS sets base rotation */
+.review-card--scatter {
+  pointer-events: none;
+  position: absolute;
+}
+/* Size variation via per-card width already set inline */
+@media (max-width: 768px) {
+  /* On mobile, stack cards normally instead of scatter */
+  .reviews-scatter {
+    position: relative;
+    inset: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 24px 20px;
+  }
+  .review-card--scatter {
+    position: relative !important;
+    left: auto !important;
+    top:  auto !important;
+    width: 100% !important;
+    transform: none !important;
+  }
 }
 
 /* Capture flip-reveal overrides */
@@ -1449,34 +1488,64 @@ strong { font-weight: 600; }
 
 .cap-slide-btn { display: inline-flex; }
 
-/* Progress dots */
-.cap-dots {
+/* ── Circular arc progress indicator ───────────────────────── */
+.cap-progress-row {
   display: flex;
-  gap: 8px;
+  align-items: center;
+  gap: 12px;
   justify-content: center;
-  padding: 28px 48px;
+  padding: 24px 48px 28px;
   flex-shrink: 0;
 }
-.cap-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  transition: all .3s ease;
+.cap-progress-circle {
+  position: relative;
+  width: 52px;
+  height: 52px;
+  flex-shrink: 0;
 }
-.cap-section--dark .cap-dot {
-  background: rgba(255,255,255,.2);
+.cap-progress-svg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);   /* start arc from 12 o'clock */
 }
-.cap-section--dark .cap-dot.is-active {
-  background: var(--teal);
-  transform: scale(1.5);
+.cap-progress-track {
+  fill: none;
+  stroke-width: 3;
 }
-.cap-section--light .cap-dot {
-  background: rgba(5,10,16,.2);
+.cap-section--dark  .cap-progress-track { stroke: rgba(255,255,255,.15); }
+.cap-section--light .cap-progress-track { stroke: rgba(5,10,16,.12); }
+
+.cap-progress-fill {
+  fill: none;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-dasharray: 125.66;    /* 2π × 20 */
+  stroke-dashoffset: 104.72;   /* initial: 1/6 filled = 125.66 × (1 − 1/6) */
+  transition: stroke-dashoffset .35s ease;
 }
-.cap-section--light .cap-dot.is-active {
-  background: var(--teal-d);
-  transform: scale(1.5);
+.cap-section--dark  .cap-progress-fill { stroke: var(--teal-l); }
+.cap-section--light .cap-progress-fill { stroke: var(--teal-d); }
+
+.cap-progress-cur {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Bebas Neue', var(--fd), sans-serif;
+  font-size: .88rem;
+  letter-spacing: .06em;
 }
+.cap-section--dark  .cap-progress-cur { color: rgba(255,255,255,.7); }
+.cap-section--light .cap-progress-cur { color: rgba(5,10,16,.6); }
+
+.cap-progress-total {
+  font-family: 'Bebas Neue', var(--fd), sans-serif;
+  font-size: .88rem;
+  letter-spacing: .06em;
+}
+.cap-section--dark  .cap-progress-total { color: rgba(255,255,255,.3); }
+.cap-section--light .cap-progress-total { color: rgba(5,10,16,.25); }
 
 @media (max-width: 768px) {
   .cap-header { padding: 24px 24px; }
@@ -1651,7 +1720,6 @@ strong { font-weight: 600; }
   justify-content: flex-start;
   padding: 60px 0 60px 48px;
   position: relative;
-  cursor: none;
 }
 .cta-big__text {
   line-height: .88;
@@ -1668,15 +1736,15 @@ strong { font-weight: 600; }
   line-height: .88;
   letter-spacing: -.01em;
   display: inline-block;
-  transform-origin: 50% 50%;
+  transform-origin: 50% 0%;    /* top fixed — letter shrinks from the bottom */
   will-change: transform;
 }
 
 /* floating hover image */
 .cta-big__hover-img {
   position: absolute;
-  width: 200px;
-  height: 200px;
+  width: 130px;
+  height: 130px;
   object-fit: cover;
   pointer-events: none;
   opacity: 0;
@@ -1691,9 +1759,8 @@ strong { font-weight: 600; }
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
+  justify-content: space-between;   /* text top, arrow+btn bottom */
   padding: 60px 48px 60px 24px;
-  gap: 32px;
 }
 .cta-big__sub {
   font-size: clamp(1rem, 1.6vw, 1.3rem);
@@ -1701,25 +1768,28 @@ strong { font-weight: 600; }
   line-height: 1.7;
   max-width: 360px;
 }
-.cta-big__arrow-row {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 16px;
+/* Button area — arrow is absolutely positioned at top-left of button */
+.cta-big__btn-area {
+  position: relative;
+  align-self: flex-end;
 }
 
-/* hand-drawn wobbling arrow */
+/* Arrow: originates from upper-left, tip at button top-left corner */
 .cta-big__arrow {
-  width: 130px;
+  position: absolute;
+  width: 120px;
   height: auto;
   color: var(--dark);
+  /* tip of arrow — sits to the left of and slightly below the button's top-left */
+  bottom: calc(100% - 32px);
+  right: calc(100% + 22px);
   animation: cta-arrow-wobble 1.5s steps(1) infinite;
-  transform-origin: 50% 50%;
+  transform-origin: 100% 100%;  /* pivot from the arrowhead end */
 }
 @keyframes cta-arrow-wobble {
-  0%   { transform: rotate(22deg);  }
+  0%   { transform: rotate(10deg);  }
   34%  { transform: rotate(0deg);   }
-  67%  { transform: rotate(-22deg); }
+  67%  { transform: rotate(-10deg); }
 }
 
 .cta-big__btn { white-space: nowrap; }

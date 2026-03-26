@@ -36,7 +36,7 @@ function HeroNew() {
       if (wheelRef.current) {
         const sc = window.innerWidth < 768 ? 0.68 : 1
         wheelRef.current.style.transform =
-          `scale(${sc}) rotateX(-22deg) rotateY(${angleRef.current}deg)`
+          `scale(${sc}) rotateZ(-20deg) rotateX(-22deg) rotateY(${angleRef.current}deg)`
       }
 
       /* Smooth mouse X lerp */
@@ -246,40 +246,47 @@ const REVIEWS = [
   { initials: 'MV', name: 'Marko Vidović',       since: '9 months ago', text: '"Najbolji 🫶🏻"' },
 ]
 
+/* Scatter positions — designed to look organic but balanced.
+   vy / vx = total pixel drift over full scroll progress 0→1 */
+const REVIEW_LAYOUT = [
+  { left: '5%',  top: '14%', width: 360, vy: -480, vx:  20, rotate: '-1.5deg' },
+  { left: '65%', top: '8%',  width: 220, vy: -660, vx: -28, rotate: '2.5deg'  },
+  { left: '30%', top: '42%', width: 420, vy: -340, vx:  16, rotate: '-0.8deg' },
+  { left: '5%',  top: '66%', width: 310, vy: -740, vx:  30, rotate: '-2.5deg' },
+  { left: '64%', top: '56%', width: 255, vy: -590, vx: -20, rotate: '3deg'    },
+]
+
 function Reviews() {
-  const cardsRef = useRef([])
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      cardsRef.current.forEach((card, i) => {
-        if (!card) return
-        setTimeout(() => card.classList.add('pop-in'), i * 120)
-      })
-    }, 200)
-    return () => clearTimeout(timer)
-  }, [])
-
   return (
-    <section className="section section-dark section--deco reviews-section" aria-labelledby="reviews-h">
-      <span className="section-deco-bg" aria-hidden="true">KLIJENTI</span>
-      <div className="container">
-        <div className="section-header">
+    <section className="reviews-section" aria-labelledby="reviews-h">
+      <div className="reviews-header-overlay">
+        <div className="container">
           <h2 className="section-title section-title-inv" id="reviews-h">Što kažu naši klijenti</h2>
-          <div className="reviews-rating-summary">
-            <div className="rrs-stars">
-              {[1,2,3,4,5].map(n => <i key={n} className="fas fa-star"></i>)}
-            </div>
+          <div className="reviews-rating-summary" style={{ justifyContent: 'flex-start', marginTop: '12px' }}>
+            <div className="rrs-stars">{[1,2,3,4,5].map(n => <i key={n} className="fas fa-star"></i>)}</div>
             <span className="rrs-score">5.0</span>
             <span className="rrs-count">Google recenzije</span>
           </div>
         </div>
-
-        <div className="reviews-grid">
-          {REVIEWS.map((r, i) => (
+      </div>
+      <div className="reviews-scatter" aria-hidden="true">
+        {REVIEWS.map((r, i) => {
+          const lay = REVIEW_LAYOUT[i]
+          return (
             <article
               key={i}
-              className="review-card"
-              ref={el => cardsRef.current[i] = el}
+              className="review-card review-card--scatter"
+              style={{
+                position: 'absolute',
+                left:     lay.left,
+                top:      lay.top,
+                width:    lay.width + 'px',
+                transform: `rotate(${lay.rotate})`,
+                willChange: 'transform',
+              }}
+              data-vy={lay.vy}
+              data-vx={lay.vx}
+              data-rotate={lay.rotate}
             >
               <div className="review-top">
                 <div className="reviewer-avatar">{r.initials}</div>
@@ -287,16 +294,37 @@ function Reviews() {
                   <span className="reviewer-name">{r.name}</span>
                   <span className="reviewer-source"><i className="fab fa-google"></i> Google · {r.since}</span>
                 </div>
-                <div className="review-stars">
-                  {[1,2,3,4,5].map(n => <i key={n} className="fas fa-star"></i>)}
-                </div>
+                <div className="review-stars">{[1,2,3,4,5].map(n => <i key={n} className="fas fa-star"></i>)}</div>
               </div>
               <p className="review-text">{r.text}</p>
             </article>
-          ))}
-        </div>
+          )
+        })}
       </div>
     </section>
+  )
+}
+
+/* ── PRESSURE TITLE ──────────────────────────────────────── */
+/* Each letter has class "pressure-letter"; a single global handler
+   in Home drives scaleY based on mouse proximity (no per-component RAF) */
+function PressureTitle({ text, className }) {
+  const words = text.split(' ')
+  return (
+    <h2 className={className}>
+      {words.map((word, wi) => (
+        <span key={wi} style={{ display: 'inline-block', whiteSpace: 'nowrap' }}>
+          {word.split('').map((ch, i) => (
+            <span
+              key={i}
+              className="pressure-letter"
+              style={{ display: 'inline-block', transformOrigin: '50% 100%', transition: 'transform .12s ease' }}
+            >{ch}</span>
+          ))}
+          {wi < words.length - 1 && <span style={{ display: 'inline-block', width: '0.3em' }}>&nbsp;</span>}
+        </span>
+      ))}
+    </h2>
   )
 }
 
@@ -323,16 +351,17 @@ const CTA_L1 = 'IMATE'
 const CTA_L2 = 'IDEJU?'
 
 function CTABig() {
-  const leftRef    = useRef(null)
-  const imgRef     = useRef(null)
-  const l1Refs     = useRef([])
-  const l2Refs     = useRef([])
-  const rafRef     = useRef(null)
+  const leftRef      = useRef(null)
+  const trailRefs    = useRef([null, null, null, null])
+  const trailSlot    = useRef(0)
+  const lastImgTime  = useRef(0)
+  const l1Refs       = useRef([])
+  const l2Refs       = useRef([])
+  const rafRef       = useRef(null)
   const targetMxRef  = useRef(typeof window !== 'undefined' ? window.innerWidth / 2 : 0)
   const currentMxRef = useRef(typeof window !== 'undefined' ? window.innerWidth / 2 : 0)
-  const intervalRef  = useRef(null)
 
-  /* RAF: letter scaleY (shrinks near cursor) */
+  /* RAF: letter scaleY shrinks near cursor, top edge fixed */
   useEffect(() => {
     function tick() {
       currentMxRef.current += (targetMxRef.current - currentMxRef.current) * 0.07
@@ -343,7 +372,7 @@ function CTABig() {
         const rect = el.getBoundingClientRect()
         const cx   = rect.left + rect.width / 2
         const t    = Math.max(0, 1 - Math.abs(mx - cx) / radius)
-        const sy   = 1.0 - (t * t * (3 - 2 * t)) * 0.22   /* shrink up to 22% */
+        const sy   = 1.0 - (t * t * (3 - 2 * t)) * 0.22
         el.style.transform = `scaleY(${sy})`
       })
       rafRef.current = requestAnimationFrame(tick)
@@ -354,35 +383,46 @@ function CTABig() {
     return () => { cancelAnimationFrame(rafRef.current); window.removeEventListener('mousemove', onMove) }
   }, [])
 
-  /* Hover image: follow cursor, cycle images */
   const pickImg = () => CTA_IMGS[Math.floor(Math.random() * CTA_IMGS.length)]
 
+  /* Trail: place image at cursor, stay there; max 4, oldest fades when 5th arrives */
   function onLeftMove(e) {
-    if (!imgRef.current || !leftRef.current) return
-    const r = leftRef.current.getBoundingClientRect()
-    imgRef.current.style.left = `${e.clientX - r.left}px`
-    imgRef.current.style.top  = `${e.clientY - r.top}px`
+    const now = Date.now()
+    if (now - lastImgTime.current < 180) return   /* throttle */
+    lastImgTime.current = now
+    if (!leftRef.current) return
+    const r    = leftRef.current.getBoundingClientRect()
+    const x    = e.clientX - r.left
+    const y    = e.clientY - r.top
+    const slot = trailSlot.current
+    const img  = trailRefs.current[slot]
+    if (!img) return
+    /* instantly hide old occupant of this slot, then show new one */
+    img.style.transition = 'opacity 0s'
+    img.style.opacity    = '0'
+    requestAnimationFrame(() => {
+      img.src              = pickImg()
+      img.style.left       = `${x}px`
+      img.style.top        = `${y}px`
+      img.style.transition = 'opacity 0.18s ease'
+      img.style.opacity    = '1'
+    })
+    trailSlot.current = (slot + 1) % 4
   }
-  function onLeftEnter() {
-    if (!imgRef.current) return
-    imgRef.current.src = pickImg()
-    imgRef.current.style.opacity = '1'
-    intervalRef.current = setInterval(() => {
-      if (imgRef.current) imgRef.current.src = pickImg()
-    }, 1400)
-  }
+
   function onLeftLeave() {
-    if (!imgRef.current) return
-    imgRef.current.style.opacity = '0'
-    clearInterval(intervalRef.current)
+    trailRefs.current.forEach(img => {
+      if (!img) return
+      img.style.transition = 'opacity 0.25s ease'
+      img.style.opacity    = '0'
+    })
   }
-  useEffect(() => () => clearInterval(intervalRef.current), [])
 
   return (
     <section className="cta-big">
-      {/* LEFT — huge interactive text */}
+      {/* LEFT — huge interactive text + image trail */}
       <div className="cta-big__left" ref={leftRef}
-        onMouseMove={onLeftMove} onMouseEnter={onLeftEnter} onMouseLeave={onLeftLeave}>
+        onMouseMove={onLeftMove} onMouseLeave={onLeftLeave}>
         <div className="cta-big__text">
           <div className="cta-big__row">
             {CTA_L1.split('').map((ch, i) => (
@@ -395,21 +435,24 @@ function CTABig() {
             ))}
           </div>
         </div>
-        {/* floating hover image */}
-        <img ref={imgRef} className="cta-big__hover-img" src={CTA_IMGS[0]} alt="" aria-hidden="true" />
+        {[0,1,2,3].map(i => (
+          <img key={i} ref={el => trailRefs.current[i] = el}
+            className="cta-big__hover-img" src="" alt="" aria-hidden="true"
+            style={{ opacity: 0 }} />
+        ))}
       </div>
 
-      {/* RIGHT — text + arrow + button */}
+      {/* RIGHT — text at top, arrow + button at bottom */}
       <div className="cta-big__right">
         <p className="cta-big__sub">
           Kontaktirajte nas danas i zajedno osmislimo projekt koji će izdvojiti Vaš brend.
         </p>
-        <div className="cta-big__arrow-row">
-          {/* hand-drawn arrow SVG */}
-          <svg className="cta-big__arrow" viewBox="0 0 140 55" fill="none" aria-hidden="true">
-            <path d="M6 34 C22 12 52 9 84 20 C104 27 122 22 132 30"
+        <div className="cta-big__btn-area">
+          {/* arrow curves from upper-left down to the button's top-left corner */}
+          <svg className="cta-big__arrow" viewBox="0 0 120 70" fill="none" aria-hidden="true">
+            <path d="M8 10 C18 10 40 22 72 46 C90 56 105 62 115 62"
               stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
-            <path d="M122 20 L132 30 L120 37"
+            <path d="M104 54 L115 62 L106 68"
               stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
           <Link to="/kontakt" className="btn btn-dark btn-lg cta-big__btn">
@@ -430,6 +473,9 @@ const FEAT_ITEMS = [
   { icon: 'fa-user-tag', title: 'Personalizirani pokloni', desc: 'Unikatni pokloni s imenom, fotografijom ili posebnom porukom — za svaku prigodu.' },
 ]
 
+const SVC_COLORS  = ['#050A10','#0C1E2E','#071524','#0F2438','#060E1A','#0B1D2C']
+const FEAT_COLORS = ['#F2F7FA','#FFFFFF','#E6F0F7','#F5FBFF','#ECF4FA','#FAFCFF']
+
 /* ── HOME PAGE ───────────────────────────────────────────── */
 export default function Home() {
   const pageRef = useRef(null)
@@ -442,37 +488,87 @@ export default function Home() {
       rafId = null
       const vh = window.innerHeight
 
-      /* — flip-reveal tilt — */
+      /* — flip-reveal tilt + sticker image — */
       pageRef.current?.querySelectorAll('.flip-reveal').forEach(el => {
-        const top = el.getBoundingClientRect().top
-        if (top <= 0) { el.style.transform = ''; return }
+        const top       = el.getBoundingClientRect().top
+        const stickerEl = el.querySelector('.sticker-img')
+        if (top <= 0) {
+          el.style.transform = ''
+          if (stickerEl) { stickerEl.style.transform = ''; stickerEl.style.opacity = '' }
+          return
+        }
         const p      = Math.max(0, Math.min(1, 1 - top / vh))
         const ease   = p * p * (3 - 2 * p)
-        const angleX = (1 - ease) * 22           /* more extreme flip */
-        const angleZ = (1 - ease) * 9            /* more extreme right-side tilt */
+        const angleX = (1 - ease) * 22
+        const angleZ = (1 - ease) * 9
         el.style.transform = `perspective(1400px) rotateX(${-angleX}deg) rotateZ(${angleZ}deg)`
+        /* Sticker slap: ease² for sharp snap-into-place near the end */
+        if (stickerEl) {
+          const slap = ease * ease
+          stickerEl.style.opacity  = String(Math.min(1, slap * 2.8))
+          stickerEl.style.transform =
+            `perspective(800px) rotateX(${(1 - slap) * 32}deg) rotateY(${(1 - slap) * -22}deg) rotateZ(${(1 - slap) * 8}deg) scale(${0.78 + slap * 0.22})`
+        }
       })
 
-      /* — scroll-capture: advance active slide — */
+      /* — reviews scatter parallax — */
+      pageRef.current?.querySelectorAll('.scroll-capture-reviews').forEach(wrap => {
+        const rect = wrap.getBoundingClientRect()
+        const totalScroll = wrap.offsetHeight - vh
+        if (totalScroll <= 0) return
+        const scrolled = -rect.top
+        const p = Math.max(0, Math.min(1, scrolled / totalScroll))
+        wrap.querySelectorAll('.review-card--scatter').forEach(card => {
+          const vy     = parseFloat(card.dataset.vy)  || 0
+          const vx     = parseFloat(card.dataset.vx)  || 0
+          const rotate = card.dataset.rotate || '0deg'
+          card.style.transform = `rotate(${rotate}) translateY(${vy * p}px) translateX(${vx * p}px)`
+        })
+      })
+
+      /* — scroll-capture: advance active slide + alternate bg — */
       pageRef.current?.querySelectorAll('.scroll-capture').forEach(wrap => {
         const rect = wrap.getBoundingClientRect()
         const totalScroll = wrap.offsetHeight - vh
         if (totalScroll <= 0) return
         const scrolled = -rect.top
         const p = Math.max(0, Math.min(1, scrolled / totalScroll))
-        const slides = wrap.querySelectorAll('.cap-slide')
-        const dots   = wrap.querySelectorAll('.cap-dot')
-        const cur    = wrap.querySelector('.cap-counter-cur')
+        const slides  = wrap.querySelectorAll('.cap-slide')
+        const dots    = wrap.querySelectorAll('.cap-dot')
+        const section = wrap.querySelector('.cap-section')
         const N = slides.length
         if (!N) return
         const rawIdx = p * N
         const idx = Math.min(N - 1, Math.floor(rawIdx))
+        const isDark = wrap.dataset.dark === 'true'
+        const colors = isDark ? SVC_COLORS : FEAT_COLORS
         slides.forEach((s, i) => {
           s.classList.toggle('is-active', i === idx)
           s.classList.toggle('was-active', i < idx)
+          s.style.background = colors[i] || colors[0]
         })
-        dots.forEach((d, i) => d.classList.toggle('is-active', i === idx))
-        if (cur) cur.textContent = String(idx + 1).padStart(2, '0')
+        if (section) section.style.background = colors[idx] || colors[0]
+        /* circle arc progress: stroke-dashoffset drives the fill */
+        const fill = wrap.querySelector('[data-progress-fill]')
+        if (fill) {
+          const circ = 2 * Math.PI * 20           /* circumference for r=20 */
+          fill.style.strokeDashoffset = circ * (1 - (idx + 1) / N)
+        }
+        /* update ALL counter elements (header + circle center) */
+        wrap.querySelectorAll('.cap-counter-cur').forEach(el => {
+          el.textContent = String(idx + 1).padStart(2, '0')
+        })
+        /* coin-flip icon on slide change */
+        const prevIdx = parseInt(wrap.dataset.prevIdx ?? '-1', 10)
+        if (idx !== prevIdx) {
+          wrap.dataset.prevIdx = String(idx)
+          const iconWrap = slides[idx]?.querySelector('.cap-slide-icon-wrap')
+          if (iconWrap) {
+            iconWrap.classList.remove('icon-flip')
+            void iconWrap.offsetWidth          /* force reflow to restart animation */
+            iconWrap.classList.add('icon-flip')
+          }
+        }
       })
     }
     function onScroll() { if (!rafId) rafId = requestAnimationFrame(update) }
@@ -484,23 +580,47 @@ export default function Home() {
     }
   }, [])
 
+  /* Single global handler for pressure-letter effect on active slides */
+  useEffect(() => {
+    function onMove(e) {
+      const mx = e.clientX
+      pageRef.current?.querySelectorAll('.cap-slide.is-active .pressure-letter').forEach(el => {
+        const rect = el.getBoundingClientRect()
+        const cx   = rect.left + rect.width / 2
+        const t    = Math.max(0, 1 - Math.abs(mx - cx) / 170)
+        el.style.transform = `scaleY(${1 + (t * t * (3 - 2 * t)) * 0.16})`
+      })
+    }
+    function onLeave() {
+      pageRef.current?.querySelectorAll('.pressure-letter').forEach(el => {
+        el.style.transform = ''
+      })
+    }
+    window.addEventListener('mousemove', onMove, { passive: true })
+    document.addEventListener('mouseleave', onLeave)
+    return () => {
+      window.removeEventListener('mousemove', onMove)
+      document.removeEventListener('mouseleave', onLeave)
+    }
+  }, [])
+
   return (
     <div ref={pageRef}>
-      <div className="hero-sticky">
+      <div className="hero-sticky" style={{ marginBottom: '240px' }}>
         <HeroNew />
       </div>
 
-      <div className="flip-reveal" style={{ zIndex: 2, background: '#050A10' }}>
+      <div className="flip-reveal" style={{ zIndex: 2, background: '#050A10', marginBottom: '240px' }}>
         <StatsBand />
       </div>
 
       {/* O NAMA PREVIEW */}
-      <div className="flip-reveal" style={{ zIndex: 3, background: '#FFFFFF' }}>
-        <section className="section" aria-labelledby="home-onam">
+      <div className="flip-reveal" style={{ zIndex: 3, background: '#FFFFFF', marginBottom: '240px' }}>
+        <section className="section" aria-labelledby="home-onam" style={{ padding: 'clamp(36px, 4.5vh, 60px) 0' }}>
           <div className="container">
-            <div className="o-nama-split">
-              <div className="o-img" data-aos>
-                <div className="o-placeholder">
+            <div className="o-nama-split" style={{ gap: '52px', alignItems: 'center' }}>
+              <div className="o-img sticker-img" style={{ willChange: 'transform, opacity' }}>
+                <div className="o-placeholder" style={{ aspectRatio: '4/5' }}>
                   <i className="fas fa-camera"></i>
                   <span>Fotografija tima / studija</span>
                 </div>
@@ -516,28 +636,29 @@ export default function Home() {
                 </div>
               </div>
               <div className="o-content" data-aos>
-                <h2 className="section-title" id="home-onam">
+                <h2 className="section-title" id="home-onam"
+                  style={{ fontSize: 'clamp(2.4rem, 3.6vw, 4.4rem)', marginBottom: '16px' }}>
                   Dvadeset godina<br /><em>strasti prema dizajnu</em>
                 </h2>
-                <div className="divider"></div>
-                <p className="body-text">
+                <div className="divider" style={{ marginBottom: '20px' }}></div>
+                <p className="body-text" style={{ marginBottom: '12px' }}>
                   Sabioncello Grafica nastala je iz ljubavi prema vizualnoj komunikaciji i
                   želje da pomognemo lokalnim tvrtkama, ugostiteljima i privatnim
                   klijentima da ostave dojam koji traje.
                 </p>
-                <p className="body-text">
+                <p className="body-text" style={{ marginBottom: '12px' }}>
                   Poslovnica nam je u <strong>Orebićima</strong>, ali poslujemo na cijelom
                   području <strong>Dubrovačko-neretvanske županije</strong>. Tijekom dvije
                   dekade izgradili smo mrežu klijenata — od malih obiteljskih biznisa do
                   poznatih brendova regije.
                 </p>
-                <ul className="feature-list">
+                <ul className="feature-list" style={{ marginTop: '14px', gap: '8px' }}>
                   <li><i className="fas fa-check-circle"></i> Osobni pristup svakom projektu</li>
                   <li><i className="fas fa-check-circle"></i> Brza izrada i pouzdana dostava</li>
                   <li><i className="fas fa-check-circle"></i> Od ideje do finalnog proizvoda</li>
                   <li><i className="fas fa-check-circle"></i> Visoka kvaliteta, konkurentne cijene</li>
                 </ul>
-                <Link to="/o-nama" className="btn btn-primary" style={{ marginTop: '2rem' }}>
+                <Link to="/o-nama" className="btn btn-primary" style={{ marginTop: '20px' }}>
                   Saznajte više <i className="fas fa-arrow-right"></i>
                 </Link>
               </div>
@@ -547,7 +668,7 @@ export default function Home() {
       </div>
 
       {/* USLUGE — scroll capture: one service per scroll step */}
-      <div className="scroll-capture" style={{ position: 'relative', zIndex: 4, height: `${SVC_CARDS.length * 100}vh` }}>
+      <div className="scroll-capture" data-dark="true" style={{ position: 'relative', zIndex: 4, height: `${SVC_CARDS.length * 100}vh` }}>
         <div className="flip-reveal flip-reveal--capture" style={{ background: '#050A10', marginBottom: 0 }}>
           <section className="cap-section cap-section--dark" aria-labelledby="home-usluge">
             <div className="cap-header">
@@ -568,7 +689,7 @@ export default function Home() {
                       <span className="cap-slide-num">{String(i + 1).padStart(2, '0')}</span>
                     </div>
                     <div className="cap-slide-body">
-                      <h2 className="cap-slide-title">{svc.title}</h2>
+                      <PressureTitle text={svc.title} className="cap-slide-title" />
                       <p className="cap-slide-desc">{svc.desc}</p>
                       <Link to={svc.href} className="btn btn-outline-inv cap-slide-btn">
                         Pogledajte uslugu <i className="fas fa-arrow-right"></i>
@@ -579,17 +700,22 @@ export default function Home() {
               ))}
             </div>
 
-            <div className="cap-dots">
-              {SVC_CARDS.map((_, i) => (
-                <div className={`cap-dot${i === 0 ? ' is-active' : ''}`} key={i} />
-              ))}
+            <div className="cap-progress-row">
+              <div className="cap-progress-circle">
+                <svg viewBox="0 0 48 48" className="cap-progress-svg">
+                  <circle cx="24" cy="24" r="20" className="cap-progress-track" />
+                  <circle cx="24" cy="24" r="20" className="cap-progress-fill" data-progress-fill />
+                </svg>
+                <span className="cap-counter-cur cap-progress-cur">01</span>
+              </div>
+              <span className="cap-progress-total">/ {String(SVC_CARDS.length).padStart(2, '0')}</span>
             </div>
           </section>
         </div>
       </div>
 
       {/* IZDVOJENO — scroll capture */}
-      <div className="scroll-capture" style={{ position: 'relative', zIndex: 5, height: `${FEAT_ITEMS.length * 100}vh` }}>
+      <div className="scroll-capture" data-dark="false" style={{ position: 'relative', zIndex: 5, height: `${FEAT_ITEMS.length * 100}vh` }}>
         <div className="flip-reveal flip-reveal--capture" style={{ background: '#F2F7FA', marginBottom: 0 }}>
           <section className="cap-section cap-section--light" aria-labelledby="home-izdv">
             <div className="cap-header">
@@ -610,7 +736,7 @@ export default function Home() {
                       <span className="cap-slide-num">{String(i + 1).padStart(2, '0')}</span>
                     </div>
                     <div className="cap-slide-body">
-                      <h2 className="cap-slide-title">{f.title}</h2>
+                      <PressureTitle text={f.title} className="cap-slide-title" />
                       <p className="cap-slide-desc">{f.desc}</p>
                       <Link to="/izdvojeno" className="btn btn-outline cap-slide-btn">
                         Pogledajte više <i className="fas fa-arrow-right"></i>
@@ -621,20 +747,27 @@ export default function Home() {
               ))}
             </div>
 
-            <div className="cap-dots">
-              {FEAT_ITEMS.map((_, i) => (
-                <div className={`cap-dot${i === 0 ? ' is-active' : ''}`} key={i} />
-              ))}
+            <div className="cap-progress-row">
+              <div className="cap-progress-circle">
+                <svg viewBox="0 0 48 48" className="cap-progress-svg">
+                  <circle cx="24" cy="24" r="20" className="cap-progress-track" />
+                  <circle cx="24" cy="24" r="20" className="cap-progress-fill" data-progress-fill />
+                </svg>
+                <span className="cap-counter-cur cap-progress-cur">01</span>
+              </div>
+              <span className="cap-progress-total">/ {String(FEAT_ITEMS.length).padStart(2, '0')}</span>
             </div>
           </section>
         </div>
       </div>
 
-      <div className="flip-reveal" style={{ zIndex: 6, background: '#0C1924' }}>
-        <Reviews />
+      <div className="scroll-capture-reviews" style={{ position: 'relative', zIndex: 6, height: `${REVIEWS.length * 120}vh` }}>
+        <div className="flip-reveal flip-reveal--capture" style={{ background: '#0C1924' }}>
+          <Reviews />
+        </div>
       </div>
 
-      <div className="flip-reveal" style={{ zIndex: 7, background: '#0CBDCF' }}>
+      <div className="flip-reveal" style={{ zIndex: 7, background: '#0CBDCF', marginBottom: 0 }}>
         <CTABig />
       </div>
     </div>
