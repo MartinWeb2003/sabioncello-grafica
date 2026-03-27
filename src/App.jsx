@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom'
+import { HashRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import { useEffect } from 'react'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
@@ -26,7 +26,7 @@ function Layout({ children }) {
 
 export default function App() {
   return (
-    <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+    <HashRouter>
       <ScrollToTop />
       <Routes>
         <Route path="/"             element={<Layout><Home /></Layout>} />
@@ -38,6 +38,6 @@ export default function App() {
         {/* Catch-all → home */}
         <Route path="*"             element={<Navigate to="/" replace />} />
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   )
 }

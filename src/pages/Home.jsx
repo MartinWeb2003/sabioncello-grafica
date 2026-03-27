@@ -499,9 +499,11 @@ export default function Home() {
         }
         const p      = Math.max(0, Math.min(1, 1 - top / vh))
         const ease   = p * p * (3 - 2 * p)
-        const angleX = (1 - ease) * 22
-        const angleZ = (1 - ease) * 9
-        el.style.transform = `perspective(1400px) rotateX(${-angleX}deg) rotateZ(${angleZ}deg)`
+        const angleX  = (1 - ease) * 22
+        const angleZ  = (1 - ease) * 9
+        const offsetX = (1 - ease) * 100
+        const offsetY = (1 - ease) * -60
+        el.style.transform = `perspective(1400px) rotateX(${-angleX}deg) rotateZ(${angleZ}deg) translateX(${offsetX}px) translateY(${offsetY}px)`
         /* Sticker slap: ease² for sharp snap-into-place near the end */
         if (stickerEl) {
           const slap = ease * ease
