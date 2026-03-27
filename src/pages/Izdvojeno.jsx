@@ -32,7 +32,7 @@ const R0       = 240
 
 const IH_CARDS = [
   {
-    bg: '#FFFFFF', accent: '#0CBDCF', icon: 'fa-star', num: '01',
+    bg: '#091624', accent: '#0CBDCF', icon: 'fa-star', num: '01',
     title: 'Etikete\n& Vina',   sub: 'Pelješki Proizvodi',
     tags: ['Vino', 'Ulje', 'Med'],
     offsetX: -295, offsetY: 50,
@@ -40,7 +40,7 @@ const IH_CARDS = [
     rotZ: -11, arcRotZ: -7,
   },
   {
-    bg: '#F0F4F7', accent: '#050A10', icon: 'fa-heart', num: '02',
+    bg: '#131F30', accent: '#7ED4DC', icon: 'fa-heart', num: '02',
     title: 'Vjenčanja\n& Događaji', sub: 'Posebne Prigode',
     tags: ['Pozivnice', 'Dekor', 'Suveniri'],
     offsetX: 225, offsetY: -30,
@@ -192,7 +192,7 @@ function IzdvojenoHero() {
                   <div
                     key={j}
                     className={`uh-slice${isL ? ' uh-slice--l' : ''}${isR ? ' uh-slice--r' : ''}`}
-                    style={{ transform: `rotateY(${arc0}deg) translateZ(${R0}px)`, width: SLICE_W + 2, height: CARD_H }}
+                    style={{ transform: `rotateY(${arc0}deg) translateZ(${R0}px)`, width: SLICE_W + 8, height: CARD_H }}
                   >
                     <div className="uh-slice-front">
                       <div className="uh-slice-content" style={{ left: -j * SLICE_W, background: card.bg }}>

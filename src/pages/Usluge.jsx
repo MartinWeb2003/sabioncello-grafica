@@ -208,7 +208,7 @@ function UslugeHero() {
                   <div
                     key={j}
                     className={`uh-slice${isL ? ' uh-slice--l' : ''}${isR ? ' uh-slice--r' : ''}`}
-                    style={{ transform: `rotateY(${arc0}deg) translateZ(${R0}px)`, width: SLICE_W + 2, height: CARD_H }}
+                    style={{ transform: `rotateY(${arc0}deg) translateZ(${R0}px)`, width: SLICE_W + 8, height: CARD_H }}
                   >
                     <div className="uh-slice-front">
                       <div className="uh-slice-content" style={{ left: -j * SLICE_W, background: card.bg }}>

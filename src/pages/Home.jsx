@@ -250,11 +250,11 @@ const REVIEWS = [
 /* Scatter positions — designed to look organic but balanced.
    vy / vx = total pixel drift over full scroll progress 0→1 */
 const REVIEW_LAYOUT = [
-  { left: '5%',  top: '14%', width: 360, vy: -480, vx:  20, rotate: '-1.5deg' },
-  { left: '65%', top: '8%',  width: 220, vy: -660, vx: -28, rotate: '2.5deg'  },
-  { left: '30%', top: '42%', width: 420, vy: -340, vx:  16, rotate: '-0.8deg' },
-  { left: '5%',  top: '66%', width: 310, vy: -740, vx:  30, rotate: '-2.5deg' },
-  { left: '64%', top: '56%', width: 255, vy: -590, vx: -20, rotate: '3deg'    },
+  { left: '4%',  top: '14%', width: 440, vy: -480, vx:  20, rotate: '-1.5deg' },
+  { left: '62%', top: '8%',  width: 320, vy: -660, vx: -28, rotate: '2.5deg'  },
+  { left: '28%', top: '42%', width: 500, vy: -340, vx:  16, rotate: '-0.8deg' },
+  { left: '4%',  top: '66%', width: 390, vy: -740, vx:  30, rotate: '-2.5deg' },
+  { left: '62%', top: '56%', width: 340, vy: -590, vx: -20, rotate: '3deg'    },
 ]
 
 function Reviews() {
@@ -492,7 +492,7 @@ export default function Home() {
         <HeroNew />
       </div>
 
-      <div className="flip-reveal" style={{ zIndex: 2, background: '#F0F9FA', marginBottom: '240px' }}>
+      <div className="flip-reveal" style={{ zIndex: 2, background: '#050A10', marginBottom: '240px' }}>
         <StatsBand />
       </div>
 
@@ -643,7 +643,7 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="scroll-capture-reviews" style={{ position: 'relative', zIndex: 6, height: `${REVIEWS.length * 120}vh` }}>
+      <div className="scroll-capture-reviews" style={{ position: 'relative', zIndex: 6, height: `${REVIEWS.length * 70}vh` }}>
         <div className="flip-reveal flip-reveal--capture" style={{ background: '#F0F9FA' }}>
           <Reviews />
         </div>
