@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
-import CTABand from '../components/CTABand'
+import CTABig from '../components/CTABig'
 
 /* ── AOS HOOK ────────────────────────────────────────────────── */
 function useAOS(ref) {
@@ -29,7 +29,7 @@ const N_SLICES  = 8
 const CARD_W    = 200
 const CARD_H    = 330
 const SLICE_W   = CARD_W / N_SLICES
-const R0        = 380   /* initial cylinder radius */
+const R0        = 240   /* initial cylinder radius */
 
 const UH_CARDS = [
   {
@@ -41,7 +41,7 @@ const UH_CARDS = [
     rotZ: -10, arcRotZ: -7,
   },
   {
-    bg: '#160A06', accent: '#E85420', icon: 'fa-print', num: '02',
+    bg: '#091624', accent: '#7ED4DC', icon: 'fa-print', num: '02',
     title: 'Tisak\n& Print', sub: 'Digitalni · Ofsetni · Formati',
     tags: ['Vizitke', 'Banneri', 'Katalozi'],
     offsetX: 72, offsetY: -25,
@@ -149,7 +149,7 @@ function UslugeHero() {
           ` rotateX(${rotX}deg) rotateY(${rotY}deg) rotateZ(${rotZ}deg)`
 
         /* Cylinder radius shrinks with scroll → card bends more */
-        const R = R0 - ease * 150
+        const R = R0 - ease * 80
         wrap.querySelectorAll('.uh-slice').forEach((slice, j) => {
           const xc  = (j - (N_SLICES - 1) / 2) * SLICE_W
           const arc = Math.asin(Math.min(0.999, Math.max(-0.999, xc / R))) * (180 / Math.PI)
@@ -208,7 +208,7 @@ function UslugeHero() {
                   <div
                     key={j}
                     className={`uh-slice${isL ? ' uh-slice--l' : ''}${isR ? ' uh-slice--r' : ''}`}
-                    style={{ transform: `rotateY(${arc0}deg) translateZ(${R0}px)`, width: SLICE_W, height: CARD_H }}
+                    style={{ transform: `rotateY(${arc0}deg) translateZ(${R0}px)`, width: SLICE_W + 2, height: CARD_H }}
                   >
                     <div className="uh-slice-front">
                       <div className="uh-slice-content" style={{ left: -j * SLICE_W, background: card.bg }}>
@@ -261,12 +261,18 @@ function UslugeHero() {
   )
 }
 
+/* ── SERVICE SECTION LETTER CONSTANTS ───────────────────────── */
+const SL1 = 'NAŠE'
+const SL2 = 'USLUGE'
+
 /* ── USLUGE PAGE ─────────────────────────────────────────────── */
 export default function Usluge() {
-  const pageRef = useRef(null)
+  const pageRef  = useRef(null)
+  const sl1Refs  = useRef([])
+  const sl2Refs  = useRef([])
   useAOS(pageRef)
 
-  /* Flip-reveal entrance tilt — same as Home / ONama */
+  /* Flip-reveal entrance tilt */
   useEffect(() => {
     let rafId = null
     function update() {
@@ -275,14 +281,9 @@ export default function Usluge() {
       pageRef.current?.querySelectorAll('.flip-reveal').forEach(el => {
         const top = el.getBoundingClientRect().top
         if (top <= 0) { el.style.transform = ''; return }
-        const p      = Math.max(0, Math.min(1, 1 - top / vh))
-        const ease   = p * p * (3 - 2 * p)
-        const angleX = (1 - ease) * 22
-        const angleZ = (1 - ease) * 9
-        const offsetX = (1 - ease) * 100
-        const offsetY = (1 - ease) * -60
-        el.style.transform =
-          `perspective(1400px) rotateX(${-angleX}deg) rotateZ(${angleZ}deg) translateX(${offsetX}px) translateY(${offsetY}px)`
+        const p     = Math.max(0, Math.min(1, 1 - top / vh))
+        const ease  = p * p * (3 - 2 * p)
+        el.style.transform = `perspective(1400px) rotateX(${-(1 - ease) * 22}deg) rotateZ(${(1 - ease) * 9}deg) translateX(${(1 - ease) * 100}px) translateY(${(1 - ease) * -60}px)`
       })
     }
     function onScroll() { if (!rafId) rafId = requestAnimationFrame(update) }
@@ -291,80 +292,96 @@ export default function Usluge() {
     return () => { window.removeEventListener('scroll', onScroll); if (rafId) cancelAnimationFrame(rafId) }
   }, [])
 
+  /* Cursor-responsive scaleY for service section letters */
+  useEffect(() => {
+    let rafId
+    let targetMx  = window.innerWidth / 2
+    let currentMx = window.innerWidth / 2
+    function tick() {
+      currentMx += (targetMx - currentMx) * 0.07
+      const radius = window.innerWidth * 0.45
+      ;[...sl1Refs.current, ...sl2Refs.current].forEach(el => {
+        if (!el) return
+        const rect = el.getBoundingClientRect()
+        const cx   = rect.left + rect.width / 2
+        const t    = Math.max(0, 1 - Math.abs(currentMx - cx) / radius)
+        el.style.transform = `scaleY(${0.9 + (t * t * (3 - 2 * t)) * 0.18})`
+      })
+      rafId = requestAnimationFrame(tick)
+    }
+    rafId = requestAnimationFrame(tick)
+    const onMove = e => { targetMx = e.clientX }
+    window.addEventListener('mousemove', onMove, { passive: true })
+    return () => { cancelAnimationFrame(rafId); window.removeEventListener('mousemove', onMove) }
+  }, [])
+
   return (
     <div ref={pageRef}>
 
-      {/* Hero — sticky anchor at z:1 */}
-      <div className="hero-sticky" style={{ marginBottom: '240px' }}>
+      {/* Hero */}
+      <div className="hero-sticky">
         <UslugeHero />
       </div>
 
-      {/* Service sections — each is a flip-reveal panel */}
-      {SERVICES.map((s, i) => (
-        <div
-          key={i}
-          className="flip-reveal"
-          style={{
-            zIndex: i + 2,
-            background: s.alt ? '#050A10' : '#ffffff',
-            marginBottom: i < SERVICES.length - 1 ? '240px' : '240px',
-          }}
-        >
-          <section
-            className={`section${s.alt ? ' section-dark' : ''}`}
-            aria-labelledby={s.id}
-          >
-            <div className="container">
-              <div className={`o-nama-split${s.reverse ? ' reverse' : ''}`}>
-                {!s.reverse && (
-                  <div className="o-img" data-aos>
-                    <div className="o-placeholder">
-                      <i className={`fas ${s.icon}`} aria-hidden="true" />
-                      <span>Primjer usluge</span>
-                    </div>
-                  </div>
-                )}
-                <div className="o-content" data-aos>
-                  <span className={`tag${s.alt ? ' tag-inv' : ''}`}>{s.tag}</span>
-                  <h2
-                    className={`section-title${s.alt ? ' section-title-inv' : ''}`}
-                    id={s.id}
-                    dangerouslySetInnerHTML={{ __html: s.title }}
-                  />
-                  <div className="divider" />
-                  <p className="body-text" style={s.alt ? { color: 'rgba(255,255,255,.68)' } : undefined}>
-                    {s.desc}
-                  </p>
-                  <ul className="feature-list" style={s.alt ? { color: 'rgba(255,255,255,.55)' } : undefined}>
-                    {s.features.map((f, j) => (
-                      <li key={j}><i className="fas fa-check-circle" aria-hidden="true" /> {f}</li>
-                    ))}
-                  </ul>
-                  <Link to="/kontakt" className="btn btn-primary" style={{ marginTop: '2rem' }}>
-                    Zatražite ponudu <i className="fas fa-arrow-right" aria-hidden="true" />
-                  </Link>
-                </div>
-                {s.reverse && (
-                  <div className="o-img" data-aos>
-                    <div className="o-placeholder">
-                      <i className={`fas ${s.icon}`} aria-hidden="true" />
-                      <span>Primjer usluge</span>
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
-          </section>
-        </div>
-      ))}
+      {/* Service sticky split layout — left: big letters, right: scrolling services */}
+      <div style={{ position: 'relative', zIndex: 2 }}>
+        <div className="svc-sticky-layout">
 
-      {/* CTA — last flip-reveal */}
-      <div className="flip-reveal" style={{ zIndex: SERVICES.length + 2, marginBottom: 0 }}>
-        <CTABand
-          title="Trebate nešto od navedenog?"
-          subtitle="Kontaktirajte nas i dobijte ponudu prilagođenu Vašim potrebama i budžetu."
-          btnText="Zatražite besplatnu ponudu"
-          btnHref="/kontakt"
+          {/* LEFT: sticky big "NAŠE / USLUGE" */}
+          <div className="svc-left">
+            <div className="about-big-row">
+              {SL1.split('').map((ch, i) => (
+                <span key={i} ref={el => { sl1Refs.current[i] = el }} className="about-big-letter about-big-letter--sm">
+                  {ch}
+                </span>
+              ))}
+            </div>
+            <div className="about-big-row">
+              {SL2.split('').map((ch, i) => (
+                <span key={i} ref={el => { sl2Refs.current[i] = el }} className="about-big-letter about-big-letter--lg">
+                  {ch}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          {/* RIGHT: all services scrolling */}
+          <div className="svc-right">
+            {SERVICES.map((s, i) => (
+              <div className="svc-item" key={i}>
+                {i > 0 && <div className="about-divider-line" style={{ borderColor: 'rgba(5,10,16,.08)' }} />}
+                <div className="svc-item-img" data-aos>
+                  <i className={`fas ${s.icon}`} aria-hidden="true" />
+                  <span>Primjer usluge</span>
+                </div>
+                <p className="svc-item-tag">{s.tag}</p>
+                <h2
+                  className="svc-item-title"
+                  id={s.id}
+                  dangerouslySetInnerHTML={{ __html: s.title }}
+                />
+                <p className="svc-item-desc">{s.desc}</p>
+                <ul className="svc-item-features">
+                  {s.features.map((f, j) => (
+                    <li key={j}><i className="fas fa-check-circle" aria-hidden="true" /> {f}</li>
+                  ))}
+                </ul>
+                <Link to="/kontakt" className="btn btn-primary">
+                  Zatražite ponudu <i className="fas fa-arrow-right" aria-hidden="true" />
+                </Link>
+              </div>
+            ))}
+          </div>
+
+        </div>
+      </div>
+
+      {/* CTA — flip-reveal pointing to Izdvojeno */}
+      <div className="flip-reveal" style={{ zIndex: 3, marginBottom: 0 }}>
+        <CTABig
+          subtitle="Pregledajte galeriju naših najljepših projekata — od brendiranja i tiska do vozila i svjetlećih reklama."
+          btnText="Izdvojeni radovi"
+          btnHref="/izdvojeno"
         />
       </div>
 

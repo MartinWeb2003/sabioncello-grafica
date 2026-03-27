@@ -282,7 +282,7 @@ export default function ONama() {
       </div>{/* end z:1 wrapper */}
 
       {/* ── STATS + DECO — flip-reveal z:2 ─────────────────────── */}
-      <div className="flip-reveal" style={{ zIndex: 2, background: '#050A10', marginBottom: '240px' }}>
+      <div className="flip-reveal" style={{ zIndex: 2, background: '#F0F9FA', marginBottom: '240px' }}>
         <section className="stats-band" aria-label="Naši rezultati u brojevima">
           <div className="container">
 
@@ -388,7 +388,7 @@ export default function ONama() {
 
       {/* ── ZAŠTO BIRAJU NAS — Princip counter z:4 ─────────────── */}
       <div className="princip-capture" style={{ position: 'relative', zIndex: 4, height: `${PRINCIP_VALUES.length * 100}vh` }}>
-        <div className="flip-reveal flip-reveal--capture" style={{ background: '#838B6E', marginBottom: 0 }}>
+        <div className="flip-reveal flip-reveal--capture" style={{ background: '#E8F5F8', marginBottom: 0 }}>
           <div className="princip-section" aria-label="Zašto biraju nas">
 
             {/* LEFT: sliding title + description */}

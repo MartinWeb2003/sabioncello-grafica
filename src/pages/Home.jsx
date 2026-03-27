@@ -1,5 +1,6 @@
 import { useEffect, useRef, useCallback } from 'react'
 import { Link } from 'react-router-dom'
+import CTABig from '../components/CTABig'
 
 /* ── HERO NEW ────────────────────────────────────────────── */
 const HERO_CARDS = [
@@ -142,7 +143,7 @@ function HeroNew() {
       <div className="hero-new__footer">
         <p className="hero-new__tagline">20 godina iskustva · Orebić, Pelješac</p>
         <div className="hero-new__footer-btns">
-          <Link to="/usluge"  className="btn btn-primary btn-lg">Naše usluge <i className="fas fa-arrow-right"></i></Link>
+          <Link to="/usluge"  className="btn btn-dark btn-lg">Naše usluge <i className="fas fa-arrow-right"></i></Link>
           <Link to="/kontakt" className="btn btn-outline-inv btn-lg">Kontaktirajte nas</Link>
         </div>
       </div>
@@ -261,7 +262,11 @@ function Reviews() {
     <section className="reviews-section" aria-labelledby="reviews-h">
       <div className="reviews-header-overlay">
         <div className="container">
-          <h2 className="section-title section-title-inv" id="reviews-h">Što kažu naši klijenti</h2>
+          <div className="reviews-big-head" aria-hidden="true">
+            <span className="reviews-big-word">ŠTO</span>
+            <span className="reviews-big-word reviews-big-word--2">KAŽU</span>
+          </div>
+          <h2 className="section-title" id="reviews-h" style={{ marginTop: '4px' }}>Naši klijenti o nama</h2>
           <div className="reviews-rating-summary" style={{ justifyContent: 'flex-start', marginTop: '12px' }}>
             <div className="rrs-stars">{[1,2,3,4,5].map(n => <i key={n} className="fas fa-star"></i>)}</div>
             <span className="rrs-score">5.0</span>
@@ -338,131 +343,6 @@ const SVC_CARDS = [
   { icon: 'fa-sign',      title: 'Putokazi i ploče',     desc: 'Natpisne ploče, putokazi i reklamni panoi — trajni i uočljivi na svakom koraku.', href: '/usluge' },
 ]
 
-const CTA_IMGS = [
-  'https://images.unsplash.com/photo-1626785774573-4b799315345d?w=400&q=80',
-  'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80',
-  'https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=400&q=80',
-  'https://images.unsplash.com/photo-1503341504253-dff4815485f1?w=400&q=80',
-  'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=400&q=80',
-  'https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=400&q=80',
-]
-
-const CTA_L1 = 'IMATE'
-const CTA_L2 = 'IDEJU?'
-
-function CTABig() {
-  const leftRef      = useRef(null)
-  const trailRefs    = useRef([null, null, null, null])
-  const trailSlot    = useRef(0)
-  const lastImgTime  = useRef(0)
-  const l1Refs       = useRef([])
-  const l2Refs       = useRef([])
-  const rafRef       = useRef(null)
-  const targetMxRef  = useRef(typeof window !== 'undefined' ? window.innerWidth / 2 : 0)
-  const currentMxRef = useRef(typeof window !== 'undefined' ? window.innerWidth / 2 : 0)
-
-  /* RAF: letter scaleY shrinks near cursor, top edge fixed */
-  useEffect(() => {
-    function tick() {
-      currentMxRef.current += (targetMxRef.current - currentMxRef.current) * 0.07
-      const mx     = currentMxRef.current
-      const radius = window.innerWidth * 0.32
-      ;[...l1Refs.current, ...l2Refs.current].forEach(el => {
-        if (!el) return
-        const rect = el.getBoundingClientRect()
-        const cx   = rect.left + rect.width / 2
-        const t    = Math.max(0, 1 - Math.abs(mx - cx) / radius)
-        const sy   = 1.0 - (t * t * (3 - 2 * t)) * 0.22
-        el.style.transform = `scaleY(${sy})`
-      })
-      rafRef.current = requestAnimationFrame(tick)
-    }
-    const onMove = e => { targetMxRef.current = e.clientX }
-    rafRef.current = requestAnimationFrame(tick)
-    window.addEventListener('mousemove', onMove)
-    return () => { cancelAnimationFrame(rafRef.current); window.removeEventListener('mousemove', onMove) }
-  }, [])
-
-  const pickImg = () => CTA_IMGS[Math.floor(Math.random() * CTA_IMGS.length)]
-
-  /* Trail: place image at cursor, stay there; max 4, oldest fades when 5th arrives */
-  function onLeftMove(e) {
-    const now = Date.now()
-    if (now - lastImgTime.current < 180) return   /* throttle */
-    lastImgTime.current = now
-    if (!leftRef.current) return
-    const r    = leftRef.current.getBoundingClientRect()
-    const x    = e.clientX - r.left
-    const y    = e.clientY - r.top
-    const slot = trailSlot.current
-    const img  = trailRefs.current[slot]
-    if (!img) return
-    /* instantly hide old occupant of this slot, then show new one */
-    img.style.transition = 'opacity 0s'
-    img.style.opacity    = '0'
-    requestAnimationFrame(() => {
-      img.src              = pickImg()
-      img.style.left       = `${x}px`
-      img.style.top        = `${y}px`
-      img.style.transition = 'opacity 0.18s ease'
-      img.style.opacity    = '1'
-    })
-    trailSlot.current = (slot + 1) % 4
-  }
-
-  function onLeftLeave() {
-    trailRefs.current.forEach(img => {
-      if (!img) return
-      img.style.transition = 'opacity 0.25s ease'
-      img.style.opacity    = '0'
-    })
-  }
-
-  return (
-    <section className="cta-big">
-      {/* LEFT — huge interactive text + image trail */}
-      <div className="cta-big__left" ref={leftRef}
-        onMouseMove={onLeftMove} onMouseLeave={onLeftLeave}>
-        <div className="cta-big__text">
-          <div className="cta-big__row">
-            {CTA_L1.split('').map((ch, i) => (
-              <span key={i} ref={el => l1Refs.current[i] = el} className="cta-big-letter">{ch}</span>
-            ))}
-          </div>
-          <div className="cta-big__row">
-            {CTA_L2.split('').map((ch, i) => (
-              <span key={i} ref={el => l2Refs.current[i] = el} className="cta-big-letter">{ch}</span>
-            ))}
-          </div>
-        </div>
-        {[0,1,2,3].map(i => (
-          <img key={i} ref={el => trailRefs.current[i] = el}
-            className="cta-big__hover-img" src="" alt="" aria-hidden="true"
-            style={{ opacity: 0 }} />
-        ))}
-      </div>
-
-      {/* RIGHT — text at top, arrow + button at bottom */}
-      <div className="cta-big__right">
-        <p className="cta-big__sub">
-          Kontaktirajte nas danas i zajedno osmislimo projekt koji će izdvojiti Vaš brend.
-        </p>
-        <div className="cta-big__btn-area">
-          {/* arrow curves from upper-left down to the button's top-left corner */}
-          <svg className="cta-big__arrow" viewBox="0 0 120 70" fill="none" aria-hidden="true">
-            <path d="M8 10 C18 10 40 22 72 46 C90 56 105 62 115 62"
-              stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
-            <path d="M104 54 L115 62 L106 68"
-              stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-          <Link to="/kontakt" className="btn btn-dark btn-lg cta-big__btn">
-            Zatražite ponudu <i className="fas fa-arrow-right"></i>
-          </Link>
-        </div>
-      </div>
-    </section>
-  )
-}
 
 const FEAT_ITEMS = [
   { icon: 'fa-utensils', title: 'Jelovnici',               desc: 'Premium dizajn i tisak jelovnika za restorane, hotele i kafiće — od jednostavnih do luksuznih verzija.' },
@@ -612,7 +492,7 @@ export default function Home() {
         <HeroNew />
       </div>
 
-      <div className="flip-reveal" style={{ zIndex: 2, background: '#050A10', marginBottom: '240px' }}>
+      <div className="flip-reveal" style={{ zIndex: 2, background: '#F0F9FA', marginBottom: '240px' }}>
         <StatsBand />
       </div>
 
@@ -671,7 +551,7 @@ export default function Home() {
 
       {/* USLUGE — scroll capture: one service per scroll step */}
       <div className="scroll-capture" data-dark="true" style={{ position: 'relative', zIndex: 4, height: `${SVC_CARDS.length * 100}vh` }}>
-        <div className="flip-reveal flip-reveal--capture" style={{ background: '#050A10', marginBottom: 0 }}>
+        <div className="flip-reveal flip-reveal--capture" style={{ background: '#F0F9FA', marginBottom: 0 }}>
           <section className="cap-section cap-section--dark" aria-labelledby="home-usluge">
             <div className="cap-header">
               <span className="cap-label">Što nudimo</span>
@@ -764,7 +644,7 @@ export default function Home() {
       </div>
 
       <div className="scroll-capture-reviews" style={{ position: 'relative', zIndex: 6, height: `${REVIEWS.length * 120}vh` }}>
-        <div className="flip-reveal flip-reveal--capture" style={{ background: '#0C1924' }}>
+        <div className="flip-reveal flip-reveal--capture" style={{ background: '#F0F9FA' }}>
           <Reviews />
         </div>
       </div>
