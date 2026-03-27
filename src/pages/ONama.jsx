@@ -282,8 +282,8 @@ export default function ONama() {
       </div>{/* end z:1 wrapper */}
 
       {/* ── STATS + DECO — flip-reveal z:2 ─────────────────────── */}
-      <div className="flip-reveal" style={{ zIndex: 2, background: '#F0F9FA', marginBottom: '240px' }}>
-        <section className="stats-band" aria-label="Naši rezultati u brojevima">
+      <div className="flip-reveal" style={{ zIndex: 2, background: '#FFFFFF', marginBottom: '240px' }}>
+        <section className="stats-band stats-band--light" aria-label="Naši rezultati u brojevima">
           <div className="container">
 
             <div className="section-header" data-aos>
@@ -305,18 +305,16 @@ export default function ONama() {
               </div>
             </div>
 
-            <div className="deco-imgs-row">
-              {DECO_IMGS.map((d, i) => (
-                <div key={i} className="deco-img-wrap" data-aos-top>
-                  <img
-                    src={d.src}
-                    alt={d.alt}
-                    className="deco-img"
-                    style={{ animationDelay: d.delay }}
-                    aria-hidden="true"
-                  />
-                </div>
-              ))}
+            <div className="deco-scatter">
+              <div className="deco-img-wrap deco-img-wrap--1">
+                <img src={DECO_IMGS[0].src} alt="" className="deco-img" aria-hidden="true" />
+              </div>
+              <div className="deco-img-wrap deco-img-wrap--2">
+                <img src={DECO_IMGS[1].src} alt="" className="deco-img" aria-hidden="true" />
+              </div>
+              <div className="deco-img-wrap deco-img-wrap--3">
+                <img src={DECO_IMGS[2].src} alt="" className="deco-img" aria-hidden="true" />
+              </div>
             </div>
 
           </div>
