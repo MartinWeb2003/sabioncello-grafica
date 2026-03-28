@@ -1,0 +1,18 @@
+.tp-wrap {
+  display: block;
+  white-space: normal;
+  word-break: normal;
+}
+
+.tp-word {
+  display: inline;
+  white-space: nowrap;
+}
+
+.tp-char {
+  display: inline-block;
+  font-weight: 100;          /* start ultra-thin */
+  color: #ffffff;
+  -webkit-font-smoothing: antialiased;
+  will-change: font-weight;
+}

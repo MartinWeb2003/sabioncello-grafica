@@ -28,7 +28,7 @@ const N_SLICES = 8
 const CARD_W   = 200
 const CARD_H   = 330
 const SLICE_W  = CARD_W / N_SLICES
-const R0       = 240
+const R0       = 340
 
 const IH_CARDS = [
   {
@@ -85,9 +85,10 @@ const ITEMS = [
 
 /* ── IZDVOJENO HERO ──────────────────────────────────────────── */
 function IzdvojenoHero() {
-  const l1Refs    = useRef([])
-  const l2Refs    = useRef([])
-  const cardWraps = useRef([])
+  const l1Refs        = useRef([])
+  const l2Refs        = useRef([])
+  const cardWraps     = useRef([])
+  const cardEntrances = useRef([])
 
   useEffect(() => {
     let rafId
@@ -95,8 +96,10 @@ function IzdvojenoHero() {
     let currentMx = window.innerWidth  / 2
     let targetMy  = window.innerHeight / 2
     let currentMy = window.innerHeight / 2
+    const startTime = Date.now()
 
     function tick() {
+      const now = Date.now()
       currentMx += (targetMx - currentMx) * 0.07
       currentMy += (targetMy - currentMy) * 0.07
 
@@ -107,19 +110,10 @@ function IzdvojenoHero() {
       const cnX       = (currentMx - vw / 2) / (vw / 2)
       const cnY       = (currentMy - vh / 2) / (vh / 2)
 
-      /* Letter scaleY */
-      const radius = vw * 0.38
-      ;[...l1Refs.current, ...l2Refs.current].forEach(el => {
-        if (!el) return
-        const rect = el.getBoundingClientRect()
-        const cx   = rect.left + rect.width / 2
-        const t    = Math.max(0, 1 - Math.abs(currentMx - cx) / radius)
-        el.style.transform = `scaleY(${0.93 + (t * t * (3 - 2 * t)) * 0.14})`
-      })
-
       /* Cards — scroll arc + cursor tilt */
       IH_CARDS.forEach((card, ci) => {
-        const wrap = cardWraps.current[ci]
+        const wrap     = cardWraps.current[ci]
+        const entrance = cardEntrances.current[ci]
         if (!wrap) return
         const baseX = vw / 2 - CARD_W / 2
         const baseY = vh / 2 - CARD_H / 2
@@ -139,6 +133,37 @@ function IzdvojenoHero() {
           const arc = Math.asin(Math.min(0.999, Math.max(-0.999, xc / R))) * (180 / Math.PI)
           slice.style.transform = `rotateY(${arc}deg) translateZ(${R}px)`
         })
+
+        /* Entrance animation — JS-driven so cursor reactivity is live throughout */
+        if (entrance) {
+          const delay    = 1000 + ci * 180
+          const duration = 700
+          const elapsed  = now - startTime - delay
+          if (elapsed < 0) {
+            entrance.style.opacity   = '0'
+            entrance.style.transform = 'translateY(22px)'
+          } else {
+            const p  = Math.min(1, elapsed / duration)
+            const ep = 1 - (1 - p) * (1 - p)  /* ease-out */
+            entrance.style.opacity   = String(Math.min(1, p / 0.4))
+            if (p < 1) {
+              entrance.style.transform = `translateY(${22 * (1 - ep)}px)`
+            } else {
+              entrance.style.transform = ''
+              entrance.style.opacity   = '1'
+            }
+          }
+        }
+      })
+
+      /* Letter scaleY */
+      const radius = vw * 0.38
+      ;[...l1Refs.current, ...l2Refs.current].forEach(el => {
+        if (!el) return
+        const rect = el.getBoundingClientRect()
+        const cx   = rect.left + rect.width / 2
+        const t    = Math.max(0, 1 - Math.abs(currentMx - cx) / radius)
+        el.style.transform = `scaleY(${0.93 + (t * t * (3 - 2 * t)) * 0.14})`
       })
 
       rafId = requestAnimationFrame(tick)
@@ -179,6 +204,10 @@ function IzdvojenoHero() {
           {IH_CARDS.map((card, ci) => (
             <div
               key={ci}
+              className="uh-card-entrance"
+              ref={el => { cardEntrances.current[ci] = el }}
+            >
+            <div
               className="uh-card-wrap"
               ref={el => { cardWraps.current[ci] = el }}
               style={{ zIndex: ci === 0 ? 2 : 1 }}
@@ -203,7 +232,7 @@ function IzdvojenoHero() {
                           <span className="uh-card-num" style={{ color: card.accent }}>{card.num}</span>
                         </div>
                         <div className="uh-card-body">
-                          <h3 className="uh-card-title" style={{ color: '#050A10' }}>
+                          <h3 className="uh-card-title">
                             {card.title.split('\n').map((line, k, arr) => (
                               <span key={k}>{line}{k < arr.length - 1 && <br />}</span>
                             ))}
@@ -228,6 +257,7 @@ function IzdvojenoHero() {
                   </div>
                 )
               })}
+            </div>
             </div>
           ))}
 

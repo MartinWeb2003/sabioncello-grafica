@@ -465,12 +465,13 @@ export default function Home() {
   /* Single global handler for pressure-letter effect on active slides */
   useEffect(() => {
     function onMove(e) {
-      const mx = e.clientX
+      const mx     = e.clientX
+      const radius = window.innerWidth * 0.38
       pageRef.current?.querySelectorAll('.cap-slide.is-active .pressure-letter').forEach(el => {
         const rect = el.getBoundingClientRect()
         const cx   = rect.left + rect.width / 2
-        const t    = Math.max(0, 1 - Math.abs(mx - cx) / 170)
-        el.style.transform = `scaleY(${1 + (t * t * (3 - 2 * t)) * 0.16})`
+        const t    = Math.max(0, 1 - Math.abs(mx - cx) / radius)
+        el.style.transform = `scaleY(${0.93 + (t * t * (3 - 2 * t)) * 0.14})`
       })
     }
     function onLeave() {

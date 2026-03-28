@@ -36,6 +36,8 @@ const KH_L1 = 'KONTAKT'
 function KontaktHero() {
   const heroRef      = useRef(null)
   const l1Refs       = useRef([])
+  const labelRef     = useRef(null)
+  const titleBlockRef = useRef(null)
   const rafRef       = useRef(null)
   const targetMxRef  = useRef(0)
   const currentMxRef = useRef(0)
@@ -50,7 +52,10 @@ function KontaktHero() {
     function tick() {
       currentMxRef.current += (targetMxRef.current - currentMxRef.current) * 0.07
       const mx     = currentMxRef.current
-      const radius = window.innerWidth * 0.45
+      const vw     = window.innerWidth
+      const radius = vw * 0.45
+
+      /* Letter scaleY — cursor proximity */
       l1Refs.current.forEach(el => {
         if (!el) return
         const rect = el.getBoundingClientRect()
@@ -58,6 +63,20 @@ function KontaktHero() {
         const t    = Math.max(0, 1 - Math.abs(mx - cx) / radius)
         el.style.transform = `scaleY(${0.93 + (t * t * (3 - 2 * t)) * 0.14})`
       })
+
+      /* Cursor repulsion — label moves left, big text moves right */
+      const cnX    = (mx - vw / 2) / (vw / 2)   // -1..+1
+      const SHIFT  = 80
+      const labelX = Math.min(0, cnX * -SHIFT)   // cursor right → label left
+      const bigX   = Math.max(0, cnX * -SHIFT)   // cursor left  → big text right
+
+      if (labelRef.current) {
+        labelRef.current.style.transform = `translateY(-50%) translateX(${labelX}px)`
+      }
+      if (titleBlockRef.current) {
+        titleBlockRef.current.style.transform = `translateX(${bigX}px)`
+      }
+
       rafRef.current = requestAnimationFrame(tick)
     }
 
@@ -113,7 +132,7 @@ function KontaktHero() {
       onMouseLeave={onHeroLeave}
     >
       {/* Giant ghost background letters */}
-      <div className="kh-title-block" aria-hidden="true">
+      <div className="kh-title-block" aria-hidden="true" ref={titleBlockRef}>
         <div className="kh-title-row">
           {KH_L1.split('').map((ch, i) => (
             <span key={i} ref={el => { l1Refs.current[i] = el }} className="kh-letter">{ch}</span>
@@ -122,7 +141,7 @@ function KontaktHero() {
       </div>
 
       {/* Foreground label */}
-      <div className="kh-label">
+      <div className="kh-label" ref={labelRef}>
         <span>Stupite u <em>kontakt</em> s nama</span>
       </div>
 
@@ -157,9 +176,34 @@ export default function Kontakt() {
   const pageRef = useRef(null)
   useAOS(pageRef)
 
+  useEffect(() => {
+    let rafId = null
+    function update() {
+      rafId = null
+      const vh = window.innerHeight
+      pageRef.current?.querySelectorAll('.flip-reveal').forEach(el => {
+        const top = el.getBoundingClientRect().top
+        if (top <= 0) { el.style.transform = ''; return }
+        const p     = Math.max(0, Math.min(1, 1 - top / vh))
+        const ease  = p * p * (3 - 2 * p)
+        const angleX  = (1 - ease) * 22
+        const angleZ  = (1 - ease) * 9
+        const offsetX = (1 - ease) * 100
+        const offsetY = (1 - ease) * -60
+        el.style.transform = `perspective(1400px) rotateX(${-angleX}deg) rotateZ(${angleZ}deg) translateX(${offsetX}px) translateY(${offsetY}px)`
+      })
+    }
+    function onScroll() { if (!rafId) rafId = requestAnimationFrame(update) }
+    window.addEventListener('scroll', onScroll, { passive: true })
+    update()
+    return () => { window.removeEventListener('scroll', onScroll); if (rafId) cancelAnimationFrame(rafId) }
+  }, [])
+
   return (
     <div ref={pageRef}>
-      <KontaktHero />
+      <div className="hero-sticky" style={{ marginBottom: '240px' }}>
+        <KontaktHero />
+      </div>
 
       {/* ── MAP + CONTACT DETAILS ── */}
       <div className="flip-reveal" style={{ zIndex: 2, background: '#FFFFFF', marginBottom: '240px' }}>

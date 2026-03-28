@@ -29,14 +29,14 @@ const N_SLICES  = 8
 const CARD_W    = 200
 const CARD_H    = 330
 const SLICE_W   = CARD_W / N_SLICES
-const R0        = 240   /* initial cylinder radius */
+const R0        = 340   /* initial cylinder radius */
 
 const UH_CARDS = [
   {
     bg: '#091624', accent: '#0CBDCF', icon: 'fa-pen-nib', num: '01',
     title: 'Grafički\nDizajn', sub: 'Logotipi · Branding · Tiskovine',
     tags: ['Logo', 'Brand', 'Print'],
-    offsetX: -150, offsetY: 55,
+    offsetX: -200, offsetY: 55,
     arcX: -80, arcY: -310,
     rotZ: -10, arcRotZ: -7,
   },
@@ -44,7 +44,7 @@ const UH_CARDS = [
     bg: '#091624', accent: '#7ED4DC', icon: 'fa-print', num: '02',
     title: 'Tisak\n& Print', sub: 'Digitalni · Ofsetni · Formati',
     tags: ['Vizitke', 'Banneri', 'Katalozi'],
-    offsetX: 72, offsetY: -25,
+    offsetX: 130, offsetY: -25,
     arcX: 104, arcY: -270,
     rotZ: 14, arcRotZ: 9,
   },
@@ -98,9 +98,10 @@ const SERVICES = [
 
 /* ── USLUGE HERO ─────────────────────────────────────────────── */
 function UslugeHero() {
-  const l1Refs    = useRef([])
-  const l2Refs    = useRef([])
-  const cardWraps = useRef([])
+  const l1Refs        = useRef([])
+  const l2Refs        = useRef([])
+  const cardWraps     = useRef([])
+  const cardEntrances = useRef([])
 
   useEffect(() => {
     let rafId
@@ -108,8 +109,10 @@ function UslugeHero() {
     let currentMx = window.innerWidth  / 2
     let targetMy  = window.innerHeight / 2
     let currentMy = window.innerHeight / 2
+    const startTime = Date.now()
 
     function tick() {
+      const now = Date.now()
       currentMx += (targetMx - currentMx) * 0.07
       currentMy += (targetMy - currentMy) * 0.07
 
@@ -120,22 +123,12 @@ function UslugeHero() {
       const cnX       = (currentMx - vw / 2) / (vw / 2)   /* -1 … +1 */
       const cnY       = (currentMy - vh / 2) / (vh / 2)
 
-      /* ── Letter scaleY — cursor proximity ── */
-      const radius = vw * 0.38
-      ;[...l1Refs.current, ...l2Refs.current].forEach(el => {
-        if (!el) return
-        const rect = el.getBoundingClientRect()
-        const cx   = rect.left + rect.width / 2
-        const t    = Math.max(0, 1 - Math.abs(currentMx - cx) / radius)
-        el.style.transform = `scaleY(${0.93 + (t * t * (3 - 2 * t)) * 0.14})`
-      })
-
       /* ── Cards — scroll arc + cursor tilt ── */
       UH_CARDS.forEach((card, ci) => {
-        const wrap = cardWraps.current[ci]
+        const wrap     = cardWraps.current[ci]
+        const entrance = cardEntrances.current[ci]
         if (!wrap) return
 
-        /* Centre card in viewport then apply per-card offset and arc */
         const baseX = vw / 2 - CARD_W / 2
         const baseY = vh / 2 - CARD_H / 2
         const arcX  = card.offsetX + ease * (card.arcX + cnX * 55)
@@ -155,6 +148,37 @@ function UslugeHero() {
           const arc = Math.asin(Math.min(0.999, Math.max(-0.999, xc / R))) * (180 / Math.PI)
           slice.style.transform = `rotateY(${arc}deg) translateZ(${R}px)`
         })
+
+        /* Entrance animation — JS-driven so cursor reactivity is live throughout */
+        if (entrance) {
+          const delay    = 1000 + ci * 180
+          const duration = 700
+          const elapsed  = now - startTime - delay
+          if (elapsed < 0) {
+            entrance.style.opacity   = '0'
+            entrance.style.transform = 'translateY(22px)'
+          } else {
+            const p  = Math.min(1, elapsed / duration)
+            const ep = 1 - (1 - p) * (1 - p)  /* ease-out */
+            entrance.style.opacity   = String(Math.min(1, p / 0.4))
+            if (p < 1) {
+              entrance.style.transform = `translateY(${22 * (1 - ep)}px)`
+            } else {
+              entrance.style.transform = ''
+              entrance.style.opacity   = '1'
+            }
+          }
+        }
+      })
+
+      /* ── Letter scaleY — cursor proximity ── */
+      const radius = vw * 0.38
+      ;[...l1Refs.current, ...l2Refs.current].forEach(el => {
+        if (!el) return
+        const rect = el.getBoundingClientRect()
+        const cx   = rect.left + rect.width / 2
+        const t    = Math.max(0, 1 - Math.abs(currentMx - cx) / radius)
+        el.style.transform = `scaleY(${0.93 + (t * t * (3 - 2 * t)) * 0.14})`
       })
 
       rafId = requestAnimationFrame(tick)
@@ -195,6 +219,10 @@ function UslugeHero() {
           {UH_CARDS.map((card, ci) => (
             <div
               key={ci}
+              className="uh-card-entrance"
+              ref={el => { cardEntrances.current[ci] = el }}
+            >
+            <div
               className="uh-card-wrap"
               ref={el => { cardWraps.current[ci] = el }}
               style={{ zIndex: ci === 0 ? 2 : 1 }}
@@ -244,6 +272,7 @@ function UslugeHero() {
                   </div>
                 )
               })}
+            </div>
             </div>
           ))}
 

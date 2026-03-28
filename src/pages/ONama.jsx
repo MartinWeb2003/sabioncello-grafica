@@ -80,12 +80,6 @@ const PRINCIP_VALUES = [
   },
 ]
 
-/* ── DECORATIVE IMAGES ──────────────────────────────────────── */
-const DECO_IMGS = [
-  { src: 'assets/img/cloud.png',     alt: '',  delay: '0s'    },
-  { src: 'assets/img/lightbulb.png', alt: '',  delay: '0.6s'  },
-  { src: 'assets/img/star.png',      alt: '',  delay: '1.2s'  },
-]
 
 /* ── HOOKS ──────────────────────────────────────────────────── */
 function useCounters(ref) {
@@ -209,10 +203,13 @@ export default function ONama() {
         }
 
         const indicator = wrap.querySelector('.princip-ruler-indicator')
+        const fill      = wrap.querySelector('.princip-ruler-fill')
         const rulerLines = wrap.querySelector('.princip-ruler-lines')
         if (indicator && rulerLines) {
           const linesH = rulerLines.offsetHeight
-          indicator.style.top = `${(idx + 0.5) / N * linesH}px`
+          const newTop = (idx + 0.5) / N * linesH
+          indicator.style.top = `${newTop}px`
+          if (fill) fill.style.height = `${newTop}px`
         }
       })
     }
@@ -305,17 +302,6 @@ export default function ONama() {
               </div>
             </div>
 
-            <div className="deco-scatter">
-              <div className="deco-img-wrap deco-img-wrap--1">
-                <img src={DECO_IMGS[0].src} alt="" className="deco-img" aria-hidden="true" />
-              </div>
-              <div className="deco-img-wrap deco-img-wrap--2">
-                <img src={DECO_IMGS[1].src} alt="" className="deco-img" aria-hidden="true" />
-              </div>
-              <div className="deco-img-wrap deco-img-wrap--3">
-                <img src={DECO_IMGS[2].src} alt="" className="deco-img" aria-hidden="true" />
-              </div>
-            </div>
 
           </div>
         </section>
@@ -413,9 +399,13 @@ export default function ONama() {
                 {Array.from({ length: 32 }).map((_, i) => (
                   <div className="princip-ruler-line" key={i} />
                 ))}
-                <div className="princip-ruler-indicator">
-                  <i className="fas fa-check" aria-hidden="true" />
+                {/* Fill layer — grows down, clips white copies of the lines */}
+                <div className="princip-ruler-fill">
+                  {Array.from({ length: 32 }).map((_, i) => (
+                    <div className="princip-ruler-line princip-ruler-line--white" key={i} />
+                  ))}
                 </div>
+                <div className="princip-ruler-indicator" />
               </div>
             </div>
 
