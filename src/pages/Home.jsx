@@ -369,15 +369,21 @@ export default function Home() {
       const vh = window.innerHeight
 
       /* — flip-reveal tilt + sticker image — */
+      /* stickyTop = min(0, vh - height): pins when bottom reaches viewport bottom */
       pageRef.current?.querySelectorAll('.flip-reveal').forEach(el => {
+        const H         = el.offsetHeight
+        const stickyTop = Math.min(0, vh - H)
+        el.style.top    = stickyTop + 'px'
+
         const top       = el.getBoundingClientRect().top
         const stickerEl = el.querySelector('.sticker-img')
-        if (top <= 0) {
+        if (top <= stickyTop) {
           el.style.transform = ''
           if (stickerEl) { stickerEl.style.transform = ''; stickerEl.style.opacity = '' }
           return
         }
-        const p      = Math.max(0, Math.min(1, 1 - top / vh))
+        const totalTravel = vh - stickyTop
+        const p      = Math.max(0, Math.min(1, (vh - top) / totalTravel))
         const ease   = p * p * (3 - 2 * p)
         const angleX  = (1 - ease) * 22
         const angleZ  = (1 - ease) * 9
@@ -455,9 +461,11 @@ export default function Home() {
     }
     function onScroll() { if (!rafId) rafId = requestAnimationFrame(update) }
     window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('resize', onScroll, { passive: true })
     update()
     return () => {
       window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('resize', onScroll)
       if (rafId) cancelAnimationFrame(rafId)
     }
   }, [])
@@ -498,11 +506,11 @@ export default function Home() {
       </div>
 
       {/* O NAMA PREVIEW */}
-      <div className="flip-reveal" style={{ zIndex: 3, background: '#FFFFFF', marginBottom: '240px' }}>
+      <div className="flip-reveal flip-reveal--full" style={{ zIndex: 3, background: '#FFFFFF', marginBottom: '240px' }}>
         <section className="section" aria-labelledby="home-onam" style={{ padding: 'clamp(36px, 4.5vh, 60px) 0' }}>
           <div className="container">
             <div className="o-nama-split" style={{ gap: '52px', alignItems: 'center' }}>
-              <div className="o-img sticker-img" style={{ willChange: 'transform, opacity' }}>
+              <div className="o-img sticker-img" style={{ willChange: 'transform, opacity', paddingBottom: '56px' }}>
                 <div className="o-placeholder" style={{ aspectRatio: '4/5' }}>
                   <i className="fas fa-camera"></i>
                   <span>Fotografija tima / studija</span>

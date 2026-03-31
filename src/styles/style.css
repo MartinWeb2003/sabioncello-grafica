@@ -1469,6 +1469,12 @@ strong { font-weight: 600; }
 /* Capture flip-reveal overrides */
 .flip-reveal--capture { margin-bottom: 0; }
 
+/* Full-height variant: grows to natural content height so nothing is clipped */
+.flip-reveal--full {
+  height: auto;
+  min-height: 100vh;
+}
+
 /* ── SCROLL CAPTURE SHOWCASE ────────────────────────────────── */
 .cap-section {
   height: 100%;
@@ -2238,8 +2244,8 @@ strong { font-weight: 600; }
 /* RIGHT — sticky panel */
 .about-right {
   position: sticky;
-  top: var(--nav-h);
-  height: calc(100vh - var(--nav-h));
+  top: 0;
+  height: 100vh;
   overflow: hidden;
   background: #F0F9FA;
 }
@@ -2251,7 +2257,7 @@ strong { font-weight: 600; }
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 52px 0 52px 56px;
+  padding: calc(var(--nav-h) + 52px) 0 52px 56px;
 }
 
 /* Big Bebas Neue words */
@@ -2373,13 +2379,13 @@ strong { font-weight: 600; }
 /* LEFT — sticky big letters (mirrors about-right) */
 .team-left {
   position: sticky;
-  top: var(--nav-h);
-  height: calc(100vh - var(--nav-h));
+  top: 0;
+  height: 100vh;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 52px 0 52px 60px;
+  padding: calc(var(--nav-h) + 52px) 0 52px 60px;
   border-right: 1px solid rgba(5,10,16,.08);
   background: #F0F9FA;
 }
@@ -2782,13 +2788,13 @@ strong { font-weight: 600; }
 
 .svc-left {
   position: sticky;
-  top: var(--nav-h);
-  height: calc(100vh - var(--nav-h));
+  top: 0;
+  height: 100vh;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 52px 0 52px 48px;
+  padding: calc(var(--nav-h) + 52px) 0 52px 48px;
   border-right: 1px solid rgba(5,10,16,.08);
   background: #F0F9FA;
 }
