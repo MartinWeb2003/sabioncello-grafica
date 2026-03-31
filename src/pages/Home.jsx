@@ -35,7 +35,11 @@ function HeroNew() {
       /* Rotate wheel clockwise: 24°/s = full circle in 15 s */
       angleRef.current = (angleRef.current + 24 * dt / 1000) % 360
       if (wheelRef.current) {
-        const sc = window.innerWidth < 768 ? 0.68 : 1
+        const sc = window.innerWidth < 430 ? 0.38
+                 : window.innerWidth < 560 ? 0.52
+                 : window.innerWidth < 768 ? 0.65
+                 : window.innerWidth < 960 ? 0.83
+                 : 1
         wheelRef.current.style.transform =
           `scale(${sc}) rotateZ(-20deg) rotateX(-22deg) rotateY(${angleRef.current}deg)`
       }
@@ -387,9 +391,8 @@ export default function Home() {
         const ease   = p * p * (3 - 2 * p)
         const angleX  = (1 - ease) * 22
         const angleZ  = (1 - ease) * 9
-        const offsetX = (1 - ease) * 100
         const offsetY = (1 - ease) * -60
-        el.style.transform = `perspective(1400px) rotateX(${-angleX}deg) rotateZ(${angleZ}deg) translateX(${offsetX}px) translateY(${offsetY}px)`
+        el.style.transform = `perspective(1400px) rotateX(${-angleX}deg) rotateZ(${angleZ}deg) translateY(${offsetY}px)`
         /* Sticker slap: ease² for sharp snap-into-place near the end */
         if (stickerEl) {
           const slap = ease * ease
