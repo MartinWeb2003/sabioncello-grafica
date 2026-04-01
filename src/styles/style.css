@@ -201,12 +201,14 @@ strong { font-weight: 600; }
 /* Kontakt — same appearance as all other links */
 .nav-cta {
   background: none;
-  color: rgba(5,10,16,.6) !important;
+  color: rgba(5,10,16,.6);
   font-weight: 500;
   padding: 8px 16px;
   border-radius: 2px;
 }
-.nav-cta:hover { background: none !important; color: #fff !important; transform: none; }
+.nav-cta.active { font-weight: 600; color: var(--teal); }
+.nav-cta:hover,
+.nav-cta.active:hover { background: none; color: #fff; transform: none; }
 
 /* Hamburger */
 .hamburger {
