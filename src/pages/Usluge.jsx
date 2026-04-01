@@ -312,7 +312,7 @@ export default function Usluge() {
         if (top <= 0) { el.style.transform = ''; return }
         const p     = Math.max(0, Math.min(1, 1 - top / vh))
         const ease  = p * p * (3 - 2 * p)
-        el.style.transform = `perspective(1400px) rotateX(${-(1 - ease) * 22}deg) rotateZ(${(1 - ease) * 9}deg) translateX(${(1 - ease) * 100}px) translateY(${(1 - ease) * -60}px)`
+        el.style.transform = `perspective(1400px) rotateX(${-(1 - ease) * 22}deg) rotateZ(${(1 - ease) * 9}deg) translateY(${(1 - ease) * -60}px)`
       })
     }
     function onScroll() { if (!rafId) rafId = requestAnimationFrame(update) }

@@ -169,22 +169,44 @@ strong { font-weight: 600; }
 .logo-main { font-family: var(--fd); font-size: 1.3rem; font-weight: 700; color: var(--dark); }
 .logo-sub  { font-size: .55rem; font-weight: 700; letter-spacing: .3em; color: var(--teal-l); text-transform: uppercase; }
 
-.nav-links { display: flex; align-items: center; gap: 2px; }
+.nav-links { display: flex; align-items: center; gap: 4px; }
 .nav-link {
-  font-size: .88rem; font-weight: 500; color: rgba(5,10,16,.55);
-  padding: 8px 14px; border-radius: 2px;
-  transition: color var(--ease);
+  position: relative;
+  font-size: .88rem; font-weight: 500; color: rgba(5,10,16,.6);
+  padding: 8px 16px; border-radius: 2px;
+  transition: color .2s ease;
   letter-spacing: .01em;
 }
-.nav-link:hover { color: rgba(5,10,16,.9); }
+/* Brushstroke — sits behind text, reveals left→right */
+.nav-link::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: url('/assets/img/brushstroke.png') center/100% 100% no-repeat;
+  opacity: 0;
+  clip-path: inset(0 100% 0 0);
+  transition: none;
+  pointer-events: none;
+}
+.nav-link:hover::before {
+  opacity: 1;
+  clip-path: inset(0 0% 0 0);
+  transition: clip-path .32s cubic-bezier(.4,0,.2,1), opacity .05s ease;
+}
+.nav-link:hover,
+.nav-link.active:hover { color: #fff; }
 .nav-link.active { font-weight: 600; color: var(--teal); }
 
+/* Kontakt — same appearance as all other links */
 .nav-cta {
-  background: var(--teal); color: #fff !important;
-  font-weight: 700; padding: 10px 22px;
+  background: none;
+  color: rgba(5,10,16,.6) !important;
+  font-weight: 500;
+  padding: 8px 16px;
   border-radius: 2px;
 }
-.nav-cta:hover { background: var(--teal-d) !important; color: #fff !important; transform: translateY(-1px); }
+.nav-cta:hover { background: none !important; color: #fff !important; transform: none; }
 
 /* Hamburger */
 .hamburger {
