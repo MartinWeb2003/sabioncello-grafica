@@ -5,8 +5,9 @@ export default defineConfig({
   plugins: [react()],
   base: '/',
   server: {
-    // Serve index.html for all routes (SPA fallback)
-    historyApiFallback: true,
+    proxy: {
+      '/api': 'http://localhost:3001',
+    },
   },
   build: {
     rollupOptions: {

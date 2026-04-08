@@ -1,17 +1,22 @@
-import { useEffect, useRef, useCallback } from 'react'
+import { useEffect, useRef, useCallback, useState } from 'react'
 import { Link } from 'react-router-dom'
 import CTABig from '../components/CTABig'
 
-/* ── HERO NEW ────────────────────────────────────────────── */
-const HERO_CARDS = [
-  { icon: 'fa-pen-nib',   line1: 'Grafički',   line2: 'Dizajn',   desc: 'Logotipi · Branding · Tiskovine' },
-  { icon: 'fa-print',     line1: 'Visoki',      line2: 'Tisak',    desc: 'Digitalni · Ofsetni · Veliki formati' },
-  { icon: 'fa-tshirt',    line1: 'Vez &',       line2: 'Tekstil',  desc: 'Uniforme · Majice · Suveniri' },
-  { icon: 'fa-car',       line1: 'Brendiranje', line2: 'Vozila',   desc: 'Wrap · Foliranje · Fasade' },
-  { icon: 'fa-lightbulb', line1: 'Svjetleće',   line2: 'Reklame',  desc: 'LED · Neonski · Kanalna slova' },
-]
+const FB_URL = 'https://www.facebook.com/share/18EMT6khbJ/'
 const L1 = 'SABIONCELLO'
 const L2 = 'GRAFICA'
+
+function truncate(text, words = 12) {
+  if (!text) return ''
+  const parts = text.trim().split(/\s+/)
+  if (parts.length <= words) return text
+  return parts.slice(0, words).join(' ') + '…'
+}
+
+function fmtDate(iso) {
+  if (!iso) return ''
+  return new Date(iso).toLocaleDateString('hr-HR', { day: '2-digit', month: '2-digit', year: 'numeric' })
+}
 
 function HeroNew() {
   const wheelRef     = useRef(null)
@@ -22,6 +27,16 @@ function HeroNew() {
   const angleRef     = useRef(0)
   const targetMxRef  = useRef(0)
   const currentMxRef = useRef(0)
+
+  const [posts,     setPosts]     = useState([])
+  const [pagePhoto, setPagePhoto] = useState(null)
+
+  useEffect(() => {
+    fetch('/api/fb-posts')
+      .then(r => r.json())
+      .then(d => { setPosts(d.posts || []); setPagePhoto(d.pagePhoto || null) })
+      .catch(() => {})
+  }, [])
 
   useEffect(() => {
     targetMxRef.current  = window.innerWidth / 2
@@ -103,8 +118,7 @@ function HeroNew() {
 
           {/* 3D carousel wheel — continuous clockwise rotation via RAF */}
           <div className="hero-wheel" ref={wheelRef} aria-hidden="true">
-            {HERO_CARDS.map((card, cardIdx) => {
-              /* Split each card into N slices placed on the circle surface */
+            {posts.map((post, cardIdx) => {
               const N = 8, W = 240, R = 260, sliceW = W / N
               const base = cardIdx * 72
               return Array.from({ length: N }, (_, j) => {
@@ -116,20 +130,29 @@ function HeroNew() {
                     key={`${cardIdx}-${j}`}
                     className="hero-slice"
                     style={{ transform: `rotateY(${base + arc}deg) translateZ(${R}px)` }}
+                    onClick={() => window.open(post.permalink_url || FB_URL, '_blank', 'noopener')}
                   >
                     <div className={`hero-slice__front${isL ? ' hero-slice__front--l' : ''}${isR ? ' hero-slice__front--r' : ''}`}>
                       <div className="hero-slice__content" style={{ left: `${-j * sliceW}px` }}>
-                        <div className="hero-card__top">
-                          <div className="hero-card__icon">
-                            <i className={`fas ${card.icon}`} aria-hidden="true"></i>
-                          </div>
-                          <span className="hero-card__num">0{cardIdx + 1}</span>
+                        {/* Header: avatar + name */}
+                        <div className="hc-header">
+                          {pagePhoto
+                            ? <img className="hc-avatar" src={pagePhoto} alt="Sabioncello Grafica" />
+                            : <div className="hc-avatar" />}
+                          <span className="hc-name">Sabioncello</span>
                         </div>
-                        <div className="hero-card__body">
-                          <h2 className="hero-card__title">
-                            {card.line1}<br /><em>{card.line2}</em>
-                          </h2>
-                          <p className="hero-card__desc">{card.desc}</p>
+                        {/* Body: optional image + text */}
+                        <div className="hc-body">
+                          {post.full_picture && (
+                            <div className="hc-img-wrap">
+                              <img className="hc-img" src={post.full_picture} alt="" loading="lazy" />
+                            </div>
+                          )}
+                          <p className="hc-text">{truncate(post.message, 20)}</p>
+                        </div>
+                        {/* Footer: date */}
+                        <div className="hc-footer">
+                          <span className="hc-date">{fmtDate(post.created_time)}</span>
                         </div>
                       </div>
                     </div>
