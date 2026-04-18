@@ -3,6 +3,15 @@ import { Link } from 'react-router-dom'
 import CTABig from '../components/CTABig'
 
 const FB_URL = 'https://www.facebook.com/share/18EMT6khbJ/'
+
+const FALLBACK_POSTS = [
+  { message: 'Sretan i miran Uskrs želi vam Sabioncello Grafica — Kristina B., Neda, Tonci, Kristina S.', created_time: '2026-04-05T10:00:00', permalink_url: FB_URL },
+  { message: 'Od ideje do etikete u nekoliko sekundi. Precizan print, vrhunski materijali i detalji koji prodaju proizvod na prvi pogled. Ako želiš da tvoj brend stoji — mi etikete već printamo.', created_time: '2026-04-06T10:00:00', permalink_url: FB_URL },
+  { message: 'Drveni natpisi laserski rezani – detalj koji prostoru daje karakter i prepoznatljivost.', created_time: '2026-04-14T10:00:00', permalink_url: FB_URL },
+  { message: 'Thermal printing in action 🔥 The new Hotronix Stahl IQ heat press takes quality to the next level. The accuracy of this. Speed.', created_time: '2026-04-16T10:00:00', permalink_url: FB_URL },
+  { message: 'Lasersko rezanje plexy-a · Ručno postavljanje LED modula · Skrivena instalacija · Testiranje i montaža · Rezultat? Logo koji ne prolazi nezapaženo.', created_time: '2026-04-04T10:00:00', permalink_url: FB_URL },
+  { message: 'Nije stvar samo u namještaju. Prostor se pamti po detaljima.', created_time: '2026-04-02T10:00:00', permalink_url: FB_URL },
+]
 const L1 = 'SABIONCELLO'
 const L2 = 'GRAFICA'
 
@@ -34,8 +43,8 @@ function HeroNew() {
   useEffect(() => {
     fetch('/api/fb-posts')
       .then(r => r.json())
-      .then(d => { setPosts(d.posts || []); setPagePhoto(d.pagePhoto || null) })
-      .catch(() => {})
+      .then(d => { setPosts(d.posts?.length ? d.posts : FALLBACK_POSTS); setPagePhoto(d.pagePhoto || null) })
+      .catch(() => { setPosts(FALLBACK_POSTS) })
   }, [])
 
   useEffect(() => {
