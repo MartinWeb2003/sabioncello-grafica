@@ -163,10 +163,10 @@ strong { font-weight: 600; }
 
 .nav-logo { display: flex; align-items: center; }
 .nav-logo img { height: 42px; width: auto; display: block; }
-.nav-logo-mobile { display: none; }
+.nav-logo .nav-logo-mobile { display: none; }
 @media (max-width: 768px) {
-  .nav-logo-desktop { display: none; }
-  .nav-logo-mobile  { display: block; }
+  .nav-logo .nav-logo-desktop { display: none; }
+  .nav-logo .nav-logo-mobile  { display: block; }
 }
 
 /* Fallback text logo (when image not available) */
@@ -2224,10 +2224,11 @@ strong { font-weight: 600; }
 .hc-avatar {
   width: 28px;
   height: 28px;
-  border-radius: 50%;
+  border-radius: 4px;
   object-fit: contain;
   background: #fff;
   flex-shrink: 0;
+  padding: 2px;
 }
 .hc-name {
   font-family: var(--fd);
