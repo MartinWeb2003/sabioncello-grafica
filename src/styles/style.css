@@ -2224,11 +2224,12 @@ strong { font-weight: 600; }
 .hc-avatar {
   width: 28px;
   height: 28px;
-  border-radius: 4px;
+  border-radius: 50%;
   object-fit: contain;
   background: #fff;
   flex-shrink: 0;
-  padding: 2px;
+  padding: 4px;
+  box-sizing: border-box;
 }
 .hc-name {
   font-family: var(--fd);
