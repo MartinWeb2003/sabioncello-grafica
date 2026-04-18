@@ -61,7 +61,7 @@ export default function Navbar() {
         <div className="nav-container">
           <NavLink to="/" className="nav-logo" aria-label="Sabioncello Grafica – početna" onClick={close}>
             <img
-              src="assets/img/logo-navbar.png"
+              src={`${import.meta.env.BASE_URL}assets/img/logo-favicon.png`}
               alt="Sabioncello Grafica"
               onError={e => {
                 e.target.style.display = 'none'
