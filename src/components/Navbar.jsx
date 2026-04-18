@@ -61,12 +61,14 @@ export default function Navbar() {
         <div className="nav-container">
           <NavLink to="/" className="nav-logo" aria-label="Sabioncello Grafica – početna" onClick={close}>
             <img
+              className="nav-logo-desktop"
+              src={`${import.meta.env.BASE_URL}assets/img/logo-navbar.png`}
+              alt="Sabioncello Grafica"
+            />
+            <img
+              className="nav-logo-mobile"
               src={`${import.meta.env.BASE_URL}assets/img/logo-favicon.png`}
               alt="Sabioncello Grafica"
-              onError={e => {
-                e.target.style.display = 'none'
-                e.target.nextSibling.style.display = 'flex'
-              }}
             />
             <span className="nav-logo-text" style={{ display: 'none' }}>
               <span className="logo-main">Sabioncello</span>

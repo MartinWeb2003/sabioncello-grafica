@@ -129,6 +129,11 @@ strong { font-weight: 600; }
 
 .nav-logo { display: flex; align-items: center; }
 .nav-logo img { height: 42px; width: auto; display: block; }
+.nav-logo-mobile { display: none; }
+@media (max-width: 768px) {
+  .nav-logo-desktop { display: none; }
+  .nav-logo-mobile  { display: block; }
+}
 
 /* Fallback text logo (when image not available) */
 .nav-logo-text { display: flex; flex-direction: column; line-height: 1; gap: 1px; }
