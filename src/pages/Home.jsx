@@ -43,8 +43,8 @@ function HeroNew() {
   useEffect(() => {
     fetch('/api/fb-posts')
       .then(r => r.json())
-      .then(d => { setPosts(d.posts?.length ? d.posts : FALLBACK_POSTS); setPagePhoto(d.pagePhoto || null) })
-      .catch(() => { setPosts(FALLBACK_POSTS) })
+      .then(d => { setPosts(d.posts?.length ? d.posts : FALLBACK_POSTS); setPagePhoto(d.pagePhoto || `${import.meta.env.BASE_URL}assets/img/logo-favicon.png`) })
+      .catch(() => { setPosts(FALLBACK_POSTS); setPagePhoto(`${import.meta.env.BASE_URL}assets/img/logo-favicon.png`) })
   }, [])
 
   useEffect(() => {
