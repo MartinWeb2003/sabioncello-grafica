@@ -10,7 +10,7 @@ export default function Footer() {
             <Link to="/">
               <img src="assets/img/logo-footer.png" alt="Sabioncello Grafica" />
             </Link>
-            <p className="footer-tagline">Grafički dizajn · Tisak · Reklame</p>
+            <p className="footer-tagline">Izrada svih vrsta reklama – Orebić Pelješac</p>
             <p className="footer-location">Orebić · Pelješac · DNŽ</p>
           </div>
 

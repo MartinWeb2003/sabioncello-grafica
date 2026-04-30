@@ -177,7 +177,7 @@ function HeroNew() {
 
       {/* Bottom CTA bar */}
       <div className="hero-new__footer">
-        <p className="hero-new__tagline">20 godina iskustva · Orebić, Pelješac</p>
+        <p className="hero-new__tagline">Izrada svih vrsta reklama – Orebić Pelješac</p>
         <div className="hero-new__footer-btns">
           <Link to="/usluge"  className="btn btn-dark btn-lg">Naše usluge <i className="fas fa-arrow-right"></i></Link>
           <Link to="/kontakt" className="btn btn-outline-inv btn-lg">Kontaktirajte nas</Link>
@@ -220,12 +220,19 @@ function StatsBand() {
               Iskustvo koje<br /><em>govori samo za sebe</em>
             </h2>
             <p className="stats-band-desc">
-              Dva desetljeća grafičkog dizajna, tiska i brendiranja — od prve skice
-              do gotovog proizvoda u Vašim rukama.
+              Devet godina Sabioncello Grafice i dvadeset godina Kristinina iskustva
+              u grafičkom dizajnu, tisku i brendiranju — od prve skice do gotovog
+              proizvoda u Vašim rukama.
             </p>
             <div className="stats-band-divider" aria-hidden="true" />
           </div>
           <div className="stats-band-numbers">
+            <div className="stat-item">
+              <div className="stat-count">
+                <span className="stat-number" data-count="9">0</span>
+              </div>
+              <span className="stat-label">Godina poslovanja</span>
+            </div>
             <div className="stat-item">
               <div className="stat-count">
                 <span className="stat-number" data-count="20">0</span>
@@ -235,14 +242,14 @@ function StatsBand() {
             </div>
             <div className="stat-item">
               <div className="stat-count">
-                <span className="stat-number" data-count="500">0</span>
+                <span className="stat-number" data-count="100">0</span>
                 <span className="stat-plus">+</span>
               </div>
               <span className="stat-label">Zadovoljnih klijenata</span>
             </div>
             <div className="stat-item">
               <div className="stat-count">
-                <span className="stat-number" data-count="7">0</span>
+                <span className="stat-number" data-count="10">0</span>
               </div>
               <span className="stat-label">Kategorija usluga</span>
             </div>
@@ -381,12 +388,12 @@ const SVC_CARDS = [
 
 
 const FEAT_ITEMS = [
-  { icon: 'fa-utensils', title: 'Jelovnici',               desc: 'Premium dizajn i tisak jelovnika za restorane, hotele i kafiće — od jednostavnih do luksuznih verzija.' },
-  { icon: 'fa-heart',    title: 'Vjenčanja',               desc: 'Pozivnice, zahvalnice, oznake stola i sav tiskani materijal za Vaš savršen dan.' },
-  { icon: 'fa-gift',     title: 'Poslovni pokloni',        desc: 'Personalizirani poslovni i privatni pokloni koji ostavljaju pravi dojam.' },
-  { icon: 'fa-tag',      title: 'Etikete',                 desc: 'Etikete za vina, maslinova ulja i domaće proizvode s prepoznatljivim dizajnom.' },
-  { icon: 'fa-trophy',   title: 'Trofeje i plakete',       desc: 'Personalizirani trofeje, plakete i nagrade za sportska i korporativna događanja.' },
-  { icon: 'fa-user-tag', title: 'Personalizirani pokloni', desc: 'Unikatni pokloni s imenom, fotografijom ili posebnom porukom — za svaku prigodu.' },
+  { icon: 'fa-utensils',    title: 'Jelovnici',                        desc: 'Premium dizajn i tisak jelovnika za restorane, hotele i kafiće — od jednostavnih do luksuznih verzija.' },
+  { icon: 'fa-stamp',       title: 'Pečati',                           desc: 'Brza izrada pečata za tvrtke, obrte i udruge — kvalitetni i trajni, prema Vašim zahtjevima.' },
+  { icon: 'fa-trophy',      title: 'Trofeji i plakete',                desc: 'Personalizirani trofeji, plakete i nagrade za sportska i korporativna događanja.' },
+  { icon: 'fa-tag',         title: 'Etikete',                          desc: 'Etikete za vina, maslinova ulja i domaće proizvode s prepoznatljivim dizajnom.' },
+  { icon: 'fa-gift',        title: 'Poslovni i personalizirani pokloni', desc: 'Brendirani promo proizvodi i personalizirani pokloni koji ostavljaju pravi dojam.' },
+  { icon: 'fa-heart',       title: 'Vjenčanja',                        desc: 'Kompletan dizajn i tisak za Vaš poseban dan — pozivnice, zahvalnice, oznake stola i više.' },
 ]
 
 const SVC_COLORS  = ['#050A10','#0C1E2E','#071524','#0F2438','#060E1A','#0B1D2C']
@@ -546,17 +553,18 @@ export default function Home() {
           <div className="container">
             <div className="o-nama-split" style={{ gap: '52px', alignItems: 'center' }}>
               <div className="o-img sticker-img" style={{ willChange: 'transform, opacity', paddingBottom: '56px' }}>
-                <div className="o-placeholder" style={{ aspectRatio: '4/5' }}>
-                  <i className="fas fa-camera"></i>
-                  <span>Fotografija tima / studija</span>
-                </div>
-                <div className="medal-badge" aria-label="Osnovani 2004">
+                <video
+                  src={`${import.meta.env.BASE_URL}videos/ured.mp4`}
+                  autoPlay muted loop playsInline
+                  style={{ width: '100%', aspectRatio: '4/5', objectFit: 'cover', borderRadius: 'var(--r)', display: 'block' }}
+                />
+                <div className="medal-badge" aria-label="Osnovani 2017">
                   <div className="medal-ribbons" aria-hidden="true">
                     <span className="ribbon ribbon-l"></span>
                     <span className="ribbon ribbon-r"></span>
                   </div>
                   <div className="medal-circle">
-                    <span className="medal-year">2004</span>
+                    <span className="medal-year">2017</span>
                     <span className="medal-label">Osnovani</span>
                   </div>
                 </div>
@@ -573,9 +581,9 @@ export default function Home() {
                   klijentima da ostave dojam koji traje.
                 </p>
                 <p className="body-text" style={{ marginBottom: '12px' }}>
-                  Poslovnica nam je u <strong>Orebićima</strong>, ali poslujemo na cijelom
-                  području <strong>Dubrovačko-neretvanske županije</strong>. Tijekom dvije
-                  dekade izgradili smo mrežu klijenata — od malih obiteljskih biznisa do
+                  Poslovnica nam je u <strong>Orebiću</strong>, ali poslujemo na cijelom
+                  području <strong>Dubrovačko-neretvanske županije</strong>. Kroz devet
+                  godina izgradili smo mrežu klijenata — od malih obiteljskih biznisa do
                   poznatih brendova regije.
                 </p>
                 <ul className="feature-list" style={{ marginTop: '14px', gap: '8px' }}>

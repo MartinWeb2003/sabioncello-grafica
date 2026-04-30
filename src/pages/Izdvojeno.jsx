@@ -1,6 +1,9 @@
 import { useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 
+const BASE = import.meta.env.BASE_URL
+const iv = p => `${BASE}videos/izdvojeno/${p}`
+
 /* ── AOS HOOK ────────────────────────────────────────────────── */
 function useAOS(ref) {
   useEffect(() => {
@@ -53,33 +56,45 @@ const IH_CARDS = [
 const ITEMS = [
   {
     tag: '01 — Izdvojeno', id: 'izdv-jelovnici', icon: 'fa-utensils',
+    video: iv('jelovnici.mp4'),
     title: '<em>Jelovnici</em>',
     desc: 'Svaki restoran, hotel i kafić zaslužuje jelovnik koji je jednako ukusan kao i hrana koju nudi. Dizajniramo i tiskamo jelovnike koji odišu karakterom Vašeg objekta — od jednostavnih laminiranih do premium tvrdouvezanih verzija.',
     features: ['Individualni dizajn prema brendu', 'Laminiranje, spiralno uvezivanje, tvrdouvez', 'A4, A5, triptih i nestandardni formati', 'Sezonska ažuriranja i retiski'],
   },
   {
-    tag: '02 — Izdvojeno', id: 'izdv-vjencanja', icon: 'fa-heart',
-    title: '<em>Vjenčanja</em>',
-    desc: 'Vaš savršen dan zaslužuje savršen tiskani materijal. Dizajniramo i tiskamo sve od pozivnica i zahvalnica do oznaka za stolove, mapa za goste i prilagođenih kutija za kolače — sve u jedinstvenoj estetici Vašeg vjenčanja.',
-    features: ['Pozivnice i zahvalnice', 'Oznake za stolove i mape gostiju', 'Kuverti, naljepnice i pečati', 'Personalizirani suvenir paketi'],
+    tag: '02 — Izdvojeno', id: 'izdv-pecati', icon: 'fa-stamp',
+    video: null,
+    title: '<em>Pečati</em>',
+    desc: 'Brza izrada pečata za tvrtke, obrte i udruge. Automatski i ručni pečati, trodijelni pečati i flaširani tinteni pečati — sve prema Vašim zahtjevima i u kratkom roku.',
+    features: ['Automatski samobojni pečati', 'Ručni i trodijelni pečati', 'Individualni motiv i tekst', 'Brza izrada i dostava'],
   },
   {
-    tag: '03 — Izdvojeno', id: 'izdv-etikete', icon: 'fa-tag',
+    tag: '03 — Izdvojeno', id: 'izdv-trofeje', icon: 'fa-trophy',
+    video: iv('trofeji.mp4'),
+    title: 'Trofeji i <em>plakete</em>',
+    desc: 'Svako postignuće vrijedi biti obilježeno. Izrađujemo personalizirane trofeje, staklene i akrilne plakete te nagrade za sportske udruge, korporativne dodjele i obljetnice — sa graviranjem ili UV tiskom.',
+    features: ['Staklene i akrilne plakete', 'Sportski trofeji i pehari', 'Graviranje i UV tisak', 'Korporativne nagrade i zahvalnice'],
+  },
+  {
+    tag: '04 — Izdvojeno', id: 'izdv-etikete', icon: 'fa-tag',
+    video: null,
     title: '<em>Etikete</em>',
     desc: 'Na Pelješcu raste iznimno vino i maslinovo ulje — a mi pazimo da i etiketa bude na razini sadržaja boce. Dizajniramo i tiskamo etikete za domaće proizvode koje privlače poglede na polici i pripovijedaju priču o tradiciji i kvaliteti.',
     features: ['Etikete za vina i maslinova ulja', 'Etikete za med, likere i rakije', 'Vodootporne i UV-lakirani tisak', 'Mala i velika naklada'],
   },
   {
-    tag: '04 — Izdvojeno', id: 'izdv-trofeje', icon: 'fa-trophy',
-    title: 'Trofeje i <em>plakete</em>',
-    desc: 'Svako postignuće vrijedi biti obilježeno. Izrađujemo personalizirane trofeje, staklene i akrilne plakete te nagrade za sportske udruge, korporativne dodjele i obljetnice — sa graviranjem ili UV tiskom.',
-    features: ['Staklene i akrilne plakete', 'Sportski trofeje i pehari', 'Graviranje i UV tisak', 'Korporativne nagrade i zahvalnice'],
-  },
-  {
     tag: '05 — Izdvojeno', id: 'izdv-pokloni', icon: 'fa-gift',
+    video: null,
     title: 'Poslovni i personalizirani <em>pokloni</em>',
     desc: 'Poklon koji nosi Vaše ime ili osobnu poruku uvijek je bolji od generičkog. Uređujemo i tiskamo personalizirane kutije, knjige, fotoalbume, kalendare i setove koji ostavljaju trajan dojam na poslovne partnere, prijatelje i obitelj.',
     features: ['Poslovni pokloni s logotipom', 'Personalizirani fotoalbumi i knjige', 'Brendirani kalendari i planer', 'Poklon kutije i ambalaža'],
+  },
+  {
+    tag: '06 — Izdvojeno', id: 'izdv-vjencanja', icon: 'fa-heart',
+    video: null,
+    title: '<em>Vjenčanja</em>',
+    desc: 'Vaš savršen dan zaslužuje savršen tiskani materijal. Dizajniramo i tiskamo sve od pozivnica i zahvalnica do oznaka za stolove, mapa za goste i prilagođenih kutija za kolače — sve u jedinstvenoj estetici Vašeg vjenčanja.',
+    features: ['Pozivnice i zahvalnice', 'Oznake za stolove i mape gostiju', 'Kuverti, naljepnice i pečati', 'Personalizirani suvenir paketi'],
   },
 ]
 
@@ -364,25 +379,31 @@ export default function Izdvojeno() {
             {ITEMS.map((s, i) => (
               <div className="svc-item" key={i}>
                 {i > 0 && <div className="about-divider-line" style={{ borderColor: 'rgba(5,10,16,.08)' }} />}
-                <div className="svc-item-img" data-aos>
-                  <i className={`fas ${s.icon}`} aria-hidden="true" />
-                  <span>Primjer rada</span>
+                <div className="svc-item-row">
+                  <div className="svc-item-video" data-aos>
+                    {s.video
+                      ? <video src={s.video} autoPlay muted loop playsInline style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                      : <><i className={`fas ${s.icon}`} aria-hidden="true" /><span>Video primjer</span></>
+                    }
+                  </div>
+                  <div className="svc-item-text">
+                    <p className="svc-item-tag">{s.tag}</p>
+                    <h2
+                      className="svc-item-title"
+                      id={s.id}
+                      dangerouslySetInnerHTML={{ __html: s.title }}
+                    />
+                    <p className="svc-item-desc">{s.desc}</p>
+                    <ul className="svc-item-features">
+                      {s.features.map((f, j) => (
+                        <li key={j}><i className="fas fa-check-circle" aria-hidden="true" /> {f}</li>
+                      ))}
+                    </ul>
+                    <Link to="/kontakt" className="btn btn-primary">
+                      Zatražite ponudu <i className="fas fa-arrow-right" aria-hidden="true" />
+                    </Link>
+                  </div>
                 </div>
-                <p className="svc-item-tag">{s.tag}</p>
-                <h2
-                  className="svc-item-title"
-                  id={s.id}
-                  dangerouslySetInnerHTML={{ __html: s.title }}
-                />
-                <p className="svc-item-desc">{s.desc}</p>
-                <ul className="svc-item-features">
-                  {s.features.map((f, j) => (
-                    <li key={j}><i className="fas fa-check-circle" aria-hidden="true" /> {f}</li>
-                  ))}
-                </ul>
-                <Link to="/kontakt" className="btn btn-primary">
-                  Zatražite ponudu <i className="fas fa-arrow-right" aria-hidden="true" />
-                </Link>
               </div>
             ))}
           </div>

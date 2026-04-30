@@ -4,15 +4,15 @@ import { useEffect, useRef } from 'react'
 const ABOUT_SECTIONS = [
   {
     label: 'Nastanak',
-    text:  'Sabioncello Grafica osnovana je 2004. godine u Orebićima s jednom jasnom misijom: pomoći lokalnim tvrtkama, ugostiteljima i privatnim klijentima da komuniciraju svoju priču na najbolji mogući način — vizualno, jasno i upečatljivo.',
+    text:  'Sabioncello Grafica osnovana je 2017. godine s ciljem pružanja profesionalnih usluga grafičkog dizajna, tiska i brendiranja — sve na jednom mjestu za klijente koji žele biti vidljivi, profesionalni i prepoznatljivi.',
   },
   {
-    label: 'Rast i razvoj',
-    text:  'Kroz dvadeset godina rada izgradili smo tim stručnjaka koji razumiju potrebe klijenata na Pelješcu i šire. Naša poslovnica u Orebićima centar je iz kojeg svakodnevno kreiramo rješenja za klijente s cijelog područja Dubrovačko-neretvanske županije.',
+    label: 'Iskustvo koje čini razliku',
+    text:  'S više od 20 godina iskustva u reklamnoj industriji i 9 godina poslovanja, razumijemo što klijentima stvarno treba — kvalitetu, brzinu i pouzdanost. Naša poslovnica u Orebiću centar je iz kojeg svakodnevno kreiramo rješenja za klijente s cijelog područja Dubrovačko-neretvanske županije.',
   },
   {
     label: 'Naš tim',
-    text:  'Iza svakog projekta stoje Kristina Bogoje — kreativna direktorica s okom za detalj i neiscrpnom energijom, i Tonći Bogoje — operativni stup koji nema projekta kojeg se boji. Mali tim s velikim srcem i dvadeset zajedničkih godina iza sebe.',
+    text:  'Iza svakog projekta stoje Kristina Bogoje — kreativna direktorica s okom za detalj, Tonći Bogoje — operativni stup koji nema projekta kojeg se boji, Neda Bakalić — majstorica za vez kojoj niti jedan detalj ne promakne, i Kristina Suvaljko — novo lice koje je od prvog dana postala neizostavan dio ekipe.',
   },
   {
     label: 'Naše vrijednosti',
@@ -20,7 +20,7 @@ const ABOUT_SECTIONS = [
   },
   {
     label: 'Doseg',
-    text:  'Smješteni u srcu Pelješca, radimo za tvrtke, ugostitelje, udruge i privatne klijente od Metkovića i Opuzena do Dubrovnika i otoka. Dugogodišnja suradnja s nizom poznatih brendova regije svjedoči o povjerenju koje smo gradili godinama.',
+    text:  'Smješteni u srcu Pelješca, radimo za tvrtke, ugostitelje, udruge i privatne klijente na području Pelješca, Korčule, Dubrovnika i Dubrovačko-neretvanske županije. Dugogodišnja suradnja s nizom poznatih brendova regije svjedoči o povjerenju koje smo gradili godinama.',
   },
 ]
 
@@ -51,11 +51,19 @@ const TEAM = [
     tel:   'tel:+38599XXXXXXX',
   },
   {
-    img:   'assets/img/niko.jpg',
-    alt:   'Niko Bogoje',
-    role:  'Budući Suradnik',
-    name:  'Niko Bogoje',
-    desc:  'Najmlađi, ali nimalo manje važan član tima. Pažljivo promatra, sve pamti i uvijek će vas dočekati s osmijehom na ulazu u poslovnicu. Tko zna — možda jednog dana i on nastavlja obiteljsku tradiciju.',
+    img:   'assets/img/neda.jpg',
+    alt:   'Neda Bakalić',
+    role:  'Majstorica veza – "Štik Neda"',
+    name:  'Neda Bakalić',
+    desc:  'Neda je majstorica za vez i osoba kojoj ništa ne promakne. Svaki detalj mora biti na svom mjestu, a svaki konac točno gdje treba. Ako treba nešto "uštikati kako treba" — znate kome se ide.',
+    phone: null,
+  },
+  {
+    img:   'assets/img/kristina-s.jpg',
+    alt:   'Kristina Suvaljko',
+    role:  'Suradnica',
+    name:  'Kristina Suvaljko',
+    desc:  'Kristina je novo lice u timu, ali kao da je s nama oduvijek. Uvijek nasmijana, spremna pomoći i brzo uči sve što treba. S takvim pristupom, jasno je da je već postala neizostavan dio ekipe.',
     phone: null,
   },
 ]
@@ -135,6 +143,8 @@ export default function ONama() {
   const rafRef       = useRef(null)
   const targetMxRef  = useRef(typeof window !== 'undefined' ? window.innerWidth / 2 : 0)
   const currentMxRef = useRef(typeof window !== 'undefined' ? window.innerWidth / 2 : 0)
+  const cardRef      = useRef(null)
+  const arcActiveRef = useRef(false)
 
   useAOS(pageRef)
   useCounters(pageRef)
@@ -160,6 +170,15 @@ export default function ONama() {
     return () => { cancelAnimationFrame(rafRef.current); window.removeEventListener('mousemove', onMove) }
   }, [])
 
+  /* Hand control from CSS entrance animation to JS arc */
+  useEffect(() => {
+    const card = cardRef.current
+    if (!card) return
+    const done = () => { card.style.animation = 'none'; arcActiveRef.current = true }
+    card.addEventListener('animationend', done, { once: true })
+    return () => card.removeEventListener('animationend', done)
+  }, [])
+
   /* Flip-reveal tilt + Princip scroll capture handler */
   useEffect(() => {
     let rafId = null
@@ -178,6 +197,23 @@ export default function ONama() {
         const offsetY = (1 - ease) * -60
         el.style.transform = `perspective(1400px) rotateX(${-angleX}deg) rotateZ(${angleZ}deg) translateY(${offsetY}px)`
       })
+
+      /* — video card arc path — */
+      if (arcActiveRef.current && cardRef.current) {
+        const layout = pageRef.current?.querySelector('.about-sticky-layout')
+        if (layout) {
+          const layoutRect = layout.getBoundingClientRect()
+          const totalScroll = layout.offsetHeight - vh
+          const t = totalScroll > 0
+            ? Math.max(0, Math.min(1, -layoutRect.top / totalScroll))
+            : 0
+          const tx  = t * 160
+          const ty  = -4 * 65 * t * (1 - t)   /* parabolic arc, peaks −65px at t=0.5 */
+          const rot = -7 + t * 20              /* −7deg → +13deg */
+          cardRef.current.style.transform =
+            `translate(calc(-50% + ${tx}px), calc(-50% + ${ty}px)) rotate(${rot}deg)`
+        }
+      }
 
       /* — princip capture scroll — */
       pageRef.current?.querySelectorAll('.princip-capture').forEach(wrap => {
@@ -245,17 +281,13 @@ export default function ONama() {
               ))}
             </div>
 
-            <div className="about-img-card">
+            <div className="about-img-card" ref={cardRef}>
               <div className="about-img-inner">
-                <img
-                  src="assets/img/kristina.jpg"
-                  alt="Sabioncello Grafica studio"
-                  onError={e => { e.target.style.display = 'none'; e.target.nextSibling.style.display = 'flex' }}
+                <video
+                  src={`${import.meta.env.BASE_URL}videos/ured.mp4`}
+                  autoPlay muted loop playsInline
+                  style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
                 />
-                <div className="about-img-placeholder" style={{ display: 'none' }}>
-                  <i className="fas fa-camera" aria-hidden="true"></i>
-                  <span>Fotografija studija</span>
-                </div>
               </div>
               <svg className="about-twinkle" viewBox="0 0 80 80" fill="none" aria-hidden="true">
                 <path d="M40 4 C39.4 20 40.6 20 40 40 C39.4 60 40.6 60 40 76 Z" fill="currentColor"/>
@@ -283,7 +315,7 @@ export default function ONama() {
           <div className="container">
 
             <div className="section-header" data-aos>
-              <h2 className="section-title section-title-inv">Dvadeset godina<br /><em>strasti i iskustva</em></h2>
+              <h2 className="section-title section-title-inv">20 godina iskustva<br /><em>u reklamnoj industriji</em></h2>
             </div>
 
             <div className="stats-grid stats-grid--3" style={{ marginTop: '48px' }}>
@@ -292,11 +324,11 @@ export default function ONama() {
                 <span className="stat-label">Godina iskustva</span>
               </div>
               <div className="stat-item" data-aos>
-                <div className="stat-count"><span className="stat-number" data-count="500">0</span><span className="stat-plus">+</span></div>
+                <div className="stat-count"><span className="stat-number" data-count="100">0</span><span className="stat-plus">+</span></div>
                 <span className="stat-label">Zadovoljnih klijenata</span>
               </div>
               <div className="stat-item" data-aos>
-                <div className="stat-count"><span className="stat-number" data-count="7">0</span></div>
+                <div className="stat-count"><span className="stat-number" data-count="10">0</span></div>
                 <span className="stat-label">Kategorija usluga</span>
               </div>
             </div>

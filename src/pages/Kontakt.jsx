@@ -151,7 +151,7 @@ function KontaktHero() {
         <div className="kh-footer-chips">
           <span><i className="fas fa-phone" aria-hidden="true"></i> +385 99 595 6567</span>
           <span><i className="fas fa-envelope" aria-hidden="true"></i> sabioncello.grafica@gmail.com</span>
-          <span><i className="fas fa-clock" aria-hidden="true"></i> Pon–Sub 08:00–16:00</span>
+          <span><i className="fas fa-clock" aria-hidden="true"></i> Pon–Pet 08:00–16:00</span>
         </div>
       </div>
 
@@ -291,8 +291,9 @@ export default function Kontakt() {
                   <div className="k-detail-row">
                     <i className="fas fa-clock" aria-hidden="true"></i>
                     <div>
-                      <p>Ponedjeljak – Subota</p>
+                      <p>Ponedjeljak – Petak</p>
                       <p>08:00 – 16:00</p>
+                      <p style={{ opacity: 0.6, fontSize: '0.88em' }}>Ne radimo subotom.</p>
                     </div>
                   </div>
                 </div>

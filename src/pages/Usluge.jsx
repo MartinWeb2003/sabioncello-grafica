@@ -2,6 +2,28 @@ import { useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import CTABig from '../components/CTABig'
 
+const BASE = import.meta.env.BASE_URL
+const uv = p => `${BASE}videos/usluge/${p}`
+
+/* ── MULTI-VIDEO PLAYER ──────────────────────────────────────── */
+function MultiVideo({ srcs, style }) {
+  const ref    = useRef(null)
+  const idxRef = useRef(0)
+  useEffect(() => {
+    const video = ref.current
+    if (!video) return
+    const next = () => {
+      idxRef.current = (idxRef.current + 1) % srcs.length
+      video.src = srcs[idxRef.current]
+      video.load()
+      video.play()
+    }
+    video.addEventListener('ended', next)
+    return () => video.removeEventListener('ended', next)
+  }, [srcs])
+  return <video ref={ref} src={srcs[0]} autoPlay muted playsInline style={style} />
+}
+
 /* ── AOS HOOK ────────────────────────────────────────────────── */
 function useAOS(ref) {
   useEffect(() => {
@@ -53,46 +75,74 @@ const UH_CARDS = [
 /* ── SERVICES LIST ───────────────────────────────────────────── */
 const SERVICES = [
   {
-    tag: '01 — Usluga', id: 'svc-dizajn', icon: 'fa-pen-nib', reverse: false, alt: false,
+    tag: '01 — Usluga', id: 'svc-dizajn', icon: 'fa-pen-nib', horizontal: true,
+    video: uv('graficki-dizajn.mp4'),
     title: 'Grafički <em>dizajn</em>',
     desc: 'Vizualni identitet koji priča Vašu priču. Od logotipa i poslovnih karata do kompletnih branding rješenja — stvaramo dizajn koji ostavlja snažan prvi dojam i gradi dugoročno povjerenje.',
     features: ['Logotipi i vizualni identitet', 'Poslovne karte i brošure', 'Reklamni materijali i banneri', 'Digitalni i print dizajn'],
   },
   {
-    tag: '02 — Usluga', id: 'svc-tisak', icon: 'fa-print', reverse: true, alt: true,
+    tag: '02 — Usluga', id: 'svc-tisak', icon: 'fa-print',
+    video: uv('tisak.mp4'),
     title: '<em>Tisak</em>',
     desc: 'Visokokvalitetni digitalni i ofsetni tisak za sve formate. Bilo da su Vam potrebne vizitke, letci, katalozi, banneri ili plakati velikih dimenzija — isporučujemo oštrinu i točnost boja na svakom tisku.',
     features: ['Digitalni i ofsetni tisak', 'Vizitke, letci i katalozi', 'Plakati i banneri velikih formata', 'Promo materijali za događanja'],
   },
   {
-    tag: '03 — Usluga', id: 'svc-vez', icon: 'fa-tshirt', reverse: false, alt: false,
+    tag: '03 — Usluga', id: 'svc-vez', icon: 'fa-tshirt',
+    videos: [uv('tisak-tekstil-1.mp4'), uv('tisak-tekstil-2.mp4')],
     title: 'Vez i tisak <em>na tekstil</em>',
     desc: 'Personalizacija tekstila za poslovne i privatne potrebe. Uniforme s Vašim logom, promotivne majice, kape i torbe — vez i direktni tisak na sve vrste materijala s dugotrajnim rezultatima.',
     features: ['Vez logotipa na uniforme', 'Direktni tisak na majice i kape', 'Promotivni tekstilni suveniri', 'Poslovni i sportski tekstil'],
   },
   {
-    tag: '04 — Usluga', id: 'svc-vozila', icon: 'fa-car', reverse: true, alt: true,
+    tag: '04 — Usluga', id: 'svc-vozila', icon: 'fa-car',
+    video: uv('vozila.mp4'),
     title: 'Oslikavanje <em>vozila i površina</em>',
     desc: 'Vaš logo i poruka na svakom kilometru. Profesionalno brendiranje osobnih i dostavnih vozila, autobusa i kamiona — ali i velikih površina poput fasada, izloga i građevinskih ograda.',
     features: ['Brendiranje osobnih i dostavnih vozila', 'Foliranje i wrap vozila', 'Oslikavanje fasada i izloga', 'Reklamni panoi i velike površine'],
   },
   {
-    tag: '05 — Usluga', id: 'svc-reklame', icon: 'fa-lightbulb', reverse: false, alt: false,
+    tag: '05 — Usluga', id: 'svc-reklame', icon: 'fa-lightbulb',
+    videos: [uv('led-1.mp4'), uv('led-2.mp4'), uv('led-3.mp4')],
     title: 'Svjetleće <em>reklame</em>',
     desc: 'Budite vidljivi danju i noću. Izrada LED i neonskih reklama, kanalnih slova i osvjetljenih fasadnih natpisa koji Vaš prostor čine uočljivim u svakom trenutku i privlače pažnju prolaznika.',
     features: ['LED kanalna slova i logotipi', 'Neonske i LED reklame', 'Osvjetljene fasadne ploče', 'Montaža i servis'],
   },
   {
-    tag: '06 — Usluga', id: 'svc-ploce', icon: 'fa-sign', reverse: true, alt: true,
+    tag: '06 — Usluga', id: 'svc-ploce', icon: 'fa-sign',
+    video: uv('putokazi-ploce.mp4'),
     title: 'Putokazi i <em>natpisne ploče</em>',
     desc: 'Profesionalna signalizacija koja vodi Vaše klijente i predstavlja Vaš brend. Od jednostavnih natpisnih ploča do kompleksnih sustavnih rješenja za turizam, ugostiteljstvo i poslovne prostore.',
     features: ['Natpisne ploče za poslovne prostore', 'Turistički putokazi i oznake', 'Prometna i informativna signalizacija', 'Aluminij, pleksiglas, inox i drvo'],
   },
   {
-    tag: '07 — Usluga', id: 'svc-promo', icon: 'fa-box-open', reverse: false, alt: false,
+    tag: '07 — Usluga', id: 'svc-promo', icon: 'fa-box-open',
+    video: null,
     title: 'Promo <em>materijali</em>',
     desc: 'Sve što Vam treba za sajmove, prezentacije i svakodnevni marketing. Rokovnici, olovke, torbe, papirnate vrećice — brendirani promo artikli koji Vaš logo nose dalje od Vašeg ureda.',
     features: ['Brendirani uredski materijal', 'Sajamski i događajni materijali', 'Ambalaža i papirnate vrećice', 'Reklamni gadgeti i pokloni'],
+  },
+  {
+    tag: '08 — Usluga', id: 'svc-laser', icon: 'fa-fire',
+    video: uv('lasersko-graviranje.mp4'),
+    title: 'Lasersko <em>graviranje i rezanje</em>',
+    desc: 'Precizno lasersko graviranje i rezanje na drvu, pleksiglasu, koži, metalu i ostalim materijalima. Savršeno za personalizirane poklone, natpise, ukrase i industrijske primjene.',
+    features: ['Graviranje na drvu, pleksiglasu i metalu', 'Rezanje kompleksnih oblika i slova', 'Personalizirani pokloni i suveniri', 'Drveni natpisi i dekorativni elementi'],
+  },
+  {
+    tag: '09 — Usluga', id: 'svc-sport', icon: 'fa-medal',
+    video: uv('sportska-natjecanja.mp4'),
+    title: 'Sve za sportska natjecanja i <em>društvena događanja</em>',
+    desc: 'Kompletna oprema za organizaciju sportskih natjecanja i društvenih događanja — od medalja i trofeja do bannera, bedževa i cijelog vizualnog identiteta Vašeg događanja.',
+    features: ['Medalje, trofeji i plakete', 'Banneri i reklamni materijali za događanja', 'Bedževi i akreditacije', 'Personalizirani suveniri i pokloni'],
+  },
+  {
+    tag: '10 — Usluga', id: 'svc-uv', icon: 'fa-sun',
+    video: uv('uv-tisak.mp4'),
+    title: 'UV tisak na <em>razne materijale</em>',
+    desc: 'UV tisak direktno na gotovo svaki materijal — staklo, drvo, keramiku, metal, kamen, pleksiglas i više. Visoka rezolucija, živopisne boje i trajnost koja odolijevaju vremenskim uvjetima.',
+    features: ['Tisak na staklo, keramiku i kamen', 'Tisak na drvo, metal i pleksiglas', 'Personalizirani pokloni i suveniri', 'Otpornost na UV i atmosferske uvjete'],
   },
 ]
 
@@ -379,25 +429,63 @@ export default function Usluge() {
             {SERVICES.map((s, i) => (
               <div className="svc-item" key={i}>
                 {i > 0 && <div className="about-divider-line" style={{ borderColor: 'rgba(5,10,16,.08)' }} />}
-                <div className="svc-item-img" data-aos>
-                  <i className={`fas ${s.icon}`} aria-hidden="true" />
-                  <span>Primjer usluge</span>
-                </div>
-                <p className="svc-item-tag">{s.tag}</p>
-                <h2
-                  className="svc-item-title"
-                  id={s.id}
-                  dangerouslySetInnerHTML={{ __html: s.title }}
-                />
-                <p className="svc-item-desc">{s.desc}</p>
-                <ul className="svc-item-features">
-                  {s.features.map((f, j) => (
-                    <li key={j}><i className="fas fa-check-circle" aria-hidden="true" /> {f}</li>
-                  ))}
-                </ul>
-                <Link to="/kontakt" className="btn btn-primary">
-                  Zatražite ponudu <i className="fas fa-arrow-right" aria-hidden="true" />
-                </Link>
+                {s.horizontal ? (
+                  <div className="svc-item-col">
+                    <div className="svc-item-video svc-item-video--h" data-aos>
+                      {s.videos
+                        ? <MultiVideo srcs={s.videos} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                        : s.video
+                          ? <video src={s.video} autoPlay muted loop playsInline style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                          : <><i className={`fas ${s.icon}`} aria-hidden="true" /><span>Video primjer</span></>
+                      }
+                    </div>
+                    <div className="svc-item-text">
+                      <p className="svc-item-tag">{s.tag}</p>
+                      <h2
+                        className="svc-item-title"
+                        id={s.id}
+                        dangerouslySetInnerHTML={{ __html: s.title }}
+                      />
+                      <p className="svc-item-desc">{s.desc}</p>
+                      <ul className="svc-item-features">
+                        {s.features.map((f, j) => (
+                          <li key={j}><i className="fas fa-check-circle" aria-hidden="true" /> {f}</li>
+                        ))}
+                      </ul>
+                      <Link to="/kontakt" className="btn btn-primary">
+                        Zatražite ponudu <i className="fas fa-arrow-right" aria-hidden="true" />
+                      </Link>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="svc-item-row">
+                    <div className="svc-item-video" data-aos>
+                      {s.videos
+                        ? <MultiVideo srcs={s.videos} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                        : s.video
+                          ? <video src={s.video} autoPlay muted loop playsInline style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                          : <><i className={`fas ${s.icon}`} aria-hidden="true" /><span>Video primjer</span></>
+                      }
+                    </div>
+                    <div className="svc-item-text">
+                      <p className="svc-item-tag">{s.tag}</p>
+                      <h2
+                        className="svc-item-title"
+                        id={s.id}
+                        dangerouslySetInnerHTML={{ __html: s.title }}
+                      />
+                      <p className="svc-item-desc">{s.desc}</p>
+                      <ul className="svc-item-features">
+                        {s.features.map((f, j) => (
+                          <li key={j}><i className="fas fa-check-circle" aria-hidden="true" /> {f}</li>
+                        ))}
+                      </ul>
+                      <Link to="/kontakt" className="btn btn-primary">
+                        Zatražite ponudu <i className="fas fa-arrow-right" aria-hidden="true" />
+                      </Link>
+                    </div>
+                  </div>
+                )}
               </div>
             ))}
           </div>

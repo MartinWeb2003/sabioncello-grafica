@@ -2952,11 +2952,12 @@ strong { font-weight: 600; }
 
 .svc-item-title {
   font-family: var(--fh);
-  font-size: clamp(2.8rem, 5vw, 4.5rem);
-  line-height: 0.88;
+  font-size: clamp(2rem, 3.5vw, 3.5rem);
+  line-height: 0.92;
   color: var(--dark);
   margin: 0 0 22px;
   text-transform: uppercase;
+  overflow-wrap: break-word;
 }
 .svc-item-title em { color: var(--teal); font-style: normal; }
 
@@ -2985,23 +2986,56 @@ strong { font-weight: 600; }
 }
 .svc-item-features li i { color: #0CBDCF; font-size: 0.7rem; }
 
-/* Service image block */
-.svc-item-img {
-  width: 100%;
-  aspect-ratio: 16/9;
-  overflow: hidden;
-  margin-bottom: 24px;
+/* Video-left row layout for service/featured items */
+.svc-item-row {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 48px;
+  align-items: start;
+}
+
+.svc-item-text { min-width: 0; }
+
+.svc-item-video {
+  aspect-ratio: 9/16;
   background: var(--teal-pale);
   border: 1px solid var(--teal-pale2);
+  border-radius: 12px;
+  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
   gap: 12px;
   color: var(--mid);
+  position: sticky;
+  top: calc(var(--nav-h) + 48px);
 }
-.svc-item-img i { font-size: 2.2rem; color: #0CBDCF; opacity: 0.6; }
-.svc-item-img span { font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; }
+.svc-item-video i    { font-size: 2.2rem; color: #0CBDCF; opacity: 0.6; }
+.svc-item-video span { font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; }
+
+/* Stacked (horizontal video) variant */
+.svc-item-col {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.svc-item-video--h {
+  width: 100%;
+  aspect-ratio: 16/9;
+  position: static;
+  border-radius: 12px;
+}
+
+@media (max-width: 1400px) {
+  .svc-item-row { grid-template-columns: 200px 1fr; }
+}
+
+@media (max-width: 960px) {
+  .svc-item-video { display: none; }
+  .svc-item-row { grid-template-columns: 1fr; }
+}
 
 @media (max-width: 768px) {
   .svc-sticky-layout { grid-template-columns: 1fr; }
@@ -3191,7 +3225,7 @@ strong { font-weight: 600; }
   line-height: 1.6;
 }
 
-.uh-card-foot {}
+
 .uh-card-tags {
   display: flex;
   flex-wrap: wrap;
