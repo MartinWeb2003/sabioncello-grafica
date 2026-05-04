@@ -63,7 +63,7 @@ const ITEMS = [
   },
   {
     tag: '02 — Izdvojeno', id: 'izdv-pecati', icon: 'fa-stamp',
-    video: null,
+    video: iv('pecat.mp4'), stacked: true,
     title: '<em>Pečati</em>',
     desc: 'Brza izrada pečata za tvrtke, obrte i udruge. Automatski i ručni pečati, trodijelni pečati i flaširani tinteni pečati — sve prema Vašim zahtjevima i u kratkom roku.',
     features: ['Automatski samobojni pečati', 'Ručni i trodijelni pečati', 'Individualni motiv i tekst', 'Brza izrada i dostava'],
@@ -91,7 +91,7 @@ const ITEMS = [
   },
   {
     tag: '06 — Izdvojeno', id: 'izdv-vjencanja', icon: 'fa-heart',
-    video: null,
+    video: iv('vjencanje.mp4'),
     title: '<em>Vjenčanja</em>',
     desc: 'Vaš savršen dan zaslužuje savršen tiskani materijal. Dizajniramo i tiskamo sve od pozivnica i zahvalnica do oznaka za stolove, mapa za goste i prilagođenih kutija za kolače — sve u jedinstvenoj estetici Vašeg vjenčanja.',
     features: ['Pozivnice i zahvalnice', 'Oznake za stolove i mape gostiju', 'Kuverti, naljepnice i pečati', 'Personalizirani suvenir paketi'],
@@ -379,31 +379,56 @@ export default function Izdvojeno() {
             {ITEMS.map((s, i) => (
               <div className="svc-item" key={i}>
                 {i > 0 && <div className="about-divider-line" style={{ borderColor: 'rgba(5,10,16,.08)' }} />}
-                <div className="svc-item-row">
-                  <div className="svc-item-video" data-aos>
-                    {s.video
-                      ? <video src={s.video} autoPlay muted loop playsInline style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                      : <><i className={`fas ${s.icon}`} aria-hidden="true" /><span>Video primjer</span></>
-                    }
+                {s.stacked ? (
+                  <div className="svc-item-col">
+                    <div className="svc-item-video svc-item-video--h" data-aos>
+                      <video src={s.video} autoPlay muted loop playsInline style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    </div>
+                    <div className="svc-item-text">
+                      <p className="svc-item-tag">{s.tag}</p>
+                      <h2
+                        className="svc-item-title"
+                        id={s.id}
+                        dangerouslySetInnerHTML={{ __html: s.title }}
+                      />
+                      <p className="svc-item-desc">{s.desc}</p>
+                      <ul className="svc-item-features">
+                        {s.features.map((f, j) => (
+                          <li key={j}><i className="fas fa-check-circle" aria-hidden="true" /> {f}</li>
+                        ))}
+                      </ul>
+                      <Link to="/kontakt" className="btn btn-primary">
+                        Zatražite ponudu <i className="fas fa-arrow-right" aria-hidden="true" />
+                      </Link>
+                    </div>
                   </div>
-                  <div className="svc-item-text">
-                    <p className="svc-item-tag">{s.tag}</p>
-                    <h2
-                      className="svc-item-title"
-                      id={s.id}
-                      dangerouslySetInnerHTML={{ __html: s.title }}
-                    />
-                    <p className="svc-item-desc">{s.desc}</p>
-                    <ul className="svc-item-features">
-                      {s.features.map((f, j) => (
-                        <li key={j}><i className="fas fa-check-circle" aria-hidden="true" /> {f}</li>
-                      ))}
-                    </ul>
-                    <Link to="/kontakt" className="btn btn-primary">
-                      Zatražite ponudu <i className="fas fa-arrow-right" aria-hidden="true" />
-                    </Link>
+                ) : (
+                  <div className="svc-item-row">
+                    <div className="svc-item-video" data-aos>
+                      {s.video
+                        ? <video src={s.video} autoPlay muted loop playsInline style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                        : <><i className={`fas ${s.icon}`} aria-hidden="true" /><span>Video primjer</span></>
+                      }
+                    </div>
+                    <div className="svc-item-text">
+                      <p className="svc-item-tag">{s.tag}</p>
+                      <h2
+                        className="svc-item-title"
+                        id={s.id}
+                        dangerouslySetInnerHTML={{ __html: s.title }}
+                      />
+                      <p className="svc-item-desc">{s.desc}</p>
+                      <ul className="svc-item-features">
+                        {s.features.map((f, j) => (
+                          <li key={j}><i className="fas fa-check-circle" aria-hidden="true" /> {f}</li>
+                        ))}
+                      </ul>
+                      <Link to="/kontakt" className="btn btn-primary">
+                        Zatražite ponudu <i className="fas fa-arrow-right" aria-hidden="true" />
+                      </Link>
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
             ))}
           </div>

@@ -64,7 +64,7 @@ const UH_CARDS = [
   },
   {
     bg: '#091624', accent: '#7ED4DC', icon: 'fa-print', num: '02',
-    title: 'Tisak\n& Print', sub: 'Digitalni · Ofsetni · Formati',
+    title: 'Tisak\n& Print', sub: 'Digitalni · Formati',
     tags: ['Vizitke', 'Banneri', 'Katalozi'],
     offsetX: 130, offsetY: -25,
     arcX: 104, arcY: -270,
@@ -104,7 +104,7 @@ const SERVICES = [
   },
   {
     tag: '05 — Usluga', id: 'svc-reklame', icon: 'fa-lightbulb',
-    videos: [uv('led-1.mp4'), uv('led-2.mp4'), uv('led-3.mp4')],
+    video: uv('led.mp4'),
     title: 'Svjetleće <em>reklame</em>',
     desc: 'Budite vidljivi danju i noću. Izrada LED i neonskih reklama, kanalnih slova i osvjetljenih fasadnih natpisa koji Vaš prostor čine uočljivim u svakom trenutku i privlače pažnju prolaznika.',
     features: ['LED kanalna slova i logotipi', 'Neonske i LED reklame', 'Osvjetljene fasadne ploče', 'Montaža i servis'],
@@ -127,8 +127,8 @@ const SERVICES = [
     tag: '08 — Usluga', id: 'svc-laser', icon: 'fa-fire',
     video: uv('lasersko-graviranje.mp4'),
     title: 'Lasersko <em>graviranje i rezanje</em>',
-    desc: 'Precizno lasersko graviranje i rezanje na drvu, pleksiglasu, koži, metalu i ostalim materijalima. Savršeno za personalizirane poklone, natpise, ukrase i industrijske primjene.',
-    features: ['Graviranje na drvu, pleksiglasu i metalu', 'Rezanje kompleksnih oblika i slova', 'Personalizirani pokloni i suveniri', 'Drveni natpisi i dekorativni elementi'],
+    desc: 'Precizno lasersko graviranje i rezanje na drvu, pleksiglasu, koži i ostalim materijalima. Savršeno za personalizirane poklone, natpise, ukrase i industrijske primjene.',
+    features: ['Graviranje na drvu, pleksiglasu i koži', 'Rezanje kompleksnih oblika i slova', 'Personalizirani pokloni i suveniri', 'Drveni natpisi i dekorativni elementi'],
   },
   {
     tag: '09 — Usluga', id: 'svc-sport', icon: 'fa-medal',

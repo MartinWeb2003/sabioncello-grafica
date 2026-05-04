@@ -2894,10 +2894,11 @@ strong { font-weight: 600; }
   .princip-section { grid-template-columns: 1fr 44px 1fr; }
   .princip-left { padding: calc(var(--nav-h) + 40px) 20px 60px; }
   .princip-ruler { padding: calc(var(--nav-h) + 40px) 0 60px; }
+  .princip-right { padding-right: 4px; }
   .princip-word,
-  .princip-num-item { font-size: clamp(5rem, 20vw, 10rem); }
+  .princip-num-item { font-size: clamp(2rem, 10vw, 4.5rem); }
   .princip-num-viewport,
-  .princip-num-item { height: clamp(5rem, 20vw, 10rem); }
+  .princip-num-item { height: clamp(2rem, 10vw, 4.5rem); }
 }
 
 /* ── SERVICE STICKY LAYOUT ────────────────────────────────────── */
@@ -3033,8 +3034,15 @@ strong { font-weight: 600; }
 }
 
 @media (max-width: 960px) {
-  .svc-item-video { display: none; }
-  .svc-item-row { grid-template-columns: 1fr; }
+  .svc-item-row {
+    grid-template-columns: 1fr;
+  }
+  .svc-item-video {
+    display: flex;
+    position: static;
+    width: 100%;
+    aspect-ratio: 9/16;
+  }
 }
 
 @media (max-width: 768px) {
