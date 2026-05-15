@@ -75,7 +75,7 @@ const UH_CARDS = [
 /* ── SERVICES LIST ───────────────────────────────────────────── */
 const SERVICES = [
   {
-    tag: '01 Usluga', id: 'svc-dizajn', icon: 'fa-pen-nib', horizontal: true,
+    tag: '01 Usluga', id: 'svc-dizajn', icon: 'fa-pen-nib',
     video: uv('graficki-dizajn.mp4'),
     title: 'Grafički <em>dizajn</em>',
     desc: 'Vizualni identitet koji priča Vašu priču. Od logotipa i poslovnih karata do kompletnih branding rješenja stvaramo dizajn koji ostavlja snažan prvi dojam i gradi dugoročno povjerenje.',

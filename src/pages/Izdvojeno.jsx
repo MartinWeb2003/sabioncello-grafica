@@ -63,7 +63,7 @@ const ITEMS = [
   },
   {
     tag: '02 Izdvojeno', id: 'izdv-pecati', icon: 'fa-stamp',
-    video: iv('pecat.mp4'), stacked: true,
+    video: iv('pecat.mp4'),
     title: '<em>Pečati</em>',
     desc: 'Brza izrada pečata za tvrtke, obrte i udruge. Automatski i ručni pečati, trodijelni pečati i flaširani tinteni pečati sve prema Vašim zahtjevima i u kratkom roku.',
     features: ['Automatski samobojni pečati', 'Ručni i trodijelni pečati', 'Individualni motiv i tekst', 'Brza izrada i dostava'],
