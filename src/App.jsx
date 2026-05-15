@@ -24,6 +24,8 @@ const ALL_VIDEOS = [
   'videos/izdvojeno/jelovnici.mp4',
   'videos/izdvojeno/pecat.mp4',
   'videos/izdvojeno/trofeji.mp4',
+  'videos/izdvojeno/etikete.mp4',
+  'videos/izdvojeno/pp-pokloni.mp4',
   'videos/izdvojeno/vjencanje.mp4',
 ]
 

@@ -77,14 +77,14 @@ const ITEMS = [
   },
   {
     tag: '04 Izdvojeno', id: 'izdv-etikete', icon: 'fa-tag',
-    video: null,
+    video: iv('etikete.mp4'),
     title: '<em>Etikete</em>',
     desc: 'Na Pelješcu raste iznimno vino i maslinovo ulje a mi pazimo da i etiketa bude na razini sadržaja boce. Dizajniramo i tiskamo etikete za domaće proizvode koje privlače poglede na polici i pripovijedaju priču o tradiciji i kvaliteti.',
     features: ['Etikete za vina i maslinova ulja', 'Etikete za med, likere i rakije', 'Vodootporne i UV-lakirani tisak', 'Mala i velika naklada'],
   },
   {
     tag: '05 Izdvojeno', id: 'izdv-pokloni', icon: 'fa-gift',
-    video: null,
+    video: iv('pp-pokloni.mp4'),
     title: 'Poslovni i personalizirani <em>pokloni</em>',
     desc: 'Poklon koji nosi Vaše ime ili osobnu poruku uvijek je bolji od generičkog. Uređujemo i tiskamo personalizirane kutije, knjige, fotoalbume, kalendare i setove koji ostavljaju trajan dojam na poslovne partnere, prijatelje i obitelj.',
     features: ['Poslovni pokloni s logotipom', 'Personalizirani fotoalbumi i knjige', 'Brendirani kalendari i planer', 'Poklon kutije i ambalaža'],
