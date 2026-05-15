@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+﻿import { useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import CTABig from '../components/CTABig'
 
@@ -75,73 +75,73 @@ const UH_CARDS = [
 /* ── SERVICES LIST ───────────────────────────────────────────── */
 const SERVICES = [
   {
-    tag: '01 — Usluga', id: 'svc-dizajn', icon: 'fa-pen-nib', horizontal: true,
+    tag: '01 Usluga', id: 'svc-dizajn', icon: 'fa-pen-nib', horizontal: true,
     video: uv('graficki-dizajn.mp4'),
     title: 'Grafički <em>dizajn</em>',
-    desc: 'Vizualni identitet koji priča Vašu priču. Od logotipa i poslovnih karata do kompletnih branding rješenja — stvaramo dizajn koji ostavlja snažan prvi dojam i gradi dugoročno povjerenje.',
+    desc: 'Vizualni identitet koji priča Vašu priču. Od logotipa i poslovnih karata do kompletnih branding rješenja stvaramo dizajn koji ostavlja snažan prvi dojam i gradi dugoročno povjerenje.',
     features: ['Logotipi i vizualni identitet', 'Poslovne karte i brošure', 'Reklamni materijali i banneri', 'Digitalni i print dizajn'],
   },
   {
-    tag: '02 — Usluga', id: 'svc-tisak', icon: 'fa-print',
+    tag: '02 Usluga', id: 'svc-tisak', icon: 'fa-print',
     video: uv('tisak.mp4'),
     title: '<em>Tisak</em>',
-    desc: 'Visokokvalitetni digitalni i ofsetni tisak za sve formate. Bilo da su Vam potrebne vizitke, letci, katalozi, banneri ili plakati velikih dimenzija — isporučujemo oštrinu i točnost boja na svakom tisku.',
+    desc: 'Visokokvalitetni digitalni i ofsetni tisak za sve formate. Bilo da su Vam potrebne vizitke, letci, katalozi, banneri ili plakati velikih dimenzija isporučujemo oštrinu i točnost boja na svakom tisku.',
     features: ['Digitalni i ofsetni tisak', 'Vizitke, letci i katalozi', 'Plakati i banneri velikih formata', 'Promo materijali za događanja'],
   },
   {
-    tag: '03 — Usluga', id: 'svc-vez', icon: 'fa-tshirt',
+    tag: '03 Usluga', id: 'svc-vez', icon: 'fa-tshirt',
     videos: [uv('tisak-tekstil-1.mp4'), uv('tisak-tekstil-2.mp4')],
     title: 'Vez i tisak <em>na tekstil</em>',
-    desc: 'Personalizacija tekstila za poslovne i privatne potrebe. Uniforme s Vašim logom, promotivne majice, kape i torbe — vez i direktni tisak na sve vrste materijala s dugotrajnim rezultatima.',
+    desc: 'Personalizacija tekstila za poslovne i privatne potrebe. Uniforme s Vašim logom, promotivne majice, kape i torbe vez i direktni tisak na sve vrste materijala s dugotrajnim rezultatima.',
     features: ['Vez logotipa na uniforme', 'Direktni tisak na majice i kape', 'Promotivni tekstilni suveniri', 'Poslovni i sportski tekstil'],
   },
   {
-    tag: '04 — Usluga', id: 'svc-vozila', icon: 'fa-car',
+    tag: '04 Usluga', id: 'svc-vozila', icon: 'fa-car',
     video: uv('vozila.mp4'),
     title: 'Oslikavanje <em>vozila i površina</em>',
-    desc: 'Vaš logo i poruka na svakom kilometru. Profesionalno brendiranje osobnih i dostavnih vozila, autobusa i kamiona — ali i velikih površina poput fasada, izloga i građevinskih ograda.',
+    desc: 'Vaš logo i poruka na svakom kilometru. Profesionalno brendiranje osobnih i dostavnih vozila, autobusa i kamiona ali i velikih površina poput fasada, izloga i građevinskih ograda.',
     features: ['Brendiranje osobnih i dostavnih vozila', 'Foliranje i wrap vozila', 'Oslikavanje fasada i izloga', 'Reklamni panoi i velike površine'],
   },
   {
-    tag: '05 — Usluga', id: 'svc-reklame', icon: 'fa-lightbulb',
+    tag: '05 Usluga', id: 'svc-reklame', icon: 'fa-lightbulb',
     video: uv('led.mp4'),
     title: 'Svjetleće <em>reklame</em>',
     desc: 'Budite vidljivi danju i noću. Izrada LED i neonskih reklama, kanalnih slova i osvjetljenih fasadnih natpisa koji Vaš prostor čine uočljivim u svakom trenutku i privlače pažnju prolaznika.',
     features: ['LED kanalna slova i logotipi', 'Neonske i LED reklame', 'Osvjetljene fasadne ploče', 'Montaža i servis'],
   },
   {
-    tag: '06 — Usluga', id: 'svc-ploce', icon: 'fa-sign',
+    tag: '06 Usluga', id: 'svc-ploce', icon: 'fa-sign',
     video: uv('putokazi-ploce.mp4'),
     title: 'Putokazi i <em>natpisne ploče</em>',
     desc: 'Profesionalna signalizacija koja vodi Vaše klijente i predstavlja Vaš brend. Od jednostavnih natpisnih ploča do kompleksnih sustavnih rješenja za turizam, ugostiteljstvo i poslovne prostore.',
     features: ['Natpisne ploče za poslovne prostore', 'Turistički putokazi i oznake', 'Prometna i informativna signalizacija', 'Aluminij, pleksiglas, inox i drvo'],
   },
   {
-    tag: '07 — Usluga', id: 'svc-promo', icon: 'fa-box-open',
-    video: null,
+    tag: '07 Usluga', id: 'svc-promo', icon: 'fa-box-open',
+    video: uv('promo-materijali.mp4'),
     title: 'Promo <em>materijali</em>',
-    desc: 'Sve što Vam treba za sajmove, prezentacije i svakodnevni marketing. Rokovnici, olovke, torbe, papirnate vrećice — brendirani promo artikli koji Vaš logo nose dalje od Vašeg ureda.',
+    desc: 'Sve što Vam treba za sajmove, prezentacije i svakodnevni marketing. Rokovnici, olovke, torbe, papirnate vrećice brendirani promo artikli koji Vaš logo nose dalje od Vašeg ureda.',
     features: ['Brendirani uredski materijal', 'Sajamski i događajni materijali', 'Ambalaža i papirnate vrećice', 'Reklamni gadgeti i pokloni'],
   },
   {
-    tag: '08 — Usluga', id: 'svc-laser', icon: 'fa-fire',
+    tag: '08 Usluga', id: 'svc-laser', icon: 'fa-fire',
     video: uv('lasersko-graviranje.mp4'),
     title: 'Lasersko <em>graviranje i rezanje</em>',
     desc: 'Precizno lasersko graviranje i rezanje na drvu, pleksiglasu, koži i ostalim materijalima. Savršeno za personalizirane poklone, natpise, ukrase i industrijske primjene.',
     features: ['Graviranje na drvu, pleksiglasu i koži', 'Rezanje kompleksnih oblika i slova', 'Personalizirani pokloni i suveniri', 'Drveni natpisi i dekorativni elementi'],
   },
   {
-    tag: '09 — Usluga', id: 'svc-sport', icon: 'fa-medal',
+    tag: '09 Usluga', id: 'svc-sport', icon: 'fa-medal',
     video: uv('sportska-natjecanja.mp4'),
     title: 'Sve za sportska natjecanja i <em>društvena događanja</em>',
-    desc: 'Kompletna oprema za organizaciju sportskih natjecanja i društvenih događanja — od medalja i trofeja do bannera, bedževa i cijelog vizualnog identiteta Vašeg događanja.',
+    desc: 'Kompletna oprema za organizaciju sportskih natjecanja i društvenih događanja od medalja i trofeja do bannera, bedževa i cijelog vizualnog identiteta Vašeg događanja.',
     features: ['Medalje, trofeji i plakete', 'Banneri i reklamni materijali za događanja', 'Bedževi i akreditacije', 'Personalizirani suveniri i pokloni'],
   },
   {
-    tag: '10 — Usluga', id: 'svc-uv', icon: 'fa-sun',
+    tag: '10 Usluga', id: 'svc-uv', icon: 'fa-sun',
     video: uv('uv-tisak.mp4'),
     title: 'UV tisak na <em>razne materijale</em>',
-    desc: 'UV tisak direktno na gotovo svaki materijal — staklo, drvo, keramiku, metal, kamen, pleksiglas i više. Visoka rezolucija, živopisne boje i trajnost koja odolijevaju vremenskim uvjetima.',
+    desc: 'UV tisak direktno na gotovo svaki materijal staklo, drvo, keramiku, metal, kamen, pleksiglas i više. Visoka rezolucija, živopisne boje i trajnost koja odolijevaju vremenskim uvjetima.',
     features: ['Tisak na staklo, keramiku i kamen', 'Tisak na drvo, metal i pleksiglas', 'Personalizirani pokloni i suveniri', 'Otpornost na UV i atmosferske uvjete'],
   },
 ]
@@ -173,7 +173,7 @@ function UslugeHero() {
       const cnX       = (currentMx - vw / 2) / (vw / 2)   /* -1 … +1 */
       const cnY       = (currentMy - vh / 2) / (vh / 2)
 
-      /* ── Cards — scroll arc + cursor tilt ── */
+      /* ── Cards scroll arc + cursor tilt ── */
       UH_CARDS.forEach((card, ci) => {
         const wrap     = cardWraps.current[ci]
         const entrance = cardEntrances.current[ci]
@@ -199,7 +199,7 @@ function UslugeHero() {
           slice.style.transform = `rotateY(${arc}deg) translateZ(${R}px)`
         })
 
-        /* Entrance animation — JS-driven so cursor reactivity is live throughout */
+        /* Entrance animation JS-driven so cursor reactivity is live throughout */
         if (entrance) {
           const delay    = 1000 + ci * 180
           const duration = 700
@@ -221,7 +221,7 @@ function UslugeHero() {
         }
       })
 
-      /* ── Letter scaleY — cursor proximity ── */
+      /* ── Letter scaleY cursor proximity ── */
       const radius = vw * 0.38
       ;[...l1Refs.current, ...l2Refs.current].forEach(el => {
         if (!el) return
@@ -402,7 +402,7 @@ export default function Usluge() {
         <UslugeHero />
       </div>
 
-      {/* Service sticky split layout — left: big letters, right: scrolling services */}
+      {/* Service sticky split layout left: big letters, right: scrolling services */}
       <div style={{ position: 'relative', zIndex: 2 }}>
         <div className="svc-sticky-layout">
 
@@ -493,10 +493,10 @@ export default function Usluge() {
         </div>
       </div>
 
-      {/* CTA — flip-reveal pointing to Izdvojeno */}
+      {/* CTA flip-reveal pointing to Izdvojeno */}
       <div className="flip-reveal" style={{ zIndex: 3, marginBottom: 0 }}>
         <CTABig
-          subtitle="Pregledajte galeriju naših najljepših projekata — od brendiranja i tiska do vozila i svjetlećih reklama."
+          subtitle="Pregledajte galeriju naših najljepših projekata od brendiranja i tiska do vozila i svjetlećih reklama."
           btnText="Izdvojeni radovi"
           btnHref="/izdvojeno"
         />

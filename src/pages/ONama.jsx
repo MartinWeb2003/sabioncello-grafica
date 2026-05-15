@@ -1,22 +1,22 @@
-import { useEffect, useRef } from 'react'
+﻿import { useEffect, useRef } from 'react'
 
 /* ── ABOUT TEXT SECTIONS ────────────────────────────────────── */
 const ABOUT_SECTIONS = [
   {
     label: 'Nastanak',
-    text:  'Sabioncello Grafica osnovana je 2017. godine s ciljem pružanja profesionalnih usluga grafičkog dizajna, tiska i brendiranja — sve na jednom mjestu za klijente koji žele biti vidljivi, profesionalni i prepoznatljivi.',
+    text:  'Sabioncello Grafica osnovana je 2017. godine s ciljem pružanja profesionalnih usluga grafičkog dizajna, tiska i brendiranja sve na jednom mjestu za klijente koji žele biti vidljivi, profesionalni i prepoznatljivi.',
   },
   {
     label: 'Iskustvo koje čini razliku',
-    text:  'S više od 20 godina iskustva u reklamnoj industriji i 9 godina poslovanja, razumijemo što klijentima stvarno treba — kvalitetu, brzinu i pouzdanost. Naša poslovnica u Orebiću centar je iz kojeg svakodnevno kreiramo rješenja za klijente s cijelog područja Dubrovačko-neretvanske županije.',
+    text:  'S više od 20 godina iskustva u reklamnoj industriji i 9 godina poslovanja, razumijemo što klijentima stvarno treba kvalitetu, brzinu i pouzdanost. Naša poslovnica u Orebiću centar je iz kojeg svakodnevno kreiramo rješenja za klijente s cijelog područja Dubrovačko-neretvanske županije.',
   },
   {
     label: 'Naš tim',
-    text:  'Iza svakog projekta stoje Kristina Bogoje — kreativna direktorica s okom za detalj, Tonći Bogoje — operativni stup koji nema projekta kojeg se boji, Neda Bakalić — majstorica za vez kojoj niti jedan detalj ne promakne, i Kristina Suvaljko — novo lice koje je od prvog dana postala neizostavan dio ekipe.',
+    text:  'Iza svakog projekta stoje Kristina Bogoje kreativna direktorica s okom za detalj, Tonći Bogoje operativni stup koji nema projekta kojeg se boji, Neda Bakalić majstorica za vez kojoj niti jedan detalj ne promakne, i Kristina Suvaljko novo lice koje je od prvog dana postala neizostavan dio ekipe.',
   },
   {
     label: 'Naše vrijednosti',
-    text:  'Ne pristajemo na kompromise. Svaki klijent je jedinstven — slušamo, razumijemo i prilagođavamo rješenje baš za Vas. Brzina, kvaliteta i kreativnost nisu klišej; to su principi koji vode svaki projekt od prve skice do gotovog proizvoda.',
+    text:  'Ne pristajemo na kompromise. Svaki klijent je jedinstven slušamo, razumijemo i prilagođavamo rješenje baš za Vas. Brzina, kvaliteta i kreativnost nisu klišej; to su principi koji vode svaki projekt od prve skice do gotovog proizvoda.',
   },
   {
     label: 'Doseg',
@@ -33,11 +33,11 @@ const L4 = 'EKIPA'
 /* ── TEAM MEMBERS ───────────────────────────────────────────── */
 const TEAM = [
   {
-    img:   'assets/img/kristina.jpg',
+    img:   'assets/img/kike.jpeg',
     alt:   'Kristina Bogoje',
     role:  'Osnivačica & Kreativna Direktorica',
     name:  'Kristina Bogoje',
-    desc:  'Vizija, preciznost i neiscrpna energija za stvaranje — Kristina je pokretačka sila iza svakog projekta koji izađe iz naše poslovnice. Dvadeset godina strastvenog rada u dizajnu, komunikaciji i brendiranju.',
+    desc:  'Vizija, preciznost i neiscrpna energija za stvaranje Kristina je pokretačka sila iza svakog projekta koji izađe iz naše poslovnice. Dvadeset godina strastvenog rada u dizajnu, komunikaciji i brendiranju.',
     phone: '+385 98 1763072',
     tel:   'tel:+38598XXXXXXX',
   },
@@ -46,7 +46,7 @@ const TEAM = [
     alt:   'Tonći Bogoje',
     role:  'Operativni Direktor & Terenski Menadžer',
     name:  'Tonći Bogoje',
-    desc:  'Operativni stup agencije — od montaže i realizacije do terenskog rada. Nema projekta koji ga uplaši, niti alata koji mu nije pri ruci. Tonći je razlog zašto svaki projekt završava na vrijeme i onako kako je dogovoreno.',
+    desc:  'Operativni stup agencije od montaže i realizacije do terenskog rada. Nema projekta koji ga uplaši, niti alata koji mu nije pri ruci. Tonći je razlog zašto svaki projekt završava na vrijeme i onako kako je dogovoreno.',
     phone: '+385 99 595 6567',
     tel:   'tel:+38599XXXXXXX',
   },
@@ -55,11 +55,11 @@ const TEAM = [
     alt:   'Neda Bakalić',
     role:  'Majstorica veza – "Štik Neda"',
     name:  'Neda Bakalić',
-    desc:  'Neda je majstorica za vez i osoba kojoj ništa ne promakne. Svaki detalj mora biti na svom mjestu, a svaki konac točno gdje treba. Ako treba nešto "uštikati kako treba" — znate kome se ide.',
+    desc:  'Neda je majstorica za vez i osoba kojoj ništa ne promakne. Svaki detalj mora biti na svom mjestu, a svaki konac točno gdje treba. Ako treba nešto "uštikati kako treba" znate kome se ide.',
     phone: null,
   },
   {
-    img:   'assets/img/kristina-s.jpg',
+    img:   'assets/img/kristina.jpg',
     alt:   'Kristina Suvaljko',
     role:  'Suradnica',
     name:  'Kristina Suvaljko',
@@ -72,7 +72,7 @@ const TEAM = [
 const PRINCIP_VALUES = [
   {
     title: 'Osobni pristup',
-    desc:  <>Svaki klijent je jedinstven. Slušamo, razumijemo i prilagođavamo <strong>rješenje baš za Vas</strong> — bez kopiranja i bez kompromisa.</>,
+    desc:  <>Svaki klijent je jedinstven. Slušamo, razumijemo i prilagođavamo <strong>rješenje baš za Vas</strong> bez kopiranja i bez kompromisa.</>,
   },
   {
     title: 'Kvaliteta bez kompromisa',
@@ -80,11 +80,11 @@ const PRINCIP_VALUES = [
   },
   {
     title: 'Brzina isporuke',
-    desc:  <>Znamo da su Vaši rokovi važni. <strong>Brza izrada i pouzdana dostava</strong> uvijek na vrijeme — jer Vaš poslovni uspjeh ne čeka.</>,
+    desc:  <>Znamo da su Vaši rokovi važni. <strong>Brza izrada i pouzdana dostava</strong> uvijek na vrijeme jer Vaš poslovni uspjeh ne čeka.</>,
   },
   {
     title: 'Kreativno rješenje',
-    desc:  <>Svježe ideje i <strong>kreativni pristup koji izdvaja</strong> Vaš brend od konkurencije — jer vizualna komunikacija je Vaš najsnažniji alat.</>,
+    desc:  <>Svježe ideje i <strong>kreativni pristup koji izdvaja</strong> Vaš brend od konkurencije jer vizualna komunikacija je Vaš najsnažniji alat.</>,
   },
 ]
 
@@ -136,10 +136,10 @@ function useAOS(ref) {
 /* ── O NAMA PAGE ────────────────────────────────────────────── */
 export default function ONama() {
   const pageRef      = useRef(null)
-  const l1Refs       = useRef([])   /* NAŠA  — about right panel */
-  const l2Refs       = useRef([])   /* PRIČA — about right panel */
-  const l3Refs       = useRef([])   /* NAŠA  — team left panel   */
-  const l4Refs       = useRef([])   /* EKIPA — team left panel   */
+  const l1Refs       = useRef([])   /* NAŠA  about right panel */
+  const l2Refs       = useRef([])   /* PRIČA about right panel */
+  const l3Refs       = useRef([])   /* NAŠA  team left panel   */
+  const l4Refs       = useRef([])   /* EKIPA team left panel   */
   const rafRef       = useRef(null)
   const targetMxRef  = useRef(typeof window !== 'undefined' ? window.innerWidth / 2 : 0)
   const currentMxRef = useRef(typeof window !== 'undefined' ? window.innerWidth / 2 : 0)
@@ -149,7 +149,7 @@ export default function ONama() {
   useAOS(pageRef)
   useCounters(pageRef)
 
-  /* Combined RAF — cursor-responsive scaleY for all 4 big-letter sets */
+  /* Combined RAF cursor-responsive scaleY for all 4 big-letter sets */
   useEffect(() => {
     function tick() {
       currentMxRef.current += (targetMxRef.current - currentMxRef.current) * 0.07
@@ -186,7 +186,7 @@ export default function ONama() {
       rafId = null
       const vh = window.innerHeight
 
-      /* — flip-reveal entrance tilt — */
+      /* flip-reveal entrance tilt */
       pageRef.current?.querySelectorAll('.flip-reveal').forEach(el => {
         const top = el.getBoundingClientRect().top
         if (top <= 0) { el.style.transform = ''; return }
@@ -198,7 +198,7 @@ export default function ONama() {
         el.style.transform = `perspective(1400px) rotateX(${-angleX}deg) rotateZ(${angleZ}deg) translateY(${offsetY}px)`
       })
 
-      /* — video card arc path — */
+      /* video card arc path */
       if (arcActiveRef.current && cardRef.current) {
         const layout = pageRef.current?.querySelector('.about-sticky-layout')
         if (layout) {
@@ -215,7 +215,7 @@ export default function ONama() {
         }
       }
 
-      /* — princip capture scroll — */
+      /* princip capture scroll */
       pageRef.current?.querySelectorAll('.princip-capture').forEach(wrap => {
         const rect = wrap.getBoundingClientRect()
         const totalScroll = wrap.offsetHeight - vh
@@ -257,7 +257,7 @@ export default function ONama() {
   return (
     <div ref={pageRef}>
 
-      {/* ── NAŠA PRIČA — sticky split layout ───────────────────── */}
+      {/* ── NAŠA PRIČA sticky split layout ───────────────────── */}
       {/* z:1 so flip-reveals (z≥2) correctly stack over it */}
       <div style={{ position: 'relative', zIndex: 1 }}>
       <div className="about-sticky-layout">
@@ -309,7 +309,7 @@ export default function ONama() {
       </div>
       </div>{/* end z:1 wrapper */}
 
-      {/* ── STATS + DECO — flip-reveal z:2 ─────────────────────── */}
+      {/* ── STATS + DECO flip-reveal z:2 ─────────────────────── */}
       <div className="flip-reveal" style={{ zIndex: 2, background: '#FFFFFF', marginBottom: '240px' }}>
         <section className="stats-band stats-band--light" aria-label="Naši rezultati u brojevima">
           <div className="container">
@@ -338,7 +338,7 @@ export default function ONama() {
         </section>
       </div>
 
-      {/* ── NAŠA EKIPA — sticky split layout ───────────────────── */}
+      {/* ── NAŠA EKIPA sticky split layout ───────────────────── */}
       {/* z:3 so it appears above sticky stats (z:2) as you scroll into it */}
       <div style={{ position: 'relative', zIndex: 3 }}>
       <div className="team-sticky-layout">
@@ -401,7 +401,7 @@ export default function ONama() {
       </div>
       </div>{/* end z:3 wrapper */}
 
-      {/* ── ZAŠTO BIRAJU NAS — Princip counter z:4 ─────────────── */}
+      {/* ── ZAŠTO BIRAJU NAS Princip counter z:4 ─────────────── */}
       <div className="princip-capture" style={{ position: 'relative', zIndex: 4, height: `${PRINCIP_VALUES.length * 100}vh` }}>
         <div className="flip-reveal flip-reveal--capture" style={{ background: '#E8F5F8', marginBottom: 0 }}>
           <div className="princip-section" aria-label="Zašto biraju nas">
@@ -430,7 +430,7 @@ export default function ONama() {
                 {Array.from({ length: 32 }).map((_, i) => (
                   <div className="princip-ruler-line" key={i} />
                 ))}
-                {/* Fill layer — grows down, clips white copies of the lines */}
+                {/* Fill layer grows down, clips white copies of the lines */}
                 <div className="princip-ruler-fill">
                   {Array.from({ length: 32 }).map((_, i) => (
                     <div className="princip-ruler-line princip-ruler-line--white" key={i} />

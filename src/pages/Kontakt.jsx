@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+﻿import { useEffect, useRef, useState } from 'react'
 
 /* ── AOS HOOK ────────────────────────────────────────────────── */
 function useAOS(ref) {
@@ -55,7 +55,7 @@ function KontaktHero() {
       const vw     = window.innerWidth
       const radius = vw * 0.45
 
-      /* Letter scaleY — cursor proximity */
+      /* Letter scaleY cursor proximity */
       l1Refs.current.forEach(el => {
         if (!el) return
         const rect = el.getBoundingClientRect()
@@ -64,7 +64,7 @@ function KontaktHero() {
         el.style.transform = `scaleY(${0.93 + (t * t * (3 - 2 * t)) * 0.14})`
       })
 
-      /* Cursor repulsion — label moves left, big text moves right */
+      /* Cursor repulsion label moves left, big text moves right */
       const cnX    = (mx - vw / 2) / (vw / 2)   // -1..+1
       const SHIFT  = 80
       const labelX = Math.min(0, cnX * -SHIFT)   // cursor right → label left
@@ -155,7 +155,7 @@ function KontaktHero() {
         </div>
       </div>
 
-      {/* Image trail — 4 pooled image slots */}
+      {/* Image trail 4 pooled image slots */}
       {[0, 1, 2, 3].map(i => (
         <img
           key={i}
@@ -210,7 +210,7 @@ export default function Kontakt() {
           <div className="container">
             <div className="k-split">
 
-              {/* LEFT — Google Maps */}
+              {/* LEFT Google Maps */}
               <div className="k-map-col" data-aos>
                 <p className="k-col-label">Pronađite nas</p>
                 <div className="k-map-wrap">
@@ -227,7 +227,7 @@ export default function Kontakt() {
                 </div>
               </div>
 
-              {/* RIGHT — Contact details */}
+              {/* RIGHT Contact details */}
               <div className="k-details-col" data-aos>
                 <h2 className="k-details-title" id="k-details-title">
                   Kontakt <em>detalji</em>

@@ -8,6 +8,25 @@ import Usluge from './pages/Usluge'
 import Izdvojeno from './pages/Izdvojeno'
 import Kontakt from './pages/Kontakt'
 
+const ALL_VIDEOS = [
+  'videos/ured.mp4',
+  'videos/usluge/graficki-dizajn.mp4',
+  'videos/usluge/tisak.mp4',
+  'videos/usluge/tisak-tekstil-1.mp4',
+  'videos/usluge/tisak-tekstil-2.mp4',
+  'videos/usluge/vozila.mp4',
+  'videos/usluge/led.mp4',
+  'videos/usluge/putokazi-ploce.mp4',
+  'videos/usluge/promo-materijali.mp4',
+  'videos/usluge/lasersko-graviranje.mp4',
+  'videos/usluge/sportska-natjecanja.mp4',
+  'videos/usluge/uv-tisak.mp4',
+  'videos/izdvojeno/jelovnici.mp4',
+  'videos/izdvojeno/pecat.mp4',
+  'videos/izdvojeno/trofeji.mp4',
+  'videos/izdvojeno/vjencanje.mp4',
+]
+
 function ScrollToTop() {
   const { pathname } = useLocation()
   useEffect(() => { window.scrollTo(0, 0) }, [pathname])
@@ -25,6 +44,20 @@ function Layout({ children }) {
 }
 
 export default function App() {
+  useEffect(() => {
+    const base = import.meta.env.BASE_URL
+    const schedule = window.requestIdleCallback ?? (cb => setTimeout(cb, 1500))
+    schedule(() => {
+      ALL_VIDEOS.forEach(path => {
+        const link = document.createElement('link')
+        link.rel  = 'prefetch'
+        link.as   = 'video'
+        link.href = `${base}${path}`
+        document.head.appendChild(link)
+      })
+    })
+  }, [])
+
   return (
     <HashRouter>
       <ScrollToTop />

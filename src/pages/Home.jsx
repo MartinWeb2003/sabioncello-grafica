@@ -1,12 +1,12 @@
-import { useEffect, useRef, useCallback, useState } from 'react'
+﻿import { useEffect, useRef, useCallback, useState } from 'react'
 import { Link } from 'react-router-dom'
 import CTABig from '../components/CTABig'
 
 const FB_URL = 'https://www.facebook.com/share/18EMT6khbJ/'
 
 const FALLBACK_POSTS = [
-  { message: 'Sretan i miran Uskrs želi vam Sabioncello Grafica — Kristina B., Neda, Tonci, Kristina S.', created_time: '2026-04-05T10:00:00', permalink_url: FB_URL },
-  { message: 'Od ideje do etikete u nekoliko sekundi. Precizan print, vrhunski materijali i detalji koji prodaju proizvod na prvi pogled. Ako želiš da tvoj brend stoji — mi etikete već printamo.', created_time: '2026-04-06T10:00:00', permalink_url: FB_URL },
+  { message: 'Sretan i miran Uskrs želi vam Sabioncello Grafica Kristina B., Neda, Tonci, Kristina S.', created_time: '2026-04-05T10:00:00', permalink_url: FB_URL },
+  { message: 'Od ideje do etikete u nekoliko sekundi. Precizan print, vrhunski materijali i detalji koji prodaju proizvod na prvi pogled. Ako želiš da tvoj brend stoji mi etikete već printamo.', created_time: '2026-04-06T10:00:00', permalink_url: FB_URL },
   { message: 'Drveni natpisi laserski rezani – detalj koji prostoru daje karakter i prepoznatljivost.', created_time: '2026-04-14T10:00:00', permalink_url: FB_URL },
   { message: 'Thermal printing in action 🔥 The new Hotronix Stahl IQ heat press takes quality to the next level. The accuracy of this. Speed.', created_time: '2026-04-16T10:00:00', permalink_url: FB_URL },
   { message: 'Lasersko rezanje plexy-a · Ručno postavljanje LED modula · Skrivena instalacija · Testiranje i montaža · Rezultat? Logo koji ne prolazi nezapaženo.', created_time: '2026-04-04T10:00:00', permalink_url: FB_URL },
@@ -71,7 +71,7 @@ function HeroNew() {
       /* Smooth mouse X lerp */
       currentMxRef.current += (targetMxRef.current - currentMxRef.current) * 0.07
 
-      /* Per-letter scaleY — height driven by proximity to mouse X */
+      /* Per-letter scaleY height driven by proximity to mouse X */
       const mx     = currentMxRef.current
       const radius = window.innerWidth * 0.38
       ;[...l1Refs.current, ...l2Refs.current].forEach(el => {
@@ -95,15 +95,15 @@ function HeroNew() {
   return (
     <section
       className="hero-new"
-      aria-label="Sabioncello Grafica — naše usluge"
+      aria-label="Sabioncello Grafica naše usluge"
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
     >
-      {/* Shared 3D stage — title letters and carousel depth-sorted together */}
+      {/* Shared 3D stage title letters and carousel depth-sorted together */}
       <div className="hero-3d-stage">
         <div className="hero-3d-world">
 
-          {/* Giant title — letters rendered at z = 0 */}
+          {/* Giant title letters rendered at z = 0 */}
           <div className="hero-title-block" aria-hidden="true">
             <div className="hero-title-row">
               {L1.split('').map((ch, i) => (
@@ -125,7 +125,7 @@ function HeroNew() {
             </div>
           </div>
 
-          {/* 3D carousel wheel — continuous clockwise rotation via RAF */}
+          {/* 3D carousel wheel continuous clockwise rotation via RAF */}
           <div className="hero-wheel" ref={wheelRef} aria-hidden="true">
             {posts.map((post, cardIdx) => {
               const N = 8, W = 240, R = 260, sliceW = W / N
@@ -221,7 +221,7 @@ function StatsBand() {
             </h2>
             <p className="stats-band-desc">
               Devet godina Sabioncello Grafice i dvadeset godina Kristinina iskustva
-              u grafičkom dizajnu, tisku i brendiranju — od prve skice do gotovog
+              u grafičkom dizajnu, tisku i brendiranju od prve skice do gotovog
               proizvoda u Vašim rukama.
             </p>
             <div className="stats-band-divider" aria-hidden="true" />
@@ -290,7 +290,7 @@ const REVIEWS = [
   { initials: 'MV', name: 'Marko Vidović',       since: '9 months ago', text: '"Najbolji 🫶🏻"' },
 ]
 
-/* Scatter positions — designed to look organic but balanced.
+/* Scatter positions designed to look organic but balanced.
    vy / vx = total pixel drift over full scroll progress 0→1 */
 const REVIEW_LAYOUT = [
   { left: '4%',  top: '14%', width: 440, vy: -480, vx:  20, rotate: '-1.5deg' },
@@ -379,21 +379,21 @@ function PressureTitle({ text, className }) {
 /* ── SVC CARDS ───────────────────────────────────────────── */
 const SVC_CARDS = [
   { icon: 'fa-pen-nib',   title: 'Grafički dizajn',      desc: 'Logotipi, vizualni identitet, oglasi i brošure koje Vašoj marki daju prepoznatljivo lice.', href: '/usluge' },
-  { icon: 'fa-print',     title: 'Tisak',                desc: 'Digitalni i ofsetni tisak visoke rezolucije — od vizitki do velikih formata.', href: '/usluge' },
+  { icon: 'fa-print',     title: 'Tisak',                desc: 'Digitalni i ofsetni tisak visoke rezolucije od vizitki do velikih formata.', href: '/usluge' },
   { icon: 'fa-lightbulb', title: 'Svjetleće reklame',    desc: 'LED i klasične reklame koje Vaš poslovni prostor čine vidljivim danju i noću.', href: '/usluge' },
-  { icon: 'fa-tshirt',    title: 'Vez i tisak na tekstil', desc: 'Uniforme, suveniri i promo tekstil s Vašim logom — vez i direktni tisak na sve materijale.', href: '/usluge' },
+  { icon: 'fa-tshirt',    title: 'Vez i tisak na tekstil', desc: 'Uniforme, suveniri i promo tekstil s Vašim logom vez i direktni tisak na sve materijale.', href: '/usluge' },
   { icon: 'fa-car',       title: 'Oslikavanje vozila',   desc: 'Brendiranje vozila i velikih površina koje Vaš logo nosi diljem regije.', href: '/usluge' },
-  { icon: 'fa-sign',      title: 'Putokazi i ploče',     desc: 'Natpisne ploče, putokazi i reklamni panoi — trajni i uočljivi na svakom koraku.', href: '/usluge' },
+  { icon: 'fa-sign',      title: 'Putokazi i ploče',     desc: 'Natpisne ploče, putokazi i reklamni panoi trajni i uočljivi na svakom koraku.', href: '/usluge' },
 ]
 
 
 const FEAT_ITEMS = [
-  { icon: 'fa-utensils',    title: 'Jelovnici',                        desc: 'Premium dizajn i tisak jelovnika za restorane, hotele i kafiće — od jednostavnih do luksuznih verzija.' },
-  { icon: 'fa-stamp',       title: 'Pečati',                           desc: 'Brza izrada pečata za tvrtke, obrte i udruge — kvalitetni i trajni, prema Vašim zahtjevima.' },
+  { icon: 'fa-utensils',    title: 'Jelovnici',                        desc: 'Premium dizajn i tisak jelovnika za restorane, hotele i kafiće od jednostavnih do luksuznih verzija.' },
+  { icon: 'fa-stamp',       title: 'Pečati',                           desc: 'Brza izrada pečata za tvrtke, obrte i udruge kvalitetni i trajni, prema Vašim zahtjevima.' },
   { icon: 'fa-trophy',      title: 'Trofeji i plakete',                desc: 'Personalizirani trofeji, plakete i nagrade za sportska i korporativna događanja.' },
   { icon: 'fa-tag',         title: 'Etikete',                          desc: 'Etikete za vina, maslinova ulja i domaće proizvode s prepoznatljivim dizajnom.' },
   { icon: 'fa-gift',        title: 'Poslovni i personalizirani pokloni', desc: 'Brendirani promo proizvodi i personalizirani pokloni koji ostavljaju pravi dojam.' },
-  { icon: 'fa-heart',       title: 'Vjenčanja',                        desc: 'Kompletan dizajn i tisak za Vaš poseban dan — pozivnice, zahvalnice, oznake stola i više.' },
+  { icon: 'fa-heart',       title: 'Vjenčanja',                        desc: 'Kompletan dizajn i tisak za Vaš poseban dan pozivnice, zahvalnice, oznake stola i više.' },
 ]
 
 const SVC_COLORS  = ['#050A10','#0C1E2E','#071524','#0F2438','#060E1A','#0B1D2C']
@@ -411,7 +411,7 @@ export default function Home() {
       rafId = null
       const vh = window.innerHeight
 
-      /* — flip-reveal tilt + sticker image — */
+      /* flip-reveal tilt + sticker image */
       /* stickyTop = min(0, vh - height): pins when bottom reaches viewport bottom */
       pageRef.current?.querySelectorAll('.flip-reveal').forEach(el => {
         const H         = el.offsetHeight
@@ -441,7 +441,7 @@ export default function Home() {
         }
       })
 
-      /* — reviews scatter parallax — */
+      /* reviews scatter parallax */
       pageRef.current?.querySelectorAll('.scroll-capture-reviews').forEach(wrap => {
         const rect = wrap.getBoundingClientRect()
         const totalScroll = wrap.offsetHeight - vh
@@ -456,7 +456,7 @@ export default function Home() {
         })
       })
 
-      /* — scroll-capture: advance active slide + alternate bg — */
+      /* scroll-capture: advance active slide + alternate bg */
       pageRef.current?.querySelectorAll('.scroll-capture').forEach(wrap => {
         const rect = wrap.getBoundingClientRect()
         const totalScroll = wrap.offsetHeight - vh
@@ -583,7 +583,7 @@ export default function Home() {
                 <p className="body-text" style={{ marginBottom: '12px' }}>
                   Poslovnica nam je u <strong>Orebiću</strong>, ali poslujemo na cijelom
                   području <strong>Dubrovačko-neretvanske županije</strong>. Kroz devet
-                  godina izgradili smo mrežu klijenata — od malih obiteljskih biznisa do
+                  godina izgradili smo mrežu klijenata od malih obiteljskih biznisa do
                   poznatih brendova regije.
                 </p>
                 <ul className="feature-list" style={{ marginTop: '14px', gap: '8px' }}>
@@ -601,7 +601,7 @@ export default function Home() {
         </section>
       </div>
 
-      {/* USLUGE — scroll capture: one service per scroll step */}
+      {/* USLUGE scroll capture: one service per scroll step */}
       <div className="scroll-capture" data-dark="true" style={{ position: 'relative', zIndex: 4, height: `${SVC_CARDS.length * 100}vh` }}>
         <div className="flip-reveal flip-reveal--capture" style={{ background: '#F0F9FA', marginBottom: 0 }}>
           <section className="cap-section cap-section--dark" aria-labelledby="home-usluge">
@@ -648,7 +648,7 @@ export default function Home() {
         </div>
       </div>
 
-      {/* IZDVOJENO — scroll capture */}
+      {/* IZDVOJENO scroll capture */}
       <div className="scroll-capture" data-dark="false" style={{ position: 'relative', zIndex: 5, height: `${FEAT_ITEMS.length * 100}vh` }}>
         <div className="flip-reveal flip-reveal--capture" style={{ background: '#F2F7FA', marginBottom: 0 }}>
           <section className="cap-section cap-section--light" aria-labelledby="home-izdv">
