@@ -217,12 +217,10 @@ function StatsBand() {
         <div className="stats-band-layout">
           <div className="stats-band-copy">
             <h2 className="stats-band-headline">
-              Iskustvo koje<br /><em>govori samo za sebe</em>
+              20 godina iskustva<br /><em>u reklamama</em>
             </h2>
             <p className="stats-band-desc">
-              Devet godina Sabioncello Grafice i dvadeset godina Kristinina iskustva
-              u grafičkom dizajnu, tisku i brendiranju od prve skice do gotovog
-              proizvoda u Vašim rukama.
+              Više od 9 godina poslovanja i preko 20 godina iskustva u reklamnoj industriji.
             </p>
             <div className="stats-band-divider" aria-hidden="true" />
           </div>
@@ -378,12 +376,12 @@ function PressureTitle({ text, className }) {
 
 /* ── SVC CARDS ───────────────────────────────────────────── */
 const SVC_CARDS = [
-  { icon: 'fa-pen-nib',   title: 'Grafički dizajn',      desc: 'Logotipi, vizualni identitet, oglasi i brošure koje Vašoj marki daju prepoznatljivo lice.', href: '/usluge' },
-  { icon: 'fa-print',     title: 'Tisak',                desc: 'Digitalni i ofsetni tisak visoke rezolucije od vizitki do velikih formata.', href: '/usluge' },
-  { icon: 'fa-lightbulb', title: 'Svjetleće reklame',    desc: 'LED i klasične reklame koje Vaš poslovni prostor čine vidljivim danju i noću.', href: '/usluge' },
-  { icon: 'fa-tshirt',    title: 'Vez i tisak na tekstil', desc: 'Uniforme, suveniri i promo tekstil s Vašim logom vez i direktni tisak na sve materijale.', href: '/usluge' },
-  { icon: 'fa-car',       title: 'Oslikavanje vozila',   desc: 'Brendiranje vozila i velikih površina koje Vaš logo nosi diljem regije.', href: '/usluge' },
-  { icon: 'fa-sign',      title: 'Putokazi i ploče',     desc: 'Natpisne ploče, putokazi i reklamni panoi trajni i uočljivi na svakom koraku.', href: '/usluge' },
+  { icon: 'fa-pen-nib',   title: 'Grafički dizajn',        desc: 'Izrada logotipa, vizualnog identiteta i promotivnih materijala koji vašem brendu daju jasan i profesionalan izgled.', href: '/usluge' },
+  { icon: 'fa-print',     title: 'Tisak',                  desc: 'Digitalni tisak visoke kvalitete — od vizitki i naljepnica do promotivnih materijala i većih formata.', href: '/usluge' },
+  { icon: 'fa-lightbulb', title: 'Svjetleće reklame',      desc: 'LED reklame koje vaš poslovni prostor čine vidljivim i prepoznatljivim danju i noću.', href: '/usluge' },
+  { icon: 'fa-tshirt',    title: 'Vez i tisak na tekstil', desc: 'Izrada uniformi, majica, radne odjeće i kapa s vašim logotipom.', href: '/usluge' },
+  { icon: 'fa-car',       title: 'Oslikavanje vozila',     desc: 'Brendiranje vozila koje pretvara vaše vozilo u pokretnu reklamu.', href: '/usluge' },
+  { icon: 'fa-sign',      title: 'Putokazi i ploče',       desc: 'Natpisne ploče, putokazi i reklamni panoi koji osiguravaju jasnu vidljivost i profesionalan dojam.', href: '/usluge' },
 ]
 
 
@@ -572,18 +570,16 @@ export default function Home() {
               <div className="o-content" data-aos>
                 <h2 className="section-title" id="home-onam"
                   style={{ fontSize: 'clamp(2.4rem, 3.6vw, 4.4rem)', marginBottom: '16px' }}>
-                  Dvadeset godina<br /><em>strasti prema dizajnu</em>
+                  Reklame, tisak i dizajn –<br /><em>sve na jednom mjestu</em>
                 </h2>
                 <div className="divider" style={{ marginBottom: '20px' }}></div>
                 <p className="body-text" style={{ marginBottom: '12px' }}>
-                  Sabioncello Grafica nastala je iz ljubavi prema vizualnoj komunikaciji i
-                  želje da pomognemo lokalnim tvrtkama, ugostiteljima i privatnim
-                  klijentima da ostave dojam koji traje.
+                  Više od 9 godina poslovanja i preko 20 godina iskustva u reklamnoj industriji.
                 </p>
                 <p className="body-text" style={{ marginBottom: '12px' }}>
                   Poslovnica nam je u <strong>Orebiću</strong>, ali poslujemo na cijelom
-                  području <strong>Dubrovačko-neretvanske županije</strong>. Kroz devet
-                  godina izgradili smo mrežu klijenata od malih obiteljskih biznisa do
+                  području <strong>Dubrovačko-neretvanske županije i šire</strong>. Tijekom
+                  godina izgradili smo mrežu klijenata — od malih obiteljskih biznisa do
                   poznatih brendova regije.
                 </p>
                 <ul className="feature-list" style={{ marginTop: '14px', gap: '8px' }}>

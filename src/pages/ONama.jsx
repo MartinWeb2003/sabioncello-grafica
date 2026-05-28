@@ -4,23 +4,23 @@
 const ABOUT_SECTIONS = [
   {
     label: 'Nastanak',
-    text:  'Sabioncello Grafica osnovana je 2017. godine s ciljem pružanja profesionalnih usluga grafičkog dizajna, tiska i brendiranja sve na jednom mjestu za klijente koji žele biti vidljivi, profesionalni i prepoznatljivi.',
+    text:  'Sabioncello Grafica osnovana je 2017. godine u Orebićima s jednom jasnom misijom: pomoći lokalnim tvrtkama, ugostiteljima i privatnim klijentima da komuniciraju svoju priču na najbolji mogući način — vizualno, jasno i upečatljivo.',
   },
   {
-    label: 'Iskustvo koje čini razliku',
-    text:  'S više od 20 godina iskustva u reklamnoj industriji i 9 godina poslovanja, razumijemo što klijentima stvarno treba kvalitetu, brzinu i pouzdanost. Naša poslovnica u Orebiću centar je iz kojeg svakodnevno kreiramo rješenja za klijente s cijelog područja Dubrovačko-neretvanske županije.',
+    label: 'Rast i razvoj',
+    text:  'Kroz skoro 10 godina rada na području Orebića i 20 godina iskustva u reklamnoj industriji izgradili smo grafički studio koji razumije potrebe klijenata na Pelješcu i šire. Naša poslovnica u Orebiću centar je iz kojeg svakodnevno kreiramo rješenja za klijente s cijelog područja Dubrovačko-neretvanske županije.',
   },
   {
     label: 'Naš tim',
-    text:  'Iza svakog projekta stoje Kristina Bogoje kreativna direktorica s okom za detalj, Tonći Bogoje operativni stup koji nema projekta kojeg se boji, Neda Bakalić majstorica za vez kojoj niti jedan detalj ne promakne, i Kristina Suvaljko novo lice koje je od prvog dana postala neizostavan dio ekipe.',
+    text:  'Iza svakog projekta stoje Kristina Bogoje — kreativna direktorica s okom za detalj i neiscrpnom energijom i Tonći Bogoje — operativni stup koji nema projekta kojeg se boji. Mali tim s velikim srcem i više od deset zajedničkih godina iza sebe.',
   },
   {
     label: 'Naše vrijednosti',
-    text:  'Ne pristajemo na kompromise. Svaki klijent je jedinstven slušamo, razumijemo i prilagođavamo rješenje baš za Vas. Brzina, kvaliteta i kreativnost nisu klišej; to su principi koji vode svaki projekt od prve skice do gotovog proizvoda.',
+    text:  'Ne pristajemo na kompromise. Svaki klijent je jedinstven — slušamo, razumijemo i prilagođavamo rješenje baš za Vas. Brzina, kvaliteta i kreativnost nisu klišej; to su principi koji vode svaki projekt od prve skice do gotovog proizvoda.',
   },
   {
     label: 'Doseg',
-    text:  'Smješteni u srcu Pelješca, radimo za tvrtke, ugostitelje, udruge i privatne klijente na području Pelješca, Korčule, Dubrovnika i Dubrovačko-neretvanske županije. Dugogodišnja suradnja s nizom poznatih brendova regije svjedoči o povjerenju koje smo gradili godinama.',
+    text:  'Smješteni u srcu Pelješca, radimo za tvrtke, ugostitelje, udruge i privatne klijente od Metkovića i Opuzena do Dubrovnika, Korčule i ostalih otoka. Dugogodišnja suradnja s nizom poznatih brendova regije svjedoči o povjerenju koje smo gradili godinama.',
   },
 ]
 

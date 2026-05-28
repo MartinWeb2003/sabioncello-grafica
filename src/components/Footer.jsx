@@ -28,8 +28,8 @@ export default function Footer() {
             <a href="tel:+38598XXXXXXX" className="footer-cline">
               <i className="fas fa-phone" aria-hidden="true"></i>+385 98 1763072
             </a>
-            <a href="mailto:info@sabioncellografica.hr" className="footer-cline">
-              <i className="fas fa-envelope" aria-hidden="true"></i>info@sabioncellografica.hr
+            <a href="mailto:sabioncello.grafica@gmail.com" className="footer-cline">
+              <i className="fas fa-envelope" aria-hidden="true"></i>sabioncello.grafica@gmail.com
             </a>
             <div className="footer-socials">
               <a href="#" className="footer-social-btn" aria-label="Facebook">
