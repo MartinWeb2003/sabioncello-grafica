@@ -205,7 +205,7 @@ export default function Kontakt() {
       </div>
 
       {/* ── MAP + CONTACT DETAILS ── */}
-      <div className="flip-reveal" style={{ zIndex: 2, background: '#FFFFFF', marginBottom: '240px' }}>
+      <div className="flip-reveal flip-reveal--full" style={{ zIndex: 2, background: '#FFFFFF', marginBottom: '240px' }}>
         <section className="section k-section" aria-labelledby="k-details-title">
           <div className="container">
             <div className="k-split">
