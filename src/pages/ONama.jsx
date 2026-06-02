@@ -4,7 +4,7 @@
 const ABOUT_SECTIONS = [
   {
     label: 'Nastanak',
-    text:  'Sabioncello Grafica osnovana je 2017. godine u Orebićima s jednom jasnom misijom: pomoći lokalnim tvrtkama, ugostiteljima i privatnim klijentima da komuniciraju svoju priču na najbolji mogući način — vizualno, jasno i upečatljivo.',
+    text:  'Sabioncello Grafica osnovana je 2017. godine u Orebiću s jednom jasnom misijom: pomoći lokalnim tvrtkama, ugostiteljima i privatnim klijentima da komuniciraju svoju priču na najbolji mogući način — vizualno, jasno i upečatljivo.',
   },
   {
     label: 'Rast i razvoj',
@@ -12,7 +12,7 @@ const ABOUT_SECTIONS = [
   },
   {
     label: 'Naš tim',
-    text:  'Iza svakog projekta stoje Kristina Bogoje — kreativna direktorica s okom za detalj i neiscrpnom energijom i Tonći Bogoje — operativni stup koji nema projekta kojeg se boji. Mali tim s velikim srcem i više od deset zajedničkih godina iza sebe.',
+    text:  'Iza svakog projekta stoje Kristina — kreativna direktorica s okom za detalj i neiscrpnom energijom i Tonći — operativni stup koji nema projekta kojeg se boji. Mali tim s velikim srcem i više od deset zajedničkih godina iza sebe.',
   },
   {
     label: 'Naše vrijednosti',
@@ -34,35 +34,35 @@ const L4 = 'EKIPA'
 const TEAM = [
   {
     img:   'assets/img/kike.jpeg',
-    alt:   'Kristina Bogoje',
+    alt:   'Kristina',
     role:  'Osnivačica & Kreativna Direktorica',
-    name:  'Kristina Bogoje',
+    name:  'Kristina',
     desc:  'Vizija, preciznost i neiscrpna energija za stvaranje Kristina je pokretačka sila iza svakog projekta koji izađe iz naše poslovnice. Dvadeset godina strastvenog rada u dizajnu, komunikaciji i brendiranju.',
     phone: '+385 98 1763072',
     tel:   'tel:+38598XXXXXXX',
   },
   {
     img:   'assets/img/tonci.jpg',
-    alt:   'Tonći Bogoje',
+    alt:   'Tonći',
     role:  'Operativni Direktor & Terenski Menadžer',
-    name:  'Tonći Bogoje',
+    name:  'Tonći',
     desc:  'Operativni stup agencije od montaže i realizacije do terenskog rada. Nema projekta koji ga uplaši, niti alata koji mu nije pri ruci. Tonći je razlog zašto svaki projekt završava na vrijeme i onako kako je dogovoreno.',
     phone: '+385 99 595 6567',
     tel:   'tel:+38599XXXXXXX',
   },
   {
     img:   'assets/img/neda.jpg',
-    alt:   'Neda Bakalić',
+    alt:   'Neda',
     role:  'Majstorica veza – "Štik Neda"',
-    name:  'Neda Bakalić',
+    name:  'Neda',
     desc:  'Neda je majstorica za vez i osoba kojoj ništa ne promakne. Svaki detalj mora biti na svom mjestu, a svaki konac točno gdje treba. Ako treba nešto "uštikati kako treba" znate kome se ide.',
     phone: null,
   },
   {
     img:   'assets/img/kristina.jpg',
-    alt:   'Kristina Suvaljko',
+    alt:   'Kristina',
     role:  'Suradnica',
-    name:  'Kristina Suvaljko',
+    name:  'Kristina',
     desc:  'Kristina je novo lice u timu, ali kao da je s nama oduvijek. Uvijek nasmijana, spremna pomoći i brzo uči sve što treba. S takvim pristupom, jasno je da je već postala neizostavan dio ekipe.',
     phone: null,
   },
