@@ -2301,15 +2301,20 @@ strong { font-weight: 600; }
 }
 .hero-new__footer-btns { display: flex; gap: 12px; flex-wrap: wrap; }
 
+/* Tablet — footer goes column before it gets cramped */
+@media (max-width: 900px) {
+  .hero-new__footer { flex-direction: column; align-items: flex-start; gap: 16px; padding: 24px 28px; }
+  .hero-new__footer-btns { flex-direction: row; gap: 12px; }
+}
+
 /* Mobile */
 @media (max-width: 768px) {
   .hero-new { height: 100svh; min-height: 560px; }
   .hero-letter    { font-size: 17.5vw; }
   .hero-letter--2 { font-size: 27vw; }
-  /* Shift wheel below the title so text stays readable */
   .hero-wheel { margin-top: 22vh; }
   .hero-title-block { justify-content: flex-start; padding-top: 18vh; }
-  .hero-new__footer { flex-direction: column; align-items: flex-start; gap: 16px; padding: 24px 20px; }
+  .hero-new__footer { padding: 24px 20px; }
   .hero-new__footer-btns { flex-direction: column; width: 100%; }
   .hero-new__footer-btns .btn { justify-content: center; }
 }

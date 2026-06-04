@@ -59,10 +59,10 @@ function HeroNew() {
       /* Rotate wheel clockwise: 24°/s = full circle in 15 s */
       angleRef.current = (angleRef.current + 24 * dt / 1000) % 360
       if (wheelRef.current) {
-        const sc = window.innerWidth < 430 ? 0.38
-                 : window.innerWidth < 560 ? 0.52
-                 : window.innerWidth < 768 ? 0.65
-                 : window.innerWidth < 960 ? 0.83
+        const sc = window.innerWidth < 430 ? 0.72
+                 : window.innerWidth < 560 ? 0.80
+                 : window.innerWidth < 768 ? 0.88
+                 : window.innerWidth < 960 ? 0.94
                  : 1
         wheelRef.current.style.transform =
           `scale(${sc}) rotateZ(-20deg) rotateX(-22deg) rotateY(${angleRef.current}deg)`
